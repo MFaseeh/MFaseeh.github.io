@@ -60,7 +60,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:99;display:flex;align-items:cent
   border:1px solid var(--line);background:#e8e8e2;position:relative;
   display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;
 }
-.photo-box img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;display:block;}
+.photo-box img{width:100%;height:100%;object-fit:cover;object-position:top center;position:absolute;inset:0;display:block;}
 .photo-ph-icon{width:56px;height:56px;border-radius:50%;background:var(--line);display:flex;align-items:center;justify-content:center;}
 .photo-ph-text{font-size:0.72rem;color:var(--ink-muted);letter-spacing:0.06em;text-transform:uppercase;}
 
@@ -198,7 +198,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:99;display:flex;align-items:cent
 #contact{background:var(--ink);color:var(--white);}
 #contact .section-title{color:var(--white);}
 #contact .section-num{color:rgba(255,255,255,0.3);}
-.contact-body{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+.contact-body{display:flex;justify-content:center;text-align:center;}
 .contact-text{font-size:1rem;color:rgba(255,255,255,0.55);line-height:1.85;font-weight:300;}
 .contact-text p+p{margin-top:1rem;}
 .contact-links-list{display:flex;flex-direction:column;}
