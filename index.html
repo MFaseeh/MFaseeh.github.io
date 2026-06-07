@@ -18,197 +18,210 @@
   --accent-soft: #eff4ff;
   --max-w: 1280px;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--off-white);
-  color: var(--ink);
-  font-family: 'Outfit', sans-serif;
-  font-size: 16px;
-  line-height: 1.7;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--off-white);color:var(--ink);font-family:'Outfit',sans-serif;font-size:16px;line-height:1.7;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:99;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 5vw;background:rgba(250,250,248,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:600;letter-spacing:-0.01em;color:var(--ink);}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{font-size:0.82rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;color:var(--ink-muted);transition:color 0.2s;}
+.nav-links a:hover{color:var(--accent);}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:9rem 5vw 5rem;max-width:var(--max-w);margin:0 auto;animation:fadeUp 0.8s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+.hero-top{display:grid;grid-template-columns:1fr 340px;gap:5rem;align-items:start;margin-bottom:3rem;}
+
+/* Left */
+.hero-eyebrow{font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;}
+.hero-name{font-family:'Playfair Display',serif;font-size:clamp(3rem,5vw,5.5rem);font-weight:400;line-height:1.05;letter-spacing:-0.03em;margin-bottom:1.25rem;}
+.hero-desc{font-size:1.02rem;font-weight:300;color:var(--ink-soft);line-height:1.85;margin-bottom:2rem;max-width:540px;}
+.hero-cta{display:flex;flex-wrap:wrap;gap:0.65rem;}
+.btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.65rem 1.5rem;border-radius:100px;font-size:0.87rem;font-weight:500;text-decoration:none;transition:all 0.2s;cursor:pointer;font-family:'Outfit',sans-serif;}
+.btn-primary{background:var(--ink);color:var(--white);border:1.5px solid var(--ink);}
+.btn-primary:hover{background:#2d2d2d;}
+.btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--line);}
+.btn-outline:hover{border-color:var(--ink);}
+
+/* Right — photo + links */
+.hero-right{display:flex;flex-direction:column;gap:1.25rem;}
+.photo-box{
+  width:100%;aspect-ratio:3/4;border-radius:20px;
+  background:linear-gradient(145deg,#e8e8e4 0%,#d4d4ce 100%);
+  border:1px solid var(--line);overflow:hidden;position:relative;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;
 }
+.photo-box img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.photo-placeholder-icon{width:64px;height:64px;border-radius:50%;background:var(--line);display:flex;align-items:center;justify-content:center;}
+.photo-placeholder-icon svg{width:32px;height:32px;opacity:0.4;}
+.photo-placeholder-text{font-size:0.75rem;color:var(--ink-muted);letter-spacing:0.06em;text-transform:uppercase;}
 
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 99;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1.25rem 5vw;
-  background: rgba(250,250,248,0.92);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--line);
+/* 5 quick links: 2 top row + 3 bottom row */
+.quick-links{display:flex;flex-direction:column;gap:0.6rem;}
+.quick-links-row{display:grid;gap:0.6rem;}
+.quick-links-row.row-2{grid-template-columns:1fr 1fr;}
+.quick-links-row.row-3{grid-template-columns:1fr 1fr 1fr;}
+.quick-link-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.3rem;
+  padding:0.85rem 0.5rem;border-radius:14px;text-decoration:none;
+  background:var(--white);border:1px solid var(--line);transition:all 0.2s;
 }
-.nav-logo { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
-.nav-links { display: flex; gap: 2.5rem; list-style: none; }
-.nav-links a { font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; color: var(--ink-muted); transition: color 0.2s; }
-.nav-links a:hover { color: var(--accent); }
+.quick-link-btn:hover{border-color:var(--accent);background:var(--accent-soft);}
+.ql-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;}
+.ql-icon svg{width:22px;height:22px;}
+.ql-label{font-size:0.68rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-muted);}
+.quick-link-btn:hover .ql-label{color:var(--accent);}
 
-/* ── HERO ── */
-#hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 9rem 5vw 5rem;
-  max-width: var(--max-w); margin: 0 auto;
-  animation: fadeUp 0.8s ease both;
+/* Stats row */
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--white);}
+.stat{padding:1.5rem 1.75rem;border-right:1px solid var(--line);}
+.stat:last-child{border-right:none;}
+.stat-num{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:500;line-height:1;color:var(--ink);margin-bottom:0.25rem;}
+.stat-label{font-size:0.72rem;font-weight:400;color:var(--ink-muted);letter-spacing:0.05em;text-transform:uppercase;}
+
+/* DIVIDER */
+.section-divider{width:100%;height:1px;background:var(--line);}
+
+/* SECTION WRAPPER */
+.section-wrap{max-width:var(--max-w);margin:0 auto;padding:5.5rem 5vw;}
+.section-header{display:flex;align-items:baseline;gap:1.5rem;margin-bottom:3.5rem;}
+.section-num{font-family:'Playfair Display',serif;font-size:0.9rem;color:var(--ink-muted);font-weight:400;}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,2.5vw,2.4rem);font-weight:400;letter-spacing:-0.02em;color:var(--ink);}
+
+/* ABOUT */
+#about{background:var(--white);}
+.about-body{display:grid;grid-template-columns:2fr 1fr;gap:6rem;align-items:start;margin-bottom:3rem;}
+.about-text{font-size:1.02rem;color:var(--ink-soft);line-height:1.9;}
+.about-text p+p{margin-top:1.1rem;}
+.about-facts{display:flex;flex-direction:column;}
+.fact-row{display:flex;flex-direction:column;padding:0.9rem 0;border-bottom:1px solid var(--line);}
+.fact-row:first-child{border-top:1px solid var(--line);}
+.fact-label{font-size:0.7rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:0.2rem;}
+.fact-value{font-size:0.95rem;font-weight:400;color:var(--ink);}
+.about-grid-6{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;}
+.ag6-cell{background:var(--off-white);padding:1.75rem 2rem;}
+.ag6-label{font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem;}
+.ag6-value{font-size:1rem;font-weight:500;color:var(--ink);line-height:1.4;}
+.ag6-sub{font-size:0.82rem;color:var(--ink-muted);margin-top:0.2rem;}
+
+/* PUBLICATIONS */
+#publications{background:var(--off-white);}
+.pub-stats-row{display:flex;gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--white);margin-bottom:2.5rem;width:fit-content;}
+.pub-stat-item{padding:1.25rem 2.25rem;border-right:1px solid var(--line);}
+.pub-stat-item:last-child{border-right:none;}
+.psn{font-family:'Playfair Display',serif;font-size:2rem;color:var(--ink);line-height:1;}
+.psl{font-size:0.72rem;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:0.2rem;}
+
+/* Publication list */
+.pub-list{display:flex;flex-direction:column;margin-bottom:2rem;}
+.pub-item{display:grid;grid-template-columns:56px 1fr 200px;gap:2rem;align-items:center;padding:1.5rem 1.25rem;border-bottom:1px solid var(--line);border-radius:4px;transition:background 0.15s;}
+.pub-item:first-child{border-top:1px solid var(--line);}
+.pub-item:hover{background:var(--white);}
+.pub-num{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--line);font-weight:400;text-align:center;}
+.pub-t{font-size:0.97rem;font-weight:500;color:var(--ink);line-height:1.5;margin-bottom:0.35rem;}
+.pub-m{font-size:0.82rem;color:var(--ink-muted);}
+.pub-right-col{display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;}
+.pub-year-big{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--ink-muted);}
+.tag{font-size:0.68rem;font-weight:600;padding:0.22rem 0.7rem;border-radius:100px;letter-spacing:0.04em;white-space:nowrap;}
+.tag-first{background:#e8f0fe;color:#1a56db;}
+.tag-co{background:#f3f4f6;color:#6b7280;}
+.tag-equal{background:#ecfdf5;color:#059669;}
+
+/* Filters BELOW the list */
+.pub-filters-bar{
+  display:flex;flex-direction:column;gap:1rem;
+  background:var(--white);border:1px solid var(--line);border-radius:16px;
+  padding:1.5rem 2rem;
 }
-@keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
-.hero-top { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: flex-end; margin-bottom: 3.5rem; }
-.hero-eyebrow { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; }
-.hero-name { font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 5.5vw, 6rem); font-weight: 400; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
-.hero-desc { font-size: 1.05rem; font-weight: 300; color: var(--ink-soft); line-height: 1.85; }
-.hero-right-block { display: flex; flex-direction: column; justify-content: flex-end; gap: 2rem; }
-.hero-cta { display: flex; flex-wrap: wrap; gap: 0.65rem; }
-.btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.65rem 1.5rem; border-radius: 100px; font-size: 0.87rem; font-weight: 500; text-decoration: none; transition: all 0.2s; cursor: pointer; font-family: 'Outfit', sans-serif; }
-.btn-primary { background: var(--ink); color: var(--white); border: 1.5px solid var(--ink); }
-.btn-primary:hover { background: #2d2d2d; }
-.btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
-.btn-outline:hover { border-color: var(--ink); }
-.hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--white); }
-.stat { padding: 1.5rem 1.75rem; border-right: 1px solid var(--line); }
-.stat:last-child { border-right: none; }
-.stat-num { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 500; line-height: 1; color: var(--ink); margin-bottom: 0.25rem; }
-.stat-label { font-size: 0.75rem; font-weight: 400; color: var(--ink-muted); letter-spacing: 0.05em; text-transform: uppercase; }
+.pub-filters-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.filter-group-label{font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-muted);min-width:90px;}
+.pf-btn{padding:0.32rem 0.9rem;border-radius:100px;font-size:0.8rem;font-weight:500;border:1px solid var(--line);background:transparent;cursor:pointer;color:var(--ink-soft);transition:all 0.18s;font-family:'Outfit',sans-serif;}
+.pf-btn.active-role{background:var(--ink);color:var(--white);border-color:var(--ink);}
+.pf-btn.active-year{background:var(--accent);color:var(--white);border-color:var(--accent);}
+.pf-btn:hover{opacity:0.75;}
+.pub-result-info{font-size:0.8rem;color:var(--ink-muted);margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--line);}
 
-/* ── DIVIDER ── */
-.section-divider { width: 100%; height: 1px; background: var(--line); }
+/* SKILLS — all 6 in one row */
+#skills{background:var(--white);}
+.skills-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1.25rem;}
+.skill-group{background:var(--off-white);border:1px solid var(--line);border-radius:14px;padding:1.5rem 1.25rem;overflow:hidden;position:relative;}
+.skill-group::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.sg-1::before{background:var(--accent);}
+.sg-2::before{background:#10b981;}
+.sg-3::before{background:#f59e0b;}
+.sg-4::before{background:#8b5cf6;}
+.sg-5::before{background:#ef4444;}
+.sg-6::before{background:#ec4899;}
+.skill-group-title{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:1rem;}
+.skill-tags{display:flex;flex-wrap:wrap;gap:0.4rem;}
+.skill-tag{font-size:0.76rem;padding:0.25rem 0.65rem;background:var(--white);border-radius:100px;color:var(--ink-soft);border:1px solid var(--line);}
 
-/* ── SECTION WRAPPER ── */
-.section-wrap { max-width: var(--max-w); margin: 0 auto; padding: 5.5rem 5vw; }
-.section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3.5rem; }
-.section-num { font-family: 'Playfair Display', serif; font-size: 0.9rem; color: var(--ink-muted); font-weight: 400; }
-.section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 2.5vw, 2.4rem); font-weight: 400; letter-spacing: -0.02em; color: var(--ink); }
+/* EXPERIENCE */
+#experience{background:var(--off-white);}
+.exp-list{display:flex;flex-direction:column;}
+.exp-item{display:grid;grid-template-columns:200px 1fr;gap:3rem;padding:2.25rem 0;border-bottom:1px solid var(--line);}
+.exp-item:first-child{border-top:1px solid var(--line);}
+.exp-period{font-size:0.82rem;color:var(--ink-muted);line-height:1.6;}
+.exp-type-tag{display:inline-block;margin-top:0.5rem;font-size:0.68rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:0.2rem 0.65rem;border-radius:100px;}
+.tag-research-t{background:#e8f0fe;color:#1a56db;}
+.tag-teaching-t{background:#ecfdf5;color:#059669;}
+.exp-title{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:500;margin-bottom:0.25rem;}
+.exp-org{font-size:0.88rem;color:var(--ink-muted);margin-bottom:0.75rem;}
+.exp-desc{font-size:0.9rem;color:var(--ink-soft);line-height:1.75;}
 
-/* ── ABOUT ── */
-#about { background: var(--white); }
-.about-body { display: grid; grid-template-columns: 2fr 1fr; gap: 6rem; align-items: start; margin-bottom: 4rem; }
-.about-text { font-size: 1.05rem; color: var(--ink-soft); line-height: 1.9; }
-.about-text p + p { margin-top: 1.1rem; }
-.about-facts { display: flex; flex-direction: column; }
-.fact-row { display: flex; flex-direction: column; padding: 0.9rem 0; border-bottom: 1px solid var(--line); }
-.fact-row:first-child { border-top: 1px solid var(--line); }
-.fact-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.2rem; }
-.fact-value { font-size: 0.95rem; font-weight: 400; color: var(--ink); }
-/* 2x3 grid for quick facts */
-.about-grid-6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
-.ag6-cell { background: var(--off-white); padding: 1.75rem 2rem; }
-.ag6-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
-.ag6-value { font-size: 1rem; font-weight: 500; color: var(--ink); line-height: 1.4; }
-.ag6-sub { font-size: 0.82rem; color: var(--ink-muted); margin-top: 0.2rem; }
+/* AWARDS */
+#awards{background:var(--white);}
+.awards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;}
+.award-card{background:var(--off-white);border:1px solid var(--line);border-radius:14px;padding:1.75rem 2rem;position:relative;overflow:hidden;transition:transform 0.2s;}
+.award-card:hover{transform:translateY(-2px);}
+.award-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.award-scholarship::before{background:var(--accent);}
+.award-certification::before{background:#10b981;}
+.award-type-label{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:0.6rem;}
+.award-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:500;color:var(--ink);margin-bottom:0.3rem;line-height:1.4;}
+.award-issuer{font-size:0.85rem;color:var(--ink-muted);margin-bottom:1rem;}
+.award-footer{display:flex;justify-content:space-between;align-items:center;}
+.award-year-badge{font-size:0.75rem;font-weight:600;background:var(--white);border:1px solid var(--line);border-radius:100px;padding:0.2rem 0.65rem;color:var(--ink-soft);}
+.award-link-btn{font-size:0.78rem;color:var(--accent);text-decoration:none;padding:0.28rem 0.8rem;border:1px solid #bfcffd;border-radius:100px;transition:all 0.2s;}
+.award-link-btn:hover{background:var(--accent);color:var(--white);border-color:var(--accent);}
 
-/* ── PUBLICATIONS ── */
-#publications { background: var(--off-white); }
-.pub-top { display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: start; margin-bottom: 3rem; }
-.pub-bar { display: flex; gap: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--white); }
-.pub-stat-item { padding: 1.25rem 2rem; border-right: 1px solid var(--line); }
-.pub-stat-item:last-child { border-right: none; }
-.psn { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--ink); line-height: 1; }
-.psl { font-size: 0.72rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.2rem; }
-.pub-filters { display: flex; flex-direction: column; gap: 1rem; align-items: flex-end; }
-.pub-filter-row { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: flex-end; }
-.filter-group-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); text-align: right; }
-.pf-btn { padding: 0.32rem 0.9rem; border-radius: 100px; font-size: 0.78rem; font-weight: 500; border: 1px solid var(--line); background: transparent; cursor: pointer; color: var(--ink-soft); transition: all 0.18s; font-family: 'Outfit', sans-serif; }
-.pf-btn.active-role { background: var(--ink); color: var(--white); border-color: var(--ink); }
-.pf-btn.active-year { background: var(--accent); color: var(--white); border-color: var(--accent); }
-.pf-btn:hover { opacity: 0.8; }
-.pub-result-info { font-size: 0.82rem; color: var(--ink-muted); margin-bottom: 1rem; }
-.pub-list { display: flex; flex-direction: column; }
-.pub-item {
-  display: grid; grid-template-columns: 60px 1fr 200px;
-  gap: 2rem; align-items: center;
-  padding: 1.5rem 1.25rem; border-bottom: 1px solid var(--line);
-  border-radius: 4px; transition: background 0.15s;
+/* CONTACT */
+#contact{background:var(--ink);color:var(--white);}
+#contact .section-title{color:var(--white);}
+#contact .section-num{color:rgba(255,255,255,0.3);}
+.contact-body{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+.contact-text{font-size:1.02rem;color:rgba(255,255,255,0.55);line-height:1.85;font-weight:300;}
+.contact-text p+p{margin-top:1rem;}
+.contact-links-list{display:flex;flex-direction:column;}
+.contact-link-item{display:flex;justify-content:space-between;align-items:center;padding:1.1rem 0;border-bottom:1px solid rgba(255,255,255,0.08);text-decoration:none;transition:opacity 0.2s;}
+.contact-link-item:first-child{border-top:1px solid rgba(255,255,255,0.08);}
+.contact-link-item:hover{opacity:0.75;}
+.cl-label{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);}
+.cl-value{font-size:0.92rem;color:rgba(255,255,255,0.85);}
+
+footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:1.5rem 5vw;font-size:0.78rem;}
+.loading{text-align:center;padding:2rem;color:var(--ink-muted);font-size:0.88rem;}
+
+@media(max-width:1100px){
+  .skills-grid{grid-template-columns:repeat(3,1fr);}
 }
-.pub-item:first-child { border-top: 1px solid var(--line); }
-.pub-item:hover { background: var(--white); }
-.pub-num { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--line); font-weight: 400; text-align: center; }
-.pub-center { }
-.pub-t { font-size: 0.97rem; font-weight: 500; color: var(--ink); line-height: 1.5; margin-bottom: 0.35rem; }
-.pub-m { font-size: 0.82rem; color: var(--ink-muted); }
-.pub-right-col { display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
-.pub-year-big { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--ink-muted); }
-.tag { font-size: 0.68rem; font-weight: 600; padding: 0.22rem 0.7rem; border-radius: 100px; letter-spacing: 0.04em; white-space: nowrap; }
-.tag-first { background: #e8f0fe; color: #1a56db; }
-.tag-co { background: #f3f4f6; color: #6b7280; }
-.tag-equal { background: #ecfdf5; color: #059669; }
-.pub-publisher { font-size: 0.75rem; color: var(--ink-muted); text-align: right; }
-
-/* ── SKILLS ── */
-#skills { background: var(--white); }
-.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
-.skill-group { background: var(--off-white); border: 1px solid var(--line); border-radius: 14px; padding: 1.75rem; overflow: hidden; position: relative; }
-.skill-group::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-.sg-1::before { background: var(--accent); }
-.sg-2::before { background: #10b981; }
-.sg-3::before { background: #f59e0b; }
-.sg-4::before { background: #8b5cf6; }
-.sg-5::before { background: #ef4444; }
-.skill-group-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 1.1rem; }
-.skill-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
-.skill-tag { font-size: 0.8rem; padding: 0.28rem 0.8rem; background: var(--white); border-radius: 100px; color: var(--ink-soft); border: 1px solid var(--line); }
-
-/* ── EXPERIENCE ── */
-#experience { background: var(--off-white); }
-.exp-list { display: flex; flex-direction: column; }
-.exp-item { display: grid; grid-template-columns: 200px 1fr; gap: 3rem; padding: 2.25rem 0; border-bottom: 1px solid var(--line); }
-.exp-item:first-child { border-top: 1px solid var(--line); }
-.exp-date-col { padding-top: 0.25rem; }
-.exp-period { font-size: 0.82rem; color: var(--ink-muted); line-height: 1.6; }
-.exp-type-tag { display: inline-block; margin-top: 0.5rem; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.2rem 0.65rem; border-radius: 100px; }
-.tag-research-t { background: #e8f0fe; color: #1a56db; }
-.tag-teaching-t { background: #ecfdf5; color: #059669; }
-.exp-content { }
-.exp-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 500; margin-bottom: 0.25rem; }
-.exp-org { font-size: 0.88rem; color: var(--ink-muted); margin-bottom: 0.75rem; }
-.exp-desc { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.75; }
-
-/* ── AWARDS ── */
-#awards { background: var(--white); }
-.awards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; }
-.award-card { background: var(--off-white); border: 1px solid var(--line); border-radius: 14px; padding: 1.75rem 2rem; position: relative; overflow: hidden; transition: transform 0.2s; }
-.award-card:hover { transform: translateY(-2px); }
-.award-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-.award-scholarship::before { background: var(--accent); }
-.award-certification::before { background: #10b981; }
-.award-type-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.6rem; }
-.award-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 500; color: var(--ink); margin-bottom: 0.3rem; line-height: 1.4; }
-.award-issuer { font-size: 0.85rem; color: var(--ink-muted); margin-bottom: 1rem; }
-.award-footer { display: flex; justify-content: space-between; align-items: center; }
-.award-year-badge { font-size: 0.75rem; font-weight: 600; background: var(--white); border: 1px solid var(--line); border-radius: 100px; padding: 0.2rem 0.65rem; color: var(--ink-soft); }
-.award-link-btn { font-size: 0.78rem; color: var(--accent); text-decoration: none; padding: 0.28rem 0.8rem; border: 1px solid #bfcffd; border-radius: 100px; transition: all 0.2s; }
-.award-link-btn:hover { background: var(--accent); color: var(--white); border-color: var(--accent); }
-
-/* ── CONTACT ── */
-#contact { background: var(--ink); color: var(--white); }
-#contact .section-title { color: var(--white); }
-#contact .section-num { color: rgba(255,255,255,0.3); }
-.contact-body { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
-.contact-text { font-size: 1.05rem; color: rgba(255,255,255,0.55); line-height: 1.85; font-weight: 300; }
-.contact-links-list { display: flex; flex-direction: column; }
-.contact-link-item { display: flex; justify-content: space-between; align-items: center; padding: 1.1rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); text-decoration: none; transition: opacity 0.2s; }
-.contact-link-item:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
-.contact-link-item:hover { opacity: 0.75; }
-.cl-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
-.cl-value { font-size: 0.92rem; color: rgba(255,255,255,0.85); }
-
-/* ── FOOTER ── */
-footer { background: #0a0a0a; color: rgba(255,255,255,0.2); text-align: center; padding: 1.5rem 5vw; font-size: 0.78rem; }
-
-/* ── LOADING ── */
-.loading { text-align: center; padding: 2rem; color: var(--ink-muted); font-size: 0.88rem; }
-
-@media (max-width: 900px) {
-  .nav-links { display: none; }
-  .hero-top { grid-template-columns: 1fr; gap: 2rem; }
-  .hero-stats { grid-template-columns: repeat(2,1fr); }
-  .about-body { grid-template-columns: 1fr; gap: 2rem; }
-  .about-grid-6 { grid-template-columns: repeat(2,1fr); }
-  .pub-top { grid-template-columns: 1fr; }
-  .pub-filters { align-items: flex-start; }
-  .pub-filter-row { justify-content: flex-start; }
-  .pub-item { grid-template-columns: 1fr; gap: 0.5rem; }
-  .pub-num { display: none; }
-  .pub-right-col { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
-  .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
-  .contact-body { grid-template-columns: 1fr; gap: 3rem; }
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hero-top{grid-template-columns:1fr;gap:3rem;}
+  .hero-right{flex-direction:row;gap:1.5rem;}
+  .photo-box{width:200px;flex-shrink:0;}
+  .hero-stats{grid-template-columns:repeat(2,1fr);}
+  .about-body{grid-template-columns:1fr;gap:2rem;}
+  .about-grid-6{grid-template-columns:repeat(2,1fr);}
+  .pub-item{grid-template-columns:1fr;gap:0.5rem;}
+  .pub-num{display:none;}
+  .pub-right-col{align-items:flex-start;flex-direction:row;flex-wrap:wrap;}
+  .exp-item{grid-template-columns:1fr;gap:0.5rem;}
+  .skills-grid{grid-template-columns:repeat(2,1fr);}
+  .contact-body{grid-template-columns:1fr;gap:3rem;}
 }
 </style>
 </head>
@@ -230,12 +243,12 @@ footer { background: #0a0a0a; color: rgba(255,255,255,0.2); text-align: center; 
 <div style="max-width:var(--max-w);margin:0 auto;padding:0 5vw;">
 <section id="hero">
   <div class="hero-top">
-    <div class="hero-left-block">
+
+    <!-- LEFT -->
+    <div>
       <p class="hero-eyebrow">PhD Candidate · Electronic Engineering · Jeju National University</p>
       <h1 class="hero-name">Muhammad<br>Faseeh</h1>
       <p class="hero-desc">AI & ML researcher specializing in Computer Vision, Material Informatics, and Natural Language Processing. Graduating December 2026. Open to research and faculty positions globally.</p>
-    </div>
-    <div class="hero-right-block">
       <div class="hero-cta">
         <a href="https://scholar.google.com/citations?user=-C-iZsAAAAAJ&hl=en" target="_blank" class="btn btn-primary">Google Scholar</a>
         <a href="https://github.com/MFaseeh" target="_blank" class="btn btn-outline">GitHub</a>
@@ -243,7 +256,67 @@ footer { background: #0a0a0a; color: rgba(255,255,255,0.2); text-align: center; 
         <a href="mailto:faseeh@stu.jejunu.ac.kr" class="btn btn-outline">Email</a>
       </div>
     </div>
+
+    <!-- RIGHT: Photo + Quick Links -->
+    <div class="hero-right">
+      <!-- Photo placeholder -->
+      <div class="photo-box" id="photo-box">
+        <div class="photo-placeholder-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+        <div class="photo-placeholder-text">Add your photo</div>
+      </div>
+
+      <!-- 5 Quick-link icons: 2 top + 3 bottom -->
+      <div class="quick-links">
+        <div class="quick-links-row row-2">
+          <!-- Google Scholar -->
+          <a href="https://scholar.google.com/citations?user=-C-iZsAAAAAJ&hl=en" target="_blank" class="quick-link-btn">
+            <div class="ql-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#4285F4"/>
+                <path d="M2 17l10 5 10-5" stroke="#34A853" stroke-width="2" fill="none"/>
+                <path d="M2 12l10 5 10-5" stroke="#FBBC05" stroke-width="2" fill="none"/>
+              </svg>
+            </div>
+            <span class="ql-label">Scholar</span>
+          </a>
+          <!-- GitHub -->
+          <a href="https://github.com/MFaseeh" target="_blank" class="quick-link-btn">
+            <div class="ql-icon">
+              <svg viewBox="0 0 24 24" fill="#111111"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+            </div>
+            <span class="ql-label">GitHub</span>
+          </a>
+        </div>
+        <div class="quick-links-row row-3">
+          <!-- ORCID -->
+          <a href="https://orcid.org" target="_blank" class="quick-link-btn">
+            <div class="ql-icon">
+              <svg viewBox="0 0 24 24" fill="#A6CE39"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.5 14.5H9V9h1.5v7.5zm-.75-8.63a.94.94 0 110-1.88.94.94 0 010 1.88zM16 16.5h-1.5v-3.75c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v3.75H10V9h1.5v.9c.47-.6 1.2-1 2-1 1.38 0 2.5 1.12 2.5 2.5v5.1z"/></svg>
+            </div>
+            <span class="ql-label">ORCID</span>
+          </a>
+          <!-- LinkedIn -->
+          <a href="https://www.linkedin.com/in/ifaseeh/" target="_blank" class="quick-link-btn">
+            <div class="ql-icon">
+              <svg viewBox="0 0 24 24" fill="#0077B5"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </div>
+            <span class="ql-label">LinkedIn</span>
+          </a>
+          <!-- Email -->
+          <a href="mailto:faseeh@stu.jejunu.ac.kr" class="quick-link-btn">
+            <div class="ql-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+            </div>
+            <span class="ql-label">Email</span>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Stats -->
   <div class="hero-stats">
     <div class="stat"><div class="stat-num" id="s-total">23</div><div class="stat-label">Publications</div></div>
     <div class="stat"><div class="stat-num" id="s-first">8</div><div class="stat-label">First Author</div></div>
@@ -275,38 +348,13 @@ footer { background: #0a0a0a; color: rgba(255,255,255,0.2); text-align: center; 
         <div class="fact-row"><div class="fact-label">Open To</div><div class="fact-value">Saudi Arabia · Middle East · Europe</div></div>
       </div>
     </div>
-    <!-- 2x3 GRID -->
     <div class="about-grid-6">
-      <div class="ag6-cell">
-        <div class="ag6-label">PhD</div>
-        <div class="ag6-value">Electronic Engineering</div>
-        <div class="ag6-sub">Jeju National University · 2023–2026</div>
-      </div>
-      <div class="ag6-cell">
-        <div class="ag6-label">MS</div>
-        <div class="ag6-value">Computer Science</div>
-        <div class="ag6-sub">COMSATS University Islamabad · 2020</div>
-      </div>
-      <div class="ag6-cell">
-        <div class="ag6-label">BS</div>
-        <div class="ag6-value">Computer Science</div>
-        <div class="ag6-sub">COMSATS University Islamabad · 2016</div>
-      </div>
-      <div class="ag6-cell">
-        <div class="ag6-label">Research Focus</div>
-        <div class="ag6-value">Computer Vision · NLP</div>
-        <div class="ag6-sub">Material Informatics · Deep Learning</div>
-      </div>
-      <div class="ag6-cell">
-        <div class="ag6-label">Funding</div>
-        <div class="ag6-value">Brain Korea BK21</div>
-        <div class="ag6-sub">Fully Funded · Korean Government</div>
-      </div>
-      <div class="ag6-cell">
-        <div class="ag6-label">Target Locations</div>
-        <div class="ag6-value">Middle East · Europe</div>
-        <div class="ag6-sub">Saudi Arabia · Open to Relocation</div>
-      </div>
+      <div class="ag6-cell"><div class="ag6-label">PhD</div><div class="ag6-value">Electronic Engineering</div><div class="ag6-sub">Jeju National University · 2023–2026</div></div>
+      <div class="ag6-cell"><div class="ag6-label">MS</div><div class="ag6-value">Computer Science</div><div class="ag6-sub">COMSATS University Islamabad · 2020</div></div>
+      <div class="ag6-cell"><div class="ag6-label">BS</div><div class="ag6-value">Computer Science</div><div class="ag6-sub">COMSATS University Islamabad · 2016</div></div>
+      <div class="ag6-cell"><div class="ag6-label">Research Focus</div><div class="ag6-value">Computer Vision · NLP</div><div class="ag6-sub">Material Informatics · Deep Learning</div></div>
+      <div class="ag6-cell"><div class="ag6-label">Funding</div><div class="ag6-value">Brain Korea BK21</div><div class="ag6-sub">Fully Funded · Korean Government</div></div>
+      <div class="ag6-cell"><div class="ag6-label">Target Locations</div><div class="ag6-value">Middle East · Europe</div><div class="ag6-sub">Saudi Arabia · Open to Relocation</div></div>
     </div>
   </div>
 </section>
@@ -317,37 +365,36 @@ footer { background: #0a0a0a; color: rgba(255,255,255,0.2); text-align: center; 
 <section id="publications">
   <div class="section-wrap">
     <div class="section-header"><span class="section-num">02</span><h2 class="section-title">Publications</h2></div>
-    <div class="pub-top">
-      <div class="pub-bar" id="pub-bar"><div class="loading">Loading…</div></div>
-      <div class="pub-filters">
-        <div>
-          <div class="filter-group-label" style="margin-bottom:0.4rem;">Filter by role</div>
-          <div class="pub-filter-row" id="role-filters">
-            <button class="pf-btn active-role" data-role="all">All</button>
-            <button class="pf-btn" data-role="first">First Author</button>
-            <button class="pf-btn" data-role="co">Co-Author</button>
-            <button class="pf-btn" data-role="equal">Equal Contribution</button>
-          </div>
-        </div>
-        <div>
-          <div class="filter-group-label" style="margin-bottom:0.4rem;">Filter by year</div>
-          <div class="pub-filter-row" id="year-filters">
-            <button class="pf-btn" data-year="all">All Years</button>
-            <button class="pf-btn" data-year="2026">2026</button>
-            <button class="pf-btn" data-year="2025">2025</button>
-            <button class="pf-btn" data-year="2024">2024</button>
-          </div>
+    <div class="pub-stats-row" id="pub-bar"><div class="loading">Loading…</div></div>
+    <div class="pub-list" id="pub-list"><div class="loading">Loading publications…</div></div>
+    <!-- FILTERS BELOW LIST -->
+    <div class="pub-filters-bar">
+      <div class="pub-filters-row">
+        <span class="filter-group-label">By Role</span>
+        <div id="role-filters" style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+          <button class="pf-btn active-role" data-role="all">All</button>
+          <button class="pf-btn" data-role="first">First Author</button>
+          <button class="pf-btn" data-role="co">Co-Author</button>
+          <button class="pf-btn" data-role="equal">Equal Contribution</button>
         </div>
       </div>
+      <div class="pub-filters-row">
+        <span class="filter-group-label">By Year</span>
+        <div id="year-filters" style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+          <button class="pf-btn active-year" data-year="all">All Years</button>
+          <button class="pf-btn" data-year="2026">2026</button>
+          <button class="pf-btn" data-year="2025">2025</button>
+          <button class="pf-btn" data-year="2024">2024</button>
+        </div>
+      </div>
+      <div class="pub-result-info" id="pub-result-info"></div>
     </div>
-    <div class="pub-result-info" id="pub-result-info"></div>
-    <div class="pub-list" id="pub-list"><div class="loading">Loading publications…</div></div>
   </div>
 </section>
 
 <div class="section-divider"></div>
 
-<!-- SKILLS -->
+<!-- SKILLS — 6 in one row -->
 <section id="skills">
   <div class="section-wrap">
     <div class="section-header"><span class="section-num">03</span><h2 class="section-title">Skills & Tools</h2></div>
@@ -384,7 +431,7 @@ footer { background: #0a0a0a; color: rgba(255,255,255,0.2); text-align: center; 
     <div class="contact-body">
       <div class="contact-text">
         <p>Open to research positions, faculty roles, postdoctoral opportunities, and collaboration in AI, Machine Learning, and Computer Vision.</p>
-        <p style="margin-top:1rem;">Currently based in Jeju, South Korea — targeting opportunities in Saudi Arabia, the Middle East, and Europe. Available from December 2026.</p>
+        <p>Currently based in Jeju, South Korea — targeting opportunities in Saudi Arabia, the Middle East, and Europe. Available from December 2026.</p>
       </div>
       <div class="contact-links-list">
         <a href="mailto:faseeh@stu.jejunu.ac.kr" class="contact-link-item"><span class="cl-label">Academic Email</span><span class="cl-value">faseeh@stu.jejunu.ac.kr</span></a>
@@ -400,17 +447,13 @@ footer { background: #0a0a0a; color: rgba(255,255,255,0.2); text-align: center; 
 <footer>© 2026 Muhammad Faseeh · Jeju National University · Data powered by CSV</footer>
 
 <script>
-const BASE = './data/';
-function csv(f){ return new Promise((res,rej)=>Papa.parse(BASE+f,{download:true,header:true,skipEmptyLines:true,complete:r=>res(r.data),error:rej})); }
+const BASE='./data/';
+function csv(f){return new Promise((res,rej)=>Papa.parse(BASE+f,{download:true,header:true,skipEmptyLines:true,complete:r=>res(r.data),error:rej}));}
 
-/* ── PUBLICATIONS with combined role + year filter ── */
 async function loadPubs(){
   try{
-    const d = await csv('publications.csv');
-    const total=d.length;
-    const first=d.filter(x=>x.FirstAuthor==='Yes').length;
-    const eq=d.filter(x=>x.FirstAuthor==='Equal').length;
-    const pubs=[...new Set(d.map(x=>x.Publisher).filter(Boolean))].length;
+    const d=await csv('publications.csv');
+    const total=d.length,first=d.filter(x=>x.FirstAuthor==='Yes').length,eq=d.filter(x=>x.FirstAuthor==='Equal').length,pubs=[...new Set(d.map(x=>x.Publisher).filter(Boolean))].length;
     document.getElementById('pub-bar').innerHTML=`
       <div class="pub-stat-item"><div class="psn">${total}</div><div class="psl">Total</div></div>
       <div class="pub-stat-item"><div class="psn">${first}</div><div class="psl">First Author</div></div>
@@ -419,7 +462,7 @@ async function loadPubs(){
     document.getElementById('s-total').textContent=total;
     document.getElementById('s-first').textContent=first;
 
-    let activeRole='all', activeYear='all';
+    let activeRole='all',activeYear='all';
 
     function render(){
       let rows=d;
@@ -428,53 +471,36 @@ async function loadPubs(){
       else if(activeRole==='equal') rows=rows.filter(x=>x.FirstAuthor==='Equal');
       if(activeYear!=='all') rows=rows.filter(x=>x.Year===activeYear);
       rows=[...rows].sort((a,b)=>(b.Year||0)-(a.Year||0));
-
-      const roleLabel = activeRole==='all'?'All':activeRole==='first'?'First Author':activeRole==='equal'?'Equal Contribution':'Co-Author';
-      const yearLabel = activeYear==='all'?'All Years':activeYear;
-      document.getElementById('pub-result-info').textContent=`Showing ${rows.length} of ${d.length} papers · ${roleLabel} · ${yearLabel}`;
-
+      const roleLabel=activeRole==='all'?'All':activeRole==='first'?'First Author':activeRole==='equal'?'Equal Contribution':'Co-Author';
+      document.getElementById('pub-result-info').textContent=`Showing ${rows.length} of ${d.length} papers · ${roleLabel} · ${activeYear==='all'?'All Years':activeYear}`;
       document.getElementById('pub-list').innerHTML=rows.map((p,i)=>{
         const rc=p.FirstAuthor==='Yes'?'tag-first':p.FirstAuthor==='Equal'?'tag-equal':'tag-co';
         const rl=p.FirstAuthor==='Yes'?'First Author':p.FirstAuthor==='Equal'?'Equal Contribution':'Co-Author';
         return `<div class="pub-item">
           <div class="pub-num">${String(i+1).padStart(2,'0')}</div>
-          <div class="pub-center">
-            <div class="pub-t">${p.Title}</div>
-            <div class="pub-m">${p.Publication} · ${p.Publisher}</div>
-          </div>
-          <div class="pub-right-col">
-            <div class="pub-year-big">${p.Year}</div>
-            <span class="tag ${rc}">${rl}</span>
-          </div>
+          <div class="pub-center"><div class="pub-t">${p.Title}</div><div class="pub-m">${p.Publication} · ${p.Publisher}</div></div>
+          <div class="pub-right-col"><div class="pub-year-big">${p.Year}</div><span class="tag ${rc}">${rl}</span></div>
         </div>`;
       }).join('');
     }
-
     render();
-
     document.querySelectorAll('#role-filters .pf-btn').forEach(b=>b.addEventListener('click',()=>{
       document.querySelectorAll('#role-filters .pf-btn').forEach(x=>x.classList.remove('active-role'));
-      b.classList.add('active-role');
-      activeRole=b.dataset.role;
-      render();
+      b.classList.add('active-role'); activeRole=b.dataset.role; render();
     }));
     document.querySelectorAll('#year-filters .pf-btn').forEach(b=>b.addEventListener('click',()=>{
       document.querySelectorAll('#year-filters .pf-btn').forEach(x=>x.classList.remove('active-year'));
-      b.classList.add('active-year');
-      activeYear=b.dataset.year;
-      render();
+      b.classList.add('active-year'); activeYear=b.dataset.year; render();
     }));
-
-  }catch(e){ document.getElementById('pub-list').innerHTML='<div class="loading">Could not load publications.csv</div>'; }
+  }catch(e){document.getElementById('pub-list').innerHTML='<div class="loading">Could not load publications.csv</div>';}
 }
 
-/* ── SKILLS ── */
 async function loadSkills(){
   try{
     const d=await csv('skills.csv');
     const groups={};
-    d.forEach(x=>{ if(!groups[x.Category]) groups[x.Category]=[]; groups[x.Category].push(x.Skill); });
-    const colors=['sg-1','sg-2','sg-3','sg-4','sg-5'];
+    d.forEach(x=>{if(!groups[x.Category])groups[x.Category]=[];groups[x.Category].push(x.Skill);});
+    const colors=['sg-1','sg-2','sg-3','sg-4','sg-5','sg-6'];
     document.getElementById('skills-grid').innerHTML=Object.entries(groups).map(([cat,skills],i)=>`
       <div class="skill-group ${colors[i%colors.length]}">
         <div class="skill-group-title">${cat}</div>
@@ -483,35 +509,22 @@ async function loadSkills(){
   }catch(e){}
 }
 
-/* ── EXPERIENCE ── */
 async function loadExp(){
   try{
     const d=await csv('experience.csv');
-    const rev=[...d].reverse();
-    document.getElementById('exp-list').innerHTML=rev.map(e=>{
-      const tc=e.Type==='Teaching'?'tag-teaching-t':'tag-research-t';
-      return `<div class="exp-item">
-        <div class="exp-date-col">
-          <div class="exp-period">${e.StartDate} – ${e.EndDate}</div>
-          <span class="exp-type-tag ${tc}">${e.Type}</span>
-        </div>
-        <div class="exp-content">
-          <div class="exp-title">${e.Title}</div>
-          <div class="exp-org">${e.Organization} · ${e.City}, ${e.Country}</div>
-          <div class="exp-desc">${e.Description}</div>
-        </div>
-      </div>`;
-    }).join('');
+    document.getElementById('exp-list').innerHTML=[...d].reverse().map(e=>`
+      <div class="exp-item">
+        <div><div class="exp-period">${e.StartDate} – ${e.EndDate}</div><span class="exp-type-tag ${e.Type==='Teaching'?'tag-teaching-t':'tag-research-t'}">${e.Type}</span></div>
+        <div><div class="exp-title">${e.Title}</div><div class="exp-org">${e.Organization} · ${e.City}, ${e.Country}</div><div class="exp-desc">${e.Description}</div></div>
+      </div>`).join('');
   }catch(e){}
 }
 
-/* ── AWARDS ── */
 async function loadAwards(){
   try{
     const d=await csv('awards.csv');
-    document.getElementById('awards-grid').innerHTML=d.map(a=>{
-      const cls=a.Type==='Scholarship'?'award-scholarship':'award-certification';
-      return `<div class="award-card ${cls}">
+    document.getElementById('awards-grid').innerHTML=d.map(a=>`
+      <div class="award-card ${a.Type==='Scholarship'?'award-scholarship':'award-certification'}">
         <div class="award-type-label">${a.Type}${a.Degree?' · '+a.Degree:''}</div>
         <div class="award-title">${a.Title}</div>
         <div class="award-issuer">${a.Issuer}</div>
@@ -519,8 +532,7 @@ async function loadAwards(){
           <span class="award-year-badge">${a.Year}</span>
           ${a.Link?`<a href="${a.Link}" target="_blank" class="award-link-btn">Verify →</a>`:''}
         </div>
-      </div>`;
-    }).join('');
+      </div>`).join('');
   }catch(e){}
 }
 
