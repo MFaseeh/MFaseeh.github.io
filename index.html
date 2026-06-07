@@ -199,7 +199,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:99;display:flex;align-items:cent
 #contact .section-title{color:var(--white);}
 #contact .section-num{color:rgba(255,255,255,0.3);}
 .contact-body{display:flex;justify-content:center;text-align:center;}
-.contact-text{font-size:1rem;color:rgba(255,255,255,0.55);line-height:1.85;font-weight:300;}
+.contact-text{font-size:1.05rem;color:rgba(255,255,255,0.55);line-height:1.9;font-weight:300;max-width:700px;width:100%;}
 .contact-text p+p{margin-top:1rem;}
 .contact-links-list{display:flex;flex-direction:column;}
 .contact-link-item{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,0.08);text-decoration:none;transition:opacity 0.2s;}
@@ -207,6 +207,20 @@ nav{position:fixed;top:0;left:0;right:0;z-index:99;display:flex;align-items:cent
 .contact-link-item:hover{opacity:0.72;}
 .cl-label{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);}
 .cl-value{font-size:0.9rem;color:rgba(255,255,255,0.85);}
+
+
+/* NEWS TICKER */
+.news-ticker-wrap{background:var(--ink);border-bottom:1px solid rgba(255,255,255,0.08);overflow:hidden;padding:0;position:relative;}
+.news-ticker-inner{display:flex;align-items:center;}
+.ticker-label{flex-shrink:0;background:var(--accent);color:#fff;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.75rem 1.25rem;white-space:nowrap;z-index:2;}
+.ticker-track{overflow:hidden;flex:1;}
+.ticker-content{display:inline-flex;gap:0;animation:ticker-scroll 40s linear infinite;white-space:nowrap;}
+.ticker-content:hover{animation-play-state:paused;}
+.ticker-item{display:inline-flex;align-items:center;gap:0.5rem;padding:0.72rem 2.5rem;font-size:0.82rem;color:rgba(255,255,255,0.75);font-weight:400;}
+.ticker-item .ticker-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+.ticker-item .ticker-date{font-size:0.72rem;color:rgba(255,255,255,0.35);margin-left:0.25rem;}
+.ticker-separator{color:rgba(255,255,255,0.15);padding:0 0.5rem;}
+@keyframes ticker-scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 
 footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:1.4rem var(--pad);font-size:0.76rem;}
 .loading{text-align:center;padding:2rem;color:var(--ink-muted);font-size:0.86rem;}
@@ -306,6 +320,17 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
 </section>
 </div>
 
+
+<!-- NEWS TICKER -->
+<div class="news-ticker-wrap" id="news-ticker-wrap" style="display:none;">
+  <div class="news-ticker-inner">
+    <div class="ticker-label">📢 News</div>
+    <div class="ticker-track">
+      <div class="ticker-content" id="ticker-content"></div>
+    </div>
+  </div>
+</div>
+
 <div class="section-divider"></div>
 
 <!-- ABOUT -->
@@ -325,7 +350,7 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
         <div class="fact-row"><div class="fact-label">University</div><div class="fact-value">Jeju National University, South Korea</div></div>
         <div class="fact-row"><div class="fact-label">Supervisor</div><div class="fact-value">Prof. Do Hyeun Kim</div></div>
         <div class="fact-row"><div class="fact-label">Graduation</div><div class="fact-value">December 2026</div></div>
-        <div class="fact-row"><div class="fact-label">Open To</div><div class="fact-value">Saudi Arabia · Middle East · Europe</div></div>
+        <div class="fact-row"><div class="fact-label">Open To</div><div class="fact-value">Middle East · Europe</div></div>
       </div>
     </div>
     <div class="about-grid-6">
@@ -334,7 +359,7 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
       <div class="ag6-cell"><div class="ag6-label">BS</div><div class="ag6-value">Computer Science</div><div class="ag6-sub">COMSATS University Islamabad · 2016</div></div>
       <div class="ag6-cell"><div class="ag6-label">Research Focus</div><div class="ag6-value">Computer Vision · NLP</div><div class="ag6-sub">Material Informatics · Deep Learning</div></div>
       <div class="ag6-cell"><div class="ag6-label">Funding</div><div class="ag6-value">Brain Korea BK21</div><div class="ag6-sub">Fully Funded · Korean Government</div></div>
-      <div class="ag6-cell"><div class="ag6-label">Target Locations</div><div class="ag6-value">Middle East · Europe</div><div class="ag6-sub">Saudi Arabia · Open to Relocation</div></div>
+      <div class="ag6-cell"><div class="ag6-label">Target Locations</div><div class="ag6-value">Middle East · Europe</div><div class="ag6-sub">Open to Relocation</div></div>
     </div>
   </div>
 </section>
@@ -422,7 +447,7 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
     <div class="section-header"><span class="section-num">06</span><h2 class="section-title">Contact</h2></div>
     <div style="max-width:680px;">
       <p style="font-size:1.05rem;color:rgba(255,255,255,0.55);line-height:1.9;font-weight:300;">Open to research positions, faculty roles, postdoctoral opportunities, and collaboration in AI, Machine Learning, and Computer Vision.</p>
-      <p style="font-size:1.05rem;color:rgba(255,255,255,0.55);line-height:1.9;font-weight:300;margin-top:1rem;">Currently based in Jeju, South Korea — targeting opportunities in Saudi Arabia, the Middle East, and Europe. Available from December 2026.</p>
+      <p style="font-size:1.05rem;color:rgba(255,255,255,0.55);line-height:1.9;font-weight:300;margin-top:1rem;">Currently based in Jeju, South Korea — targeting opportunities in the Middle East and Europe. Available from December 2026.</p>
     </div>
   </div>
 </section>
@@ -629,7 +654,29 @@ async function loadAwards(){
   }catch(e){}
 }
 
-loadPubs();loadSkills();loadExp();loadAwards();
+
+async function loadNews(){
+  try{
+    const d=await csv('news.csv');
+    if(!d.length) return;
+    // Build items twice for seamless loop
+    const items=d.map(n=>`
+      <span class="ticker-item">
+        <span class="ticker-dot"></span>
+        ${n.Text}
+        <span class="ticker-date">${n.Date}</span>
+      </span>
+      <span class="ticker-separator">·</span>`).join('');
+    document.getElementById('ticker-content').innerHTML=items+items;
+    document.getElementById('news-ticker-wrap').style.display='block';
+    // Adjust animation speed based on content length
+    const itemCount=d.length;
+    const duration=Math.max(30, itemCount*5);
+    document.querySelector('.ticker-content').style.animationDuration=duration+'s';
+  }catch(e){}
+}
+
+loadPubs();loadSkills();loadExp();loadAwards();loadNews();
 </script>
 </body>
 </html>
