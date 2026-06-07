@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Muhammad Faseeh — AI & ML Researcher</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --paper: #f5f2eb;
+    --accent1: #e8431a;
+    --accent2: #1a3de8;
+    --accent3: #12b06e;
+    --accent4: #f5a623;
+    --muted: #6b6560;
+    --border: rgba(13,13,13,0.12);
+    --card-bg: #ffffff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  h1,h2,h3,h4 { font-family: 'Syne', sans-serif; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 3rem;
+    background: rgba(245,242,235,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.03em; }
+  .nav-logo span { color: var(--accent1); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--muted); font-size: 0.88rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent1); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 5rem;
+    overflow: hidden;
+    position: relative;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 4rem 3rem 4rem 4rem;
+    position: relative; z-index: 2;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--accent1); color: #fff;
+    font-family: 'Syne', sans-serif; font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.35rem 0.9rem; border-radius: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .hero-name {
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    margin-bottom: 1rem;
+  }
+  .hero-name .line2 { color: var(--accent2); }
+  .hero-sub {
+    font-size: 1.15rem; color: var(--muted); font-weight: 300;
+    max-width: 420px; margin-bottom: 2rem; line-height: 1.7;
+  }
+  .hero-links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2.5rem; }
+  .hero-link {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.55rem 1.2rem; border-radius: 2rem;
+    font-size: 0.85rem; font-weight: 500; text-decoration: none;
+    border: 1.5px solid var(--ink); color: var(--ink);
+    transition: all 0.2s;
+  }
+  .hero-link:hover { background: var(--ink); color: var(--paper); }
+  .hero-link.primary { background: var(--accent1); border-color: var(--accent1); color: #fff; }
+  .hero-link.primary:hover { background: #c73210; border-color: #c73210; }
+  .hero-stats { display: flex; gap: 2rem; }
+  .stat-item { text-align: center; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; line-height: 1; }
+  .stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .stat-num.c1 { color: var(--accent1); }
+  .stat-num.c2 { color: var(--accent2); }
+  .stat-num.c3 { color: var(--accent3); }
+
+  .hero-right {
+    position: relative; overflow: hidden;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-bg-pattern {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 30% 50%, rgba(232,67,26,0.25) 0%, transparent 60%),
+                      radial-gradient(circle at 70% 20%, rgba(26,61,232,0.2) 0%, transparent 50%);
+  }
+  .hero-float-card {
+    position: relative; z-index: 2;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 1.5rem;
+    padding: 2rem 2.5rem;
+    color: #fff;
+    max-width: 340px;
+    backdrop-filter: blur(8px);
+  }
+  .hfc-title { font-family: 'Syne', sans-serif; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 1rem; }
+  .hfc-area {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.92rem; font-weight: 400;
+  }
+  .hfc-area:last-child { border-bottom: none; }
+  .hfc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .d1 { background: var(--accent1); }
+  .d2 { background: var(--accent2); }
+  .d3 { background: var(--accent3); }
+  .d4 { background: var(--accent4); }
+
+  /* SECTIONS */
+  section { padding: 5rem 4rem; }
+  .section-label {
+    font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent1);
+    margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 800;
+    letter-spacing: -0.03em; line-height: 1.1;
+    margin-bottom: 3rem;
+  }
+
+  /* ABOUT */
+  #about { background: var(--ink); color: var(--paper); }
+  #about .section-label { color: var(--accent4); }
+  #about .section-title { color: var(--paper); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .about-text { font-size: 1.05rem; line-height: 1.8; color: rgba(245,242,235,0.8); }
+  .about-text p + p { margin-top: 1rem; }
+  .about-details { display: flex; flex-direction: column; gap: 1rem; }
+  .about-detail-item {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 1rem;
+    padding: 1.25rem 1.5rem;
+  }
+  .adi-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,242,235,0.45); margin-bottom: 0.25rem; }
+  .adi-value { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 600; color: var(--paper); }
+
+  /* PUBLICATIONS */
+  #publications { background: var(--paper); }
+  .pub-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+  .pub-filter-btn {
+    padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.82rem; font-weight: 500;
+    border: 1.5px solid var(--border); background: transparent; cursor: pointer;
+    transition: all 0.2s; font-family: 'DM Sans', sans-serif; color: var(--ink);
+  }
+  .pub-filter-btn.active, .pub-filter-btn:hover { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+  .pub-stats-bar { display: flex; gap: 1.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+  .pub-stat { background: var(--card-bg); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.75rem 1.25rem; }
+  .pub-stat-num { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; line-height: 1; }
+  .pub-stat-label { font-size: 0.75rem; color: var(--muted); }
+  .pub-list { display: flex; flex-direction: column; gap: 1rem; }
+  .pub-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 1rem; padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-left: 4px solid var(--border);
+  }
+  .pub-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+  .pub-card.first-author { border-left-color: var(--accent1); }
+  .pub-card.co-author { border-left-color: var(--accent2); }
+  .pub-card.equal { border-left-color: var(--accent3); }
+  .pub-title { font-family: 'Syne', sans-serif; font-size: 0.98rem; font-weight: 600; line-height: 1.4; margin-bottom: 0.5rem; }
+  .pub-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .pub-badge {
+    font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.65rem; border-radius: 2rem;
+    letter-spacing: 0.04em;
+  }
+  .badge-year { background: #f0ece0; color: var(--muted); }
+  .badge-first { background: #fde8e2; color: #b53010; }
+  .badge-co { background: #e2e8fd; color: #1a2eb0; }
+  .badge-equal { background: #e2fdf0; color: #0a7a4a; }
+  .badge-pub { background: #f5f5f5; color: #444; }
+  .hidden { display: none; }
+
+  /* SKILLS */
+  #skills { background: #f0ece2; }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .skill-group {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 1rem; padding: 1.5rem; overflow: hidden; position: relative;
+  }
+  .skill-group::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .sg-1::before { background: var(--accent1); }
+  .sg-2::before { background: var(--accent2); }
+  .sg-3::before { background: var(--accent3); }
+  .sg-4::before { background: var(--accent4); }
+  .sg-5::before { background: #9b59b6; }
+  .skill-group-title { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 1rem; color: var(--muted); }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-tag { font-size: 0.82rem; padding: 0.3rem 0.8rem; background: #f5f2eb; border-radius: 2rem; color: var(--ink); border: 1px solid var(--border); }
+
+  /* EXPERIENCE */
+  #experience { background: var(--paper); }
+  .exp-timeline { position: relative; padding-left: 2rem; }
+  .exp-timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--border); }
+  .exp-item { position: relative; margin-bottom: 2.5rem; }
+  .exp-item::before {
+    content: ''; position: absolute; left: -2.4rem; top: 0.35rem;
+    width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--card-bg);
+    background: var(--accent1);
+  }
+  .exp-item.teaching::before { background: var(--accent2); }
+  .exp-item.last::before { background: var(--accent3); }
+  .exp-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 1rem; padding: 1.5rem;
+  }
+  .exp-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+  .exp-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; }
+  .exp-date { font-size: 0.8rem; color: var(--muted); background: #f0ece2; padding: 0.25rem 0.75rem; border-radius: 2rem; white-space: nowrap; }
+  .exp-org { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.75rem; }
+  .exp-desc { font-size: 0.9rem; line-height: 1.6; color: #444; }
+
+  /* AWARDS */
+  #awards { background: var(--ink); color: var(--paper); }
+  #awards .section-label { color: var(--accent3); }
+  #awards .section-title { color: var(--paper); }
+  .awards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+  .award-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 1rem; padding: 1.5rem;
+    transition: background 0.2s;
+  }
+  .award-card:hover { background: rgba(255,255,255,0.09); }
+  .award-type { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem; }
+  .award-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: var(--paper); margin-bottom: 0.25rem; line-height: 1.3; }
+  .award-issuer { font-size: 0.85rem; color: rgba(245,242,235,0.6); margin-bottom: 0.75rem; }
+  .award-link { font-size: 0.8rem; color: var(--accent3); text-decoration: none; }
+  .award-link:hover { text-decoration: underline; }
+
+  /* CONTACT */
+  #contact { background: var(--accent1); color: #fff; text-align: center; padding: 5rem 3rem; }
+  #contact .section-label { color: rgba(255,255,255,0.6); }
+  #contact .section-title { color: #fff; margin-bottom: 1.5rem; }
+  .contact-sub { font-size: 1.1rem; color: rgba(255,255,255,0.8); margin-bottom: 2.5rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
+  .contact-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.75rem; border-radius: 2rem;
+    font-weight: 500; text-decoration: none; font-size: 0.92rem;
+    background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.4); color: #fff;
+    transition: all 0.2s;
+  }
+  .contact-link:hover { background: rgba(255,255,255,0.28); }
+  .contact-link.white-btn { background: #fff; color: var(--accent1); border-color: #fff; }
+  .contact-link.white-btn:hover { background: #f0ece2; }
+
+  /* FOOTER */
+  footer { background: #0a0a0a; color: rgba(255,255,255,0.4); text-align: center; padding: 1.5rem; font-size: 0.82rem; }
+
+  /* LOADING */
+  .loading-spinner { text-align: center; padding: 3rem; color: var(--muted); font-size: 0.9rem; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { grid-template-columns: 1fr; }
+    .hero-right { min-height: 300px; }
+    .hero-left { padding: 3rem 1.5rem; }
+    section { padding: 3rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">MF<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#awards">Awards</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-tag">PhD Researcher · AI & ML</div>
+    <h1 class="hero-name">
+      Muhammad<br>
+      <span class="line2">Faseeh</span>
+    </h1>
+    <p class="hero-sub">
+      PhD Candidate in Electronic Engineering at Jeju National University,
+      specializing in Computer Vision, Material Informatics, and NLP.
+      Graduating December 2026.
+    </p>
+    <div class="hero-links">
+      <a href="https://scholar.google.com/citations?user=-C-iZsAAAAAJ&hl=en" target="_blank" class="hero-link primary">Google Scholar</a>
+      <a href="https://github.com/MFaseeh" target="_blank" class="hero-link">GitHub</a>
+      <a href="https://www.linkedin.com/in/ifaseeh/" target="_blank" class="hero-link">LinkedIn</a>
+      <a href="mailto:faseeh@stu.jejunu.ac.kr" class="hero-link">Email</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num c1" id="stat-total">—</div>
+        <div class="stat-label">Publications</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num c2" id="stat-first">—</div>
+        <div class="stat-label">First Author</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num c3" id="stat-years">3+</div>
+        <div class="stat-label">Years Research</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bg-pattern"></div>
+    <div class="hero-float-card">
+      <div class="hfc-title">Research Areas</div>
+      <div class="hfc-area"><div class="hfc-dot d1"></div>Computer Vision</div>
+      <div class="hfc-area"><div class="hfc-dot d2"></div>Material Informatics</div>
+      <div class="hfc-area"><div class="hfc-dot d3"></div>Natural Language Processing</div>
+      <div class="hfc-area"><div class="hfc-dot d4"></div>Material Properties Prediction</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About Me</div>
+  <div class="section-title">Bridging AI with<br>Real-World Impact</div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I am a PhD Candidate in the Department of Electronic Engineering at Jeju National University, South Korea, working under the supervision of Prof. Do Hyeun Kim. My research sits at the intersection of deep learning, computer vision, and materials science — developing AI-driven methods that accelerate scientific discovery.</p>
+      <p>With over 23 published and accepted papers in top-tier journals including IEEE Access, Elsevier, Springer, and Wiley, I bring a strong track record of translating research into impact. My work spans object detection, depth estimation, NLP, and inverse learning for ceramic material design.</p>
+      <p>Prior to my PhD, I spent 6+ years in academia as a lecturer, lab engineer, and vice principal — giving me a unique combination of deep technical expertise and real-world teaching experience.</p>
+    </div>
+    <div class="about-details">
+      <div class="about-detail-item">
+        <div class="adi-label">Current Position</div>
+        <div class="adi-value">PhD Candidate — Electronic Engineering</div>
+      </div>
+      <div class="about-detail-item">
+        <div class="adi-label">University</div>
+        <div class="adi-value">Jeju National University, South Korea</div>
+      </div>
+      <div class="about-detail-item">
+        <div class="adi-label">Supervisor</div>
+        <div class="adi-value">Prof. Do Hyeun Kim</div>
+      </div>
+      <div class="about-detail-item">
+        <div class="adi-label">Expected Graduation</div>
+        <div class="adi-value">December 2026</div>
+      </div>
+      <div class="about-detail-item">
+        <div class="adi-label">Open to Opportunities</div>
+        <div class="adi-value">Saudi Arabia · Middle East · Europe</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="section-label">Research Output</div>
+  <div class="section-title">Publications</div>
+  <div class="pub-stats-bar" id="pub-stats-bar"></div>
+  <div class="pub-filters" id="pub-filters">
+    <button class="pub-filter-btn active" data-filter="all">All</button>
+    <button class="pub-filter-btn" data-filter="first">First Author</button>
+    <button class="pub-filter-btn" data-filter="co">Co-Author</button>
+    <button class="pub-filter-btn" data-filter="2026">2026</button>
+    <button class="pub-filter-btn" data-filter="2025">2025</button>
+    <button class="pub-filter-btn" data-filter="2024">2024</button>
+  </div>
+  <div class="pub-list" id="pub-list">
+    <div class="loading-spinner">Loading publications…</div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Expertise</div>
+  <div class="section-title">Skills & Tools</div>
+  <div class="skills-grid" id="skills-grid">
+    <div class="loading-spinner">Loading skills…</div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Career</div>
+  <div class="section-title">Experience</div>
+  <div class="exp-timeline" id="exp-timeline">
+    <div class="loading-spinner">Loading experience…</div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="section-label">Recognition</div>
+  <div class="section-title">Awards & Certifications</div>
+  <div class="awards-grid" id="awards-grid">
+    <div class="loading-spinner">Loading awards…</div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Get In Touch</div>
+  <div class="section-title">Let's Connect</div>
+  <p class="contact-sub">Open to research positions, faculty roles, and collaboration opportunities in AI, ML, and Computer Vision.</p>
+  <div class="contact-links">
+    <a href="mailto:faseeh@stu.jejunu.ac.kr" class="contact-link white-btn">✉ faseeh@stu.jejunu.ac.kr</a>
+    <a href="mailto:ifaseeh1@gmail.com" class="contact-link">✉ ifaseeh1@gmail.com</a>
+    <a href="https://www.linkedin.com/in/ifaseeh/" target="_blank" class="contact-link">LinkedIn</a>
+    <a href="https://github.com/MFaseeh" target="_blank" class="contact-link">GitHub</a>
+    <a href="https://scholar.google.com/citations?user=-C-iZsAAAAAJ&hl=en" target="_blank" class="contact-link">Google Scholar</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Muhammad Faseeh · Built with CSV-driven data · Jeju National University</p>
+</footer>
+
+<script>
+const BASE = './data/';
+
+function parseCSV(url) {
+  return new Promise((resolve, reject) => {
+    Papa.parse(url, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: r => resolve(r.data),
+      error: e => reject(e)
+    });
+  });
+}
+
+async function loadPublications() {
+  try {
+    const data = await parseCSV(BASE + 'publications.csv');
+    const total = data.length;
+    const firstCount = data.filter(d => d.FirstAuthor === 'Yes').length;
+    const equalCount = data.filter(d => d.FirstAuthor === 'Equal').length;
+    const publishers = [...new Set(data.map(d => d.Publisher).filter(Boolean))].length;
+
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-first').textContent = firstCount;
+
+    document.getElementById('pub-stats-bar').innerHTML = `
+      <div class="pub-stat"><div class="pub-stat-num" style="color:var(--accent1)">${total}</div><div class="pub-stat-label">Total Papers</div></div>
+      <div class="pub-stat"><div class="pub-stat-num" style="color:var(--accent2)">${firstCount}</div><div class="pub-stat-label">First Author</div></div>
+      <div class="pub-stat"><div class="pub-stat-num" style="color:var(--accent3)">${equalCount}</div><div class="pub-stat-label">Equal Contribution</div></div>
+      <div class="pub-stat"><div class="pub-stat-num" style="color:var(--accent4)">${publishers}</div><div class="pub-stat-label">Publishers</div></div>
+    `;
+
+    function renderPubs(filter) {
+      let filtered = data;
+      if (filter === 'first') filtered = data.filter(d => d.FirstAuthor === 'Yes');
+      else if (filter === 'co') filtered = data.filter(d => d.FirstAuthor === 'No');
+      else if (['2024','2025','2026'].includes(filter)) filtered = data.filter(d => d.Year === filter);
+
+      const sorted = [...filtered].sort((a,b) => (b.Year||0) - (a.Year||0));
+
+      document.getElementById('pub-list').innerHTML = sorted.map((p, i) => {
+        const roleClass = p.FirstAuthor === 'Yes' ? 'first-author' : p.FirstAuthor === 'Equal' ? 'equal' : 'co-author';
+        const roleBadge = p.FirstAuthor === 'Yes'
+          ? '<span class="pub-badge badge-first">First Author</span>'
+          : p.FirstAuthor === 'Equal'
+          ? '<span class="pub-badge badge-equal">Equal Contribution</span>'
+          : '<span class="pub-badge badge-co">Co-Author</span>';
+        return `
+          <div class="pub-card ${roleClass}">
+            <div class="pub-title">${p.Title}</div>
+            <div class="pub-meta">
+              <span class="pub-badge badge-year">${p.Year}</span>
+              ${roleBadge}
+              <span class="pub-badge badge-pub">${p.Publication}</span>
+              <span class="pub-badge badge-pub">${p.Publisher}</span>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    renderPubs('all');
+
+    document.querySelectorAll('.pub-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.pub-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderPubs(btn.dataset.filter);
+      });
+    });
+
+  } catch(e) {
+    document.getElementById('pub-list').innerHTML = '<div class="loading-spinner">Could not load publications.csv</div>';
+  }
+}
+
+async function loadSkills() {
+  try {
+    const data = await parseCSV(BASE + 'skills.csv');
+    const groups = {};
+    data.forEach(d => {
+      if (!groups[d.Category]) groups[d.Category] = [];
+      groups[d.Category].push(d.Skill);
+    });
+    const colors = ['sg-1','sg-2','sg-3','sg-4','sg-5'];
+    document.getElementById('skills-grid').innerHTML = Object.entries(groups).map(([cat, skills], i) => `
+      <div class="skill-group ${colors[i % colors.length]}">
+        <div class="skill-group-title">${cat}</div>
+        <div class="skill-tags">${skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}</div>
+      </div>`).join('');
+  } catch(e) {
+    document.getElementById('skills-grid').innerHTML = '<div class="loading-spinner">Could not load skills.csv</div>';
+  }
+}
+
+async function loadExperience() {
+  try {
+    const data = await parseCSV(BASE + 'experience.csv');
+    const reversed = [...data].reverse();
+    document.getElementById('exp-timeline').innerHTML = reversed.map((e, i) => {
+      const cls = i === 0 ? 'last' : e.Type === 'Teaching' ? 'teaching' : '';
+      return `
+        <div class="exp-item ${cls}">
+          <div class="exp-card">
+            <div class="exp-header">
+              <div class="exp-title">${e.Title}</div>
+              <div class="exp-date">${e.StartDate} – ${e.EndDate}</div>
+            </div>
+            <div class="exp-org">${e.Organization} · ${e.City}, ${e.Country}</div>
+            <div class="exp-desc">${e.Description}</div>
+          </div>
+        </div>`;
+    }).join('');
+  } catch(e) {
+    document.getElementById('exp-timeline').innerHTML = '<div class="loading-spinner">Could not load experience.csv</div>';
+  }
+}
+
+async function loadAwards() {
+  try {
+    const data = await parseCSV(BASE + 'awards.csv');
+    document.getElementById('awards-grid').innerHTML = data.map(a => `
+      <div class="award-card">
+        <div class="award-type">${a.Type} · ${a.Year}</div>
+        <div class="award-title">${a.Title}</div>
+        <div class="award-issuer">${a.Issuer}${a.Degree ? ' · ' + a.Degree : ''}</div>
+        ${a.Link ? `<a href="${a.Link}" target="_blank" class="award-link">Verify Certificate →</a>` : ''}
+      </div>`).join('');
+  } catch(e) {
+    document.getElementById('awards-grid').innerHTML = '<div class="loading-spinner">Could not load awards.csv</div>';
+  }
+}
+
+loadPublications();
+loadSkills();
+loadExperience();
+loadAwards();
+</script>
+</body>
+</html>
