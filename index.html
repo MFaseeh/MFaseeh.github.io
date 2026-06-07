@@ -431,12 +431,12 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
 
 <script>
 const ORCID_ID = '0009-0008-2375-7803';
-const MY_NAME_KEY = 'Faseeh'; // used to detect first-author
+const MY_NAME_KEY = 'Faseeh';
 const BASE='./data/';
 
 function csv(f){return new Promise((res,rej)=>Papa.parse(BASE+f,{download:true,header:true,skipEmptyLines:true,complete:r=>res(r.data),error:rej}));}
 
-/* ── Fetch works summary from ORCID public API ── */
+/* ── Fetch works summary ── */
 async function fetchORCIDWorks(){
   const url=`https://pub.orcid.org/v3.0/${ORCID_ID}/works`;
   const res=await fetch(url,{headers:{Accept:'application/json'}});
@@ -445,7 +445,7 @@ async function fetchORCIDWorks(){
   return json.group||[];
 }
 
-/* ── Fetch full detail for a single work by put-code ── */
+/* ── Fetch full detail for a single put-code ── */
 async function fetchWorkDetail(putCode){
   const url=`https://pub.orcid.org/v3.0/${ORCID_ID}/work/${putCode}`;
   const res=await fetch(url,{headers:{Accept:'application/json'}});
@@ -453,28 +453,32 @@ async function fetchWorkDetail(putCode){
   return res.json();
 }
 
-/* ── Parse ORCID work into our standard format ── */
-function parseWork(work){
-  const ws=work['work-summary']?.[0]||work;
-  const title=ws?.title?.title?.value||'Untitled';
-  const year=ws?.['publication-date']?.year?.value||'';
-  const journal=ws?.['journal-title']?.value||'';
-  const type=ws?.type||'';
+/* ── Detect publisher from journal name ── */
+function detectPublisher(journal){
+  if(!journal) return '';
+  const j=journal.toLowerCase();
+  if(j.includes('ieee access')||j.includes('ieee trans')) return 'IEEE';
+  if(j.includes('results in engineering')||j.includes('internet of things')||j.includes('expert systems')||j.includes('materials today')||j.includes('journal of alloys')||j.includes('hydrogen energy')||j.includes('elsevier')) return 'Elsevier';
+  if(j.includes('mathematics')||j.includes('bioengineering')||j.includes('mdpi')) return 'MDPI';
+  if(j.includes('smart grid')||j.includes('springer')) return 'Springer';
+  if(j.includes('advanced intelligent')||j.includes('caai')||j.includes('wiley')) return 'Wiley';
+  if(j.includes('ceramic societ')||j.includes('taylor')) return 'Taylor & Francis';
+  if(j.includes('plos')||j.includes('public library')) return 'PLOS ONE';
+  return '';
+}
 
-  // detect role from contributors if available, else mark unknown
-  let firstAuthor='Unknown';
-  const contribs=work?.contributors?.contributor||[];
-  if(contribs.length>0){
-    const first=contribs[0];
-    const name=first?.['credit-name']?.value||'';
-    firstAuthor=name.toLowerCase().includes(MY_NAME_KEY.toLowerCase())?'Yes':'No';
+/* ── Cross-match with CSV to get FirstAuthor & Publisher reliably ── */
+function crossMatch(orcidWork, csvMap){
+  const title=orcidWork.Title.toLowerCase().trim();
+  for(const [csvTitle, csvData] of csvMap.entries()){
+    if(title.includes(csvTitle.substring(0,40).toLowerCase())||csvTitle.toLowerCase().includes(title.substring(0,40))){
+      return {
+        FirstAuthor: csvData.FirstAuthor||orcidWork.FirstAuthor,
+        Publisher: csvData.Publisher||orcidWork.Publisher
+      };
+    }
   }
-
-  // external ids for DOI
-  const extIds=ws?.['external-ids']?.['external-id']||[];
-  const doi=extIds.find(e=>e['external-id-type']==='doi')?.['external-id-value']||'';
-
-  return {Title:title,Publication:journal,Publisher:'',Year:year,FirstAuthor:firstAuthor,DOI:doi,Type:type};
+  return {FirstAuthor: orcidWork.FirstAuthor, Publisher: orcidWork.Publisher};
 }
 
 /* ── Render publication list & filters ── */
@@ -482,13 +486,14 @@ function renderPubs(d){
   const total=d.length;
   const first=d.filter(x=>x.FirstAuthor==='Yes').length;
   const eq=d.filter(x=>x.FirstAuthor==='Equal').length;
-  const pubs=[...new Set(d.map(x=>x.Publisher).filter(Boolean))].length||'—';
+  const pubSet=[...new Set(d.map(x=>x.Publisher).filter(Boolean))];
+  const pubCount=pubSet.length||'—';
 
   document.getElementById('pub-bar').innerHTML=`
     <div class="pub-stat-item"><div class="psn">${total}</div><div class="psl">Total</div></div>
     <div class="pub-stat-item"><div class="psn">${first}</div><div class="psl">First Author</div></div>
     <div class="pub-stat-item"><div class="psn">${eq}</div><div class="psl">Equal Contrib.</div></div>
-    <div class="pub-stat-item"><div class="psn">${pubs}</div><div class="psl">Publishers</div></div>`;
+    <div class="pub-stat-item"><div class="psn">${pubCount}</div><div class="psl">Publishers</div></div>`;
   document.getElementById('s-total').textContent=total;
   document.getElementById('s-first').textContent=first>0?first:'—';
 
@@ -526,35 +531,66 @@ function renderPubs(d){
   }));
 }
 
-/* ── Main loader: try ORCID first, fall back to CSV ── */
+/* ── Main loader: ORCID + CSV cross-match for full metadata ── */
 async function loadPubs(){
   document.getElementById('pub-list').innerHTML='<div class="loading">Fetching publications from ORCID…</div>';
   try{
+    // Load CSV in parallel for cross-matching FirstAuthor & Publisher
+    let csvMap=new Map();
+    try{
+      const csvData=await csv('publications.csv');
+      csvData.forEach(row=>csvMap.set(row.Title.toLowerCase().trim(), row));
+    }catch(e){}
+
     const groups=await fetchORCIDWorks();
     if(groups.length===0) throw new Error('ORCID profile has no works yet');
-    const works=groups.map(g=>{
-      const summary=g['work-summary']?.[0]||{};
-      const extIds=g['external-ids']?.['external-id']||[];
+
+    // Fetch full details in batches of 5 to avoid rate limiting
+    const putCodes=groups.map(g=>g['work-summary']?.[0]?.['put-code']).filter(Boolean);
+    const allDetails=[];
+    const BATCH=5;
+    for(let i=0;i<putCodes.length;i+=BATCH){
+      const batch=putCodes.slice(i,i+BATCH);
+      const results=await Promise.all(batch.map(pc=>fetchWorkDetail(pc).catch(()=>null)));
+      allDetails.push(...results.filter(Boolean));
+      if(i+BATCH<putCodes.length) await new Promise(r=>setTimeout(r,300));
+    }
+
+    const works=allDetails.map(detail=>{
+      const title=detail?.title?.title?.value||'Untitled';
+      const year=detail?.['publication-date']?.year?.value||'';
+      const journal=detail?.['journal-title']?.value||'';
+      const publisher=detail?.publisher||detectPublisher(journal);
+      const extIds=detail?.['external-ids']?.['external-id']||[];
       const doi=extIds.find(e=>e['external-id-type']==='doi')?.['external-id-value']||'';
-      return {
-        Title:summary?.title?.title?.value||'Untitled',
-        Publication:summary?.['journal-title']?.value||'',
-        Publisher:'',
-        Year:summary?.['publication-date']?.year?.value||'',
-        FirstAuthor:'Unknown',
-        DOI:doi
-      };
+
+      // Determine first-author from contributors
+      const contribs=detail?.contributors?.contributor||[];
+      let firstAuthor='No';
+      if(contribs.length>0){
+        const first=contribs[0];
+        const name=first?.['credit-name']?.value||'';
+        const role=first?.['contributor-attributes']?.['contributor-role']||'';
+        if(name.toLowerCase().includes(MY_NAME_KEY.toLowerCase())){
+          firstAuthor=role.toLowerCase().includes('equal')?'Equal':'Yes';
+        }
+      }
+
+      const base={Title:title,Publication:journal,Publisher:publisher,Year:year,FirstAuthor:firstAuthor,DOI:doi};
+      // Cross-match with CSV for more accurate FirstAuthor & Publisher
+      const matched=crossMatch(base, csvMap);
+      return {...base, FirstAuthor:matched.FirstAuthor, Publisher:matched.Publisher||publisher};
     });
-    // Show source badge
-    document.getElementById('pub-source-badge').textContent='Live from ORCID';
+
+    document.getElementById('pub-source-badge').textContent='● Live from ORCID';
     document.getElementById('pub-source-badge').style.color='var(--accent)';
     renderPubs(works);
+
   }catch(orcidErr){
-    // Fallback to CSV
     try{
       document.getElementById('pub-list').innerHTML='<div class="loading">Loading from local data…</div>';
       const d=await csv('publications.csv');
-      document.getElementById('pub-source-badge').textContent='From local data (add papers to ORCID to enable live sync)';
+      document.getElementById('pub-source-badge').textContent='○ From local data — add papers to ORCID to enable live sync';
       document.getElementById('pub-source-badge').style.color='var(--ink-muted)';
       renderPubs(d);
     }catch(csvErr){
