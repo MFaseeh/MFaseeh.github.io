@@ -109,7 +109,7 @@ I am actively seeking opportunities starting **December 2026** in:
 - 🏛️ Faculty / Lecturer roles
 - 🤝 Research collaboration in AI, CV, and NLP
 
-📍 **Preferred locations:** Saudi Arabia · Middle East · Europe
+📍 **Preferred locations:** Middle East · Europe
 
 ---
 
