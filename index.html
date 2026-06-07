@@ -346,6 +346,11 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
   <div class="section-wrap">
     <div class="section-header"><span class="section-num">02</span><h2 class="section-title">Publications</h2></div>
 
+    <!-- Source indicator -->
+    <div style="margin-bottom:1.25rem;">
+      <span id="pub-source-badge" style="font-size:0.75rem;font-weight:500;letter-spacing:0.04em;"></span>
+    </div>
+
     <!-- Stats centered -->
     <div class="pub-stats-wrap">
       <div class="pub-stats-row" id="pub-bar"><div class="loading">Loading…</div></div>
@@ -415,60 +420,147 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
 <section id="contact">
   <div class="section-wrap">
     <div class="section-header"><span class="section-num">06</span><h2 class="section-title">Contact</h2></div>
-    <div style="max-width:880px;">
-      <p style="font-size:1.05rem;color:rgba(255,255,255,0.55);line-height:1.9;font-weight:300;">Open to research positions, faculty roles, postdoctoral opportunities, and collaboration in AI, Machine Learning, Material Informatics, and Computer Vision.</p>
-      <p style="font-size:1.05rem;color:rgba(255,255,255,0.55);line-height:1.9;font-weight:300;margin-top:1rem;">Currently based in Jeju, South Korea — targeting opportunities in the Middle East, and Europe. Available from February 2027.</p>
+    <div style="max-width:680px;">
+      <p style="font-size:1.05rem;color:rgba(255,255,255,0.55);line-height:1.9;font-weight:300;">Open to research positions, faculty roles, postdoctoral opportunities, and collaboration in AI, Machine Learning, and Computer Vision.</p>
+      <p style="font-size:1.05rem;color:rgba(255,255,255,0.55);line-height:1.9;font-weight:300;margin-top:1rem;">Currently based in Jeju, South Korea — targeting opportunities in Saudi Arabia, the Middle East, and Europe. Available from December 2026.</p>
     </div>
   </div>
 </section>
 
-<footer>© 2026 Muhammad Faseeh · Jeju National University</footer>
+<footer>© 2026 Muhammad Faseeh · Jeju National University · Publications via ORCID</footer>
 
 <script>
+const ORCID_ID = '0009-0008-2375-7803';
+const MY_NAME_KEY = 'Faseeh'; // used to detect first-author
 const BASE='./data/';
+
 function csv(f){return new Promise((res,rej)=>Papa.parse(BASE+f,{download:true,header:true,skipEmptyLines:true,complete:r=>res(r.data),error:rej}));}
 
+/* ── Fetch works summary from ORCID public API ── */
+async function fetchORCIDWorks(){
+  const url=`https://pub.orcid.org/v3.0/${ORCID_ID}/works`;
+  const res=await fetch(url,{headers:{Accept:'application/json'}});
+  if(!res.ok) throw new Error('ORCID fetch failed');
+  const json=await res.json();
+  return json.group||[];
+}
+
+/* ── Fetch full detail for a single work by put-code ── */
+async function fetchWorkDetail(putCode){
+  const url=`https://pub.orcid.org/v3.0/${ORCID_ID}/work/${putCode}`;
+  const res=await fetch(url,{headers:{Accept:'application/json'}});
+  if(!res.ok) return null;
+  return res.json();
+}
+
+/* ── Parse ORCID work into our standard format ── */
+function parseWork(work){
+  const ws=work['work-summary']?.[0]||work;
+  const title=ws?.title?.title?.value||'Untitled';
+  const year=ws?.['publication-date']?.year?.value||'';
+  const journal=ws?.['journal-title']?.value||'';
+  const type=ws?.type||'';
+
+  // detect role from contributors if available, else mark unknown
+  let firstAuthor='Unknown';
+  const contribs=work?.contributors?.contributor||[];
+  if(contribs.length>0){
+    const first=contribs[0];
+    const name=first?.['credit-name']?.value||'';
+    firstAuthor=name.toLowerCase().includes(MY_NAME_KEY.toLowerCase())?'Yes':'No';
+  }
+
+  // external ids for DOI
+  const extIds=ws?.['external-ids']?.['external-id']||[];
+  const doi=extIds.find(e=>e['external-id-type']==='doi')?.['external-id-value']||'';
+
+  return {Title:title,Publication:journal,Publisher:'',Year:year,FirstAuthor:firstAuthor,DOI:doi,Type:type};
+}
+
+/* ── Render publication list & filters ── */
+function renderPubs(d){
+  const total=d.length;
+  const first=d.filter(x=>x.FirstAuthor==='Yes').length;
+  const eq=d.filter(x=>x.FirstAuthor==='Equal').length;
+  const pubs=[...new Set(d.map(x=>x.Publisher).filter(Boolean))].length||'—';
+
+  document.getElementById('pub-bar').innerHTML=`
+    <div class="pub-stat-item"><div class="psn">${total}</div><div class="psl">Total</div></div>
+    <div class="pub-stat-item"><div class="psn">${first}</div><div class="psl">First Author</div></div>
+    <div class="pub-stat-item"><div class="psn">${eq}</div><div class="psl">Equal Contrib.</div></div>
+    <div class="pub-stat-item"><div class="psn">${pubs}</div><div class="psl">Publishers</div></div>`;
+  document.getElementById('s-total').textContent=total;
+  document.getElementById('s-first').textContent=first>0?first:'—';
+
+  let activeRole='all',activeYear='all';
+
+  function render(){
+    let rows=d;
+    if(activeRole==='first') rows=rows.filter(x=>x.FirstAuthor==='Yes');
+    else if(activeRole==='co') rows=rows.filter(x=>x.FirstAuthor==='No');
+    else if(activeRole==='equal') rows=rows.filter(x=>x.FirstAuthor==='Equal');
+    if(activeYear!=='all') rows=rows.filter(x=>x.Year===activeYear);
+    rows=[...rows].sort((a,b)=>(b.Year||0)-(a.Year||0));
+    const rl=activeRole==='all'?'All':activeRole==='first'?'First Author':activeRole==='equal'?'Equal Contribution':'Co-Author';
+    document.getElementById('pub-result-info').textContent=`Showing ${rows.length} of ${d.length} papers · ${rl} · ${activeYear==='all'?'All Years':activeYear}`;
+    document.getElementById('pub-list').innerHTML=rows.map((p,i)=>{
+      const rc=p.FirstAuthor==='Yes'?'tag-first':p.FirstAuthor==='Equal'?'tag-equal':'tag-co';
+      const rl2=p.FirstAuthor==='Yes'?'First Author':p.FirstAuthor==='Equal'?'Equal Contribution':'Co-Author';
+      const doiLink=p.DOI?`<a href="https://doi.org/${p.DOI}" target="_blank" style="font-size:0.75rem;color:var(--accent);margin-left:0.5rem;">DOI →</a>`:'';
+      return `<div class="pub-item">
+        <div class="pub-num">${String(i+1).padStart(2,'0')}</div>
+        <div><div class="pub-t">${p.Title}${doiLink}</div><div class="pub-m">${p.Publication}${p.Publisher?' · '+p.Publisher:''}</div></div>
+        <div class="pub-right-col"><div class="pub-year-big">${p.Year}</div><span class="tag ${rc}">${rl2}</span></div>
+      </div>`;
+    }).join('');
+  }
+  render();
+
+  document.querySelectorAll('#role-filters .pf-btn').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#role-filters .pf-btn').forEach(x=>x.classList.remove('active-role'));
+    b.classList.add('active-role');activeRole=b.dataset.role;render();
+  }));
+  document.querySelectorAll('#year-filters .pf-btn').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#year-filters .pf-btn').forEach(x=>x.classList.remove('active-year'));
+    b.classList.add('active-year');activeYear=b.dataset.year;render();
+  }));
+}
+
+/* ── Main loader: try ORCID first, fall back to CSV ── */
 async function loadPubs(){
+  document.getElementById('pub-list').innerHTML='<div class="loading">Fetching publications from ORCID…</div>';
   try{
-    const d=await csv('publications.csv');
-    const total=d.length,first=d.filter(x=>x.FirstAuthor==='Yes').length,eq=d.filter(x=>x.FirstAuthor==='Equal').length,pubs=[...new Set(d.map(x=>x.Publisher).filter(Boolean))].length;
-    document.getElementById('pub-bar').innerHTML=`
-      <div class="pub-stat-item"><div class="psn">${total}</div><div class="psl">Total</div></div>
-      <div class="pub-stat-item"><div class="psn">${first}</div><div class="psl">First Author</div></div>
-      <div class="pub-stat-item"><div class="psn">${eq}</div><div class="psl">Equal Contrib.</div></div>
-      <div class="pub-stat-item"><div class="psn">${pubs}</div><div class="psl">Publishers</div></div>`;
-    document.getElementById('s-total').textContent=total;
-    document.getElementById('s-first').textContent=first;
-    let activeRole='all',activeYear='all';
-    function render(){
-      let rows=d;
-      if(activeRole==='first') rows=rows.filter(x=>x.FirstAuthor==='Yes');
-      else if(activeRole==='co') rows=rows.filter(x=>x.FirstAuthor==='No');
-      else if(activeRole==='equal') rows=rows.filter(x=>x.FirstAuthor==='Equal');
-      if(activeYear!=='all') rows=rows.filter(x=>x.Year===activeYear);
-      rows=[...rows].sort((a,b)=>(b.Year||0)-(a.Year||0));
-      const rl=activeRole==='all'?'All':activeRole==='first'?'First Author':activeRole==='equal'?'Equal Contribution':'Co-Author';
-      document.getElementById('pub-result-info').textContent=`Showing ${rows.length} of ${d.length} papers · ${rl} · ${activeYear==='all'?'All Years':activeYear}`;
-      document.getElementById('pub-list').innerHTML=rows.map((p,i)=>{
-        const rc=p.FirstAuthor==='Yes'?'tag-first':p.FirstAuthor==='Equal'?'tag-equal':'tag-co';
-        const rl2=p.FirstAuthor==='Yes'?'First Author':p.FirstAuthor==='Equal'?'Equal Contribution':'Co-Author';
-        return `<div class="pub-item">
-          <div class="pub-num">${String(i+1).padStart(2,'0')}</div>
-          <div><div class="pub-t">${p.Title}</div><div class="pub-m">${p.Publication} · ${p.Publisher}</div></div>
-          <div class="pub-right-col"><div class="pub-year-big">${p.Year}</div><span class="tag ${rc}">${rl2}</span></div>
-        </div>`;
-      }).join('');
+    const groups=await fetchORCIDWorks();
+    if(groups.length===0) throw new Error('ORCID profile has no works yet');
+    const works=groups.map(g=>{
+      const summary=g['work-summary']?.[0]||{};
+      const extIds=g['external-ids']?.['external-id']||[];
+      const doi=extIds.find(e=>e['external-id-type']==='doi')?.['external-id-value']||'';
+      return {
+        Title:summary?.title?.title?.value||'Untitled',
+        Publication:summary?.['journal-title']?.value||'',
+        Publisher:'',
+        Year:summary?.['publication-date']?.year?.value||'',
+        FirstAuthor:'Unknown',
+        DOI:doi
+      };
+    });
+    // Show source badge
+    document.getElementById('pub-source-badge').textContent='Live from ORCID';
+    document.getElementById('pub-source-badge').style.color='var(--accent)';
+    renderPubs(works);
+  }catch(orcidErr){
+    // Fallback to CSV
+    try{
+      document.getElementById('pub-list').innerHTML='<div class="loading">Loading from local data…</div>';
+      const d=await csv('publications.csv');
+      document.getElementById('pub-source-badge').textContent='From local data (add papers to ORCID to enable live sync)';
+      document.getElementById('pub-source-badge').style.color='var(--ink-muted)';
+      renderPubs(d);
+    }catch(csvErr){
+      document.getElementById('pub-list').innerHTML='<div class="loading">Could not load publications.</div>';
     }
-    render();
-    document.querySelectorAll('#role-filters .pf-btn').forEach(b=>b.addEventListener('click',()=>{
-      document.querySelectorAll('#role-filters .pf-btn').forEach(x=>x.classList.remove('active-role'));
-      b.classList.add('active-role');activeRole=b.dataset.role;render();
-    }));
-    document.querySelectorAll('#year-filters .pf-btn').forEach(b=>b.addEventListener('click',()=>{
-      document.querySelectorAll('#year-filters .pf-btn').forEach(x=>x.classList.remove('active-year'));
-      b.classList.add('active-year');activeYear=b.dataset.year;render();
-    }));
-  }catch(e){document.getElementById('pub-list').innerHTML='<div class="loading">Could not load publications.csv</div>';}
+  }
 }
 
 async function loadSkills(){
