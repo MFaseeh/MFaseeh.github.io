@@ -16,10 +16,10 @@
   --line: #e8e8e4;
   --accent: #2563eb;
   --accent-soft: #eff4ff;
+  --max-w: 1280px;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-
 body {
   background: var(--off-white);
   color: var(--ink);
@@ -33,225 +33,182 @@ nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 99;
   display: flex; align-items: center; justify-content: space-between;
   padding: 1.25rem 5vw;
-  background: rgba(250,250,248,0.9);
+  background: rgba(250,250,248,0.92);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--line);
 }
-.nav-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.15rem; font-weight: 600; letter-spacing: -0.01em;
-  color: var(--ink);
-}
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
 .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-.nav-links a {
-  font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em;
-  text-transform: uppercase; text-decoration: none;
-  color: var(--ink-muted); transition: color 0.2s;
-}
+.nav-links a { font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; color: var(--ink-muted); transition: color 0.2s; }
 .nav-links a:hover { color: var(--accent); }
 
 /* ── HERO ── */
 #hero {
   min-height: 100vh;
   display: flex; flex-direction: column; justify-content: center;
-  padding: 8rem 5vw 5rem;
-  max-width: 900px;
-  margin: 0 auto;
+  padding: 9rem 5vw 5rem;
+  max-width: var(--max-w); margin: 0 auto;
   animation: fadeUp 0.8s ease both;
 }
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.hero-eyebrow {
-  font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--accent);
-  margin-bottom: 1.5rem;
-}
-.hero-name {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(3.5rem, 7vw, 6rem);
-  font-weight: 400; line-height: 1.05;
-  letter-spacing: -0.03em;
-  margin-bottom: 1.75rem;
-  color: var(--ink);
-}
-.hero-desc {
-  font-size: 1.12rem; font-weight: 300; color: var(--ink-soft);
-  max-width: 580px; margin-bottom: 2.5rem; line-height: 1.8;
-}
-.hero-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 4rem; }
-.btn {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  padding: 0.65rem 1.5rem; border-radius: 100px;
-  font-size: 0.87rem; font-weight: 500; text-decoration: none;
-  transition: all 0.2s; cursor: pointer; font-family: 'Outfit', sans-serif;
-}
+@keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+.hero-top { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: flex-end; margin-bottom: 3.5rem; }
+.hero-eyebrow { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; }
+.hero-name { font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 5.5vw, 6rem); font-weight: 400; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
+.hero-desc { font-size: 1.05rem; font-weight: 300; color: var(--ink-soft); line-height: 1.85; }
+.hero-right-block { display: flex; flex-direction: column; justify-content: flex-end; gap: 2rem; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+.btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.65rem 1.5rem; border-radius: 100px; font-size: 0.87rem; font-weight: 500; text-decoration: none; transition: all 0.2s; cursor: pointer; font-family: 'Outfit', sans-serif; }
 .btn-primary { background: var(--ink); color: var(--white); border: 1.5px solid var(--ink); }
 .btn-primary:hover { background: #2d2d2d; }
 .btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
 .btn-outline:hover { border-color: var(--ink); }
-.hero-stats { display: flex; gap: 3rem; padding-top: 2.5rem; border-top: 1px solid var(--line); }
-.stat { }
-.stat-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.4rem; font-weight: 500; line-height: 1;
-  color: var(--ink); margin-bottom: 0.2rem;
-}
-.stat-label { font-size: 0.78rem; font-weight: 400; color: var(--ink-muted); letter-spacing: 0.04em; }
+.hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--white); }
+.stat { padding: 1.5rem 1.75rem; border-right: 1px solid var(--line); }
+.stat:last-child { border-right: none; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 500; line-height: 1; color: var(--ink); margin-bottom: 0.25rem; }
+.stat-label { font-size: 0.75rem; font-weight: 400; color: var(--ink-muted); letter-spacing: 0.05em; text-transform: uppercase; }
 
 /* ── DIVIDER ── */
 .section-divider { width: 100%; height: 1px; background: var(--line); }
 
-/* ── SECTIONS ── */
-.section-wrap { max-width: 900px; margin: 0 auto; padding: 5rem 5vw; }
-.section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; }
-.section-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 0.9rem; color: var(--ink-muted); font-weight: 400;
-}
-.section-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  font-weight: 400; letter-spacing: -0.02em; color: var(--ink);
-}
+/* ── SECTION WRAPPER ── */
+.section-wrap { max-width: var(--max-w); margin: 0 auto; padding: 5.5rem 5vw; }
+.section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3.5rem; }
+.section-num { font-family: 'Playfair Display', serif; font-size: 0.9rem; color: var(--ink-muted); font-weight: 400; }
+.section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 2.5vw, 2.4rem); font-weight: 400; letter-spacing: -0.02em; color: var(--ink); }
 
 /* ── ABOUT ── */
 #about { background: var(--white); }
-.about-body { display: grid; grid-template-columns: 3fr 2fr; gap: 4rem; align-items: start; }
-.about-text { font-size: 1rem; color: var(--ink-soft); line-height: 1.85; }
+.about-body { display: grid; grid-template-columns: 2fr 1fr; gap: 6rem; align-items: start; margin-bottom: 4rem; }
+.about-text { font-size: 1.05rem; color: var(--ink-soft); line-height: 1.9; }
 .about-text p + p { margin-top: 1.1rem; }
-.about-facts { display: flex; flex-direction: column; gap: 0; }
-.fact-row {
-  display: flex; flex-direction: column;
-  padding: 1rem 0; border-bottom: 1px solid var(--line);
-}
+.about-facts { display: flex; flex-direction: column; }
+.fact-row { display: flex; flex-direction: column; padding: 0.9rem 0; border-bottom: 1px solid var(--line); }
 .fact-row:first-child { border-top: 1px solid var(--line); }
-.fact-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.2rem; }
+.fact-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.2rem; }
 .fact-value { font-size: 0.95rem; font-weight: 400; color: var(--ink); }
+/* 2x3 grid for quick facts */
+.about-grid-6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.ag6-cell { background: var(--off-white); padding: 1.75rem 2rem; }
+.ag6-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+.ag6-value { font-size: 1rem; font-weight: 500; color: var(--ink); line-height: 1.4; }
+.ag6-sub { font-size: 0.82rem; color: var(--ink-muted); margin-top: 0.2rem; }
 
 /* ── PUBLICATIONS ── */
 #publications { background: var(--off-white); }
-.pub-bar { display: flex; gap: 2rem; margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--line); }
-.pub-stat-item { }
-.psn { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--ink); }
-.psl { font-size: 0.75rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.06em; }
-.pub-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
-.pf-btn {
-  padding: 0.35rem 1rem; border-radius: 100px; font-size: 0.8rem; font-weight: 500;
-  border: 1px solid var(--line); background: transparent; cursor: pointer;
-  color: var(--ink-soft); transition: all 0.18s; font-family: 'Outfit', sans-serif;
-}
-.pf-btn.active, .pf-btn:hover { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.pub-top { display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: start; margin-bottom: 3rem; }
+.pub-bar { display: flex; gap: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--white); }
+.pub-stat-item { padding: 1.25rem 2rem; border-right: 1px solid var(--line); }
+.pub-stat-item:last-child { border-right: none; }
+.psn { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--ink); line-height: 1; }
+.psl { font-size: 0.72rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.2rem; }
+.pub-filters { display: flex; flex-direction: column; gap: 1rem; align-items: flex-end; }
+.pub-filter-row { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: flex-end; }
+.filter-group-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); text-align: right; }
+.pf-btn { padding: 0.32rem 0.9rem; border-radius: 100px; font-size: 0.78rem; font-weight: 500; border: 1px solid var(--line); background: transparent; cursor: pointer; color: var(--ink-soft); transition: all 0.18s; font-family: 'Outfit', sans-serif; }
+.pf-btn.active-role { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.pf-btn.active-year { background: var(--accent); color: var(--white); border-color: var(--accent); }
+.pf-btn:hover { opacity: 0.8; }
+.pub-result-info { font-size: 0.82rem; color: var(--ink-muted); margin-bottom: 1rem; }
 .pub-list { display: flex; flex-direction: column; }
 .pub-item {
-  display: grid; grid-template-columns: 1fr auto;
-  gap: 1rem; align-items: start;
-  padding: 1.4rem 0; border-bottom: 1px solid var(--line);
-  transition: background 0.15s;
+  display: grid; grid-template-columns: 60px 1fr 200px;
+  gap: 2rem; align-items: center;
+  padding: 1.5rem 1.25rem; border-bottom: 1px solid var(--line);
+  border-radius: 4px; transition: background 0.15s;
 }
 .pub-item:first-child { border-top: 1px solid var(--line); }
-.pub-item:hover { background: var(--white); margin: 0 -1.5rem; padding-left: 1.5rem; padding-right: 1.5rem; border-radius: 4px; }
-.pub-t { font-size: 0.95rem; font-weight: 500; color: var(--ink); line-height: 1.5; margin-bottom: 0.4rem; }
+.pub-item:hover { background: var(--white); }
+.pub-num { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--line); font-weight: 400; text-align: center; }
+.pub-center { }
+.pub-t { font-size: 0.97rem; font-weight: 500; color: var(--ink); line-height: 1.5; margin-bottom: 0.35rem; }
 .pub-m { font-size: 0.82rem; color: var(--ink-muted); }
-.pub-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; }
-.pub-year { font-family: 'Playfair Display', serif; font-size: 0.9rem; color: var(--ink-muted); }
-.tag {
-  font-size: 0.68rem; font-weight: 600; padding: 0.2rem 0.6rem;
-  border-radius: 100px; letter-spacing: 0.04em; white-space: nowrap;
-}
+.pub-right-col { display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+.pub-year-big { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--ink-muted); }
+.tag { font-size: 0.68rem; font-weight: 600; padding: 0.22rem 0.7rem; border-radius: 100px; letter-spacing: 0.04em; white-space: nowrap; }
 .tag-first { background: #e8f0fe; color: #1a56db; }
 .tag-co { background: #f3f4f6; color: #6b7280; }
 .tag-equal { background: #ecfdf5; color: #059669; }
+.pub-publisher { font-size: 0.75rem; color: var(--ink-muted); text-align: right; }
 
 /* ── SKILLS ── */
 #skills { background: var(--white); }
-.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
-.skill-col { }
-.skill-col-title {
-  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--accent);
-  margin-bottom: 1rem; padding-bottom: 0.75rem;
-  border-bottom: 2px solid var(--accent);
-}
-.skill-list { display: flex; flex-direction: column; gap: 0.5rem; }
-.skill-item { font-size: 0.88rem; color: var(--ink-soft); padding: 0.1rem 0; }
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+.skill-group { background: var(--off-white); border: 1px solid var(--line); border-radius: 14px; padding: 1.75rem; overflow: hidden; position: relative; }
+.skill-group::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.sg-1::before { background: var(--accent); }
+.sg-2::before { background: #10b981; }
+.sg-3::before { background: #f59e0b; }
+.sg-4::before { background: #8b5cf6; }
+.sg-5::before { background: #ef4444; }
+.skill-group-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 1.1rem; }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.skill-tag { font-size: 0.8rem; padding: 0.28rem 0.8rem; background: var(--white); border-radius: 100px; color: var(--ink-soft); border: 1px solid var(--line); }
 
 /* ── EXPERIENCE ── */
 #experience { background: var(--off-white); }
 .exp-list { display: flex; flex-direction: column; }
-.exp-item {
-  display: grid; grid-template-columns: 160px 1fr;
-  gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--line);
-}
+.exp-item { display: grid; grid-template-columns: 200px 1fr; gap: 3rem; padding: 2.25rem 0; border-bottom: 1px solid var(--line); }
 .exp-item:first-child { border-top: 1px solid var(--line); }
-.exp-date-col { }
-.exp-period { font-size: 0.8rem; color: var(--ink-muted); line-height: 1.5; }
-.exp-type-dot {
-  display: inline-block; width: 6px; height: 6px;
-  border-radius: 50%; margin-right: 0.4rem; vertical-align: middle;
-}
-.dot-research { background: var(--accent); }
-.dot-teaching { background: #10b981; }
+.exp-date-col { padding-top: 0.25rem; }
+.exp-period { font-size: 0.82rem; color: var(--ink-muted); line-height: 1.6; }
+.exp-type-tag { display: inline-block; margin-top: 0.5rem; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.2rem 0.65rem; border-radius: 100px; }
+.tag-research-t { background: #e8f0fe; color: #1a56db; }
+.tag-teaching-t { background: #ecfdf5; color: #059669; }
 .exp-content { }
-.exp-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 500; margin-bottom: 0.2rem; }
-.exp-org { font-size: 0.85rem; color: var(--ink-muted); margin-bottom: 0.6rem; }
-.exp-desc { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.7; }
+.exp-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 500; margin-bottom: 0.25rem; }
+.exp-org { font-size: 0.88rem; color: var(--ink-muted); margin-bottom: 0.75rem; }
+.exp-desc { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.75; }
 
 /* ── AWARDS ── */
 #awards { background: var(--white); }
-.awards-list { display: flex; flex-direction: column; }
-.award-item {
-  display: grid; grid-template-columns: 80px 1fr auto;
-  gap: 1.5rem; align-items: center;
-  padding: 1.25rem 0; border-bottom: 1px solid var(--line);
-}
-.award-item:first-child { border-top: 1px solid var(--line); }
-.award-year { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--ink-muted); }
-.award-info { }
-.award-title { font-size: 0.95rem; font-weight: 500; color: var(--ink); margin-bottom: 0.15rem; }
-.award-issuer { font-size: 0.82rem; color: var(--ink-muted); }
-.award-link-btn {
-  font-size: 0.78rem; color: var(--accent); text-decoration: none;
-  padding: 0.3rem 0.8rem; border: 1px solid #bfcffd; border-radius: 100px;
-  white-space: nowrap; transition: all 0.2s;
-}
+.awards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; }
+.award-card { background: var(--off-white); border: 1px solid var(--line); border-radius: 14px; padding: 1.75rem 2rem; position: relative; overflow: hidden; transition: transform 0.2s; }
+.award-card:hover { transform: translateY(-2px); }
+.award-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.award-scholarship::before { background: var(--accent); }
+.award-certification::before { background: #10b981; }
+.award-type-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.6rem; }
+.award-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 500; color: var(--ink); margin-bottom: 0.3rem; line-height: 1.4; }
+.award-issuer { font-size: 0.85rem; color: var(--ink-muted); margin-bottom: 1rem; }
+.award-footer { display: flex; justify-content: space-between; align-items: center; }
+.award-year-badge { font-size: 0.75rem; font-weight: 600; background: var(--white); border: 1px solid var(--line); border-radius: 100px; padding: 0.2rem 0.65rem; color: var(--ink-soft); }
+.award-link-btn { font-size: 0.78rem; color: var(--accent); text-decoration: none; padding: 0.28rem 0.8rem; border: 1px solid #bfcffd; border-radius: 100px; transition: all 0.2s; }
 .award-link-btn:hover { background: var(--accent); color: var(--white); border-color: var(--accent); }
 
 /* ── CONTACT ── */
 #contact { background: var(--ink); color: var(--white); }
 #contact .section-title { color: var(--white); }
 #contact .section-num { color: rgba(255,255,255,0.3); }
-.contact-body { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
-.contact-text { font-size: 1rem; color: rgba(255,255,255,0.6); line-height: 1.8; font-weight: 300; }
-.contact-links-list { display: flex; flex-direction: column; gap: 0; }
-.contact-link-item {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);
-  text-decoration: none;
-}
-.contact-link-item:first-child { border-top: 1px solid rgba(255,255,255,0.1); }
-.cl-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
-.cl-value { font-size: 0.9rem; color: rgba(255,255,255,0.85); transition: color 0.2s; }
-.contact-link-item:hover .cl-value { color: var(--white); }
+.contact-body { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+.contact-text { font-size: 1.05rem; color: rgba(255,255,255,0.55); line-height: 1.85; font-weight: 300; }
+.contact-links-list { display: flex; flex-direction: column; }
+.contact-link-item { display: flex; justify-content: space-between; align-items: center; padding: 1.1rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); text-decoration: none; transition: opacity 0.2s; }
+.contact-link-item:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+.contact-link-item:hover { opacity: 0.75; }
+.cl-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+.cl-value { font-size: 0.92rem; color: rgba(255,255,255,0.85); }
 
 /* ── FOOTER ── */
-footer {
-  background: #0a0a0a; color: rgba(255,255,255,0.25);
-  text-align: center; padding: 1.5rem 5vw; font-size: 0.78rem;
-}
+footer { background: #0a0a0a; color: rgba(255,255,255,0.2); text-align: center; padding: 1.5rem 5vw; font-size: 0.78rem; }
 
 /* ── LOADING ── */
 .loading { text-align: center; padding: 2rem; color: var(--ink-muted); font-size: 0.88rem; }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .nav-links { display: none; }
-  .hero-stats { gap: 1.5rem; }
-  .about-body { grid-template-columns: 1fr; }
+  .hero-top { grid-template-columns: 1fr; gap: 2rem; }
+  .hero-stats { grid-template-columns: repeat(2,1fr); }
+  .about-body { grid-template-columns: 1fr; gap: 2rem; }
+  .about-grid-6 { grid-template-columns: repeat(2,1fr); }
+  .pub-top { grid-template-columns: 1fr; }
+  .pub-filters { align-items: flex-start; }
+  .pub-filter-row { justify-content: flex-start; }
+  .pub-item { grid-template-columns: 1fr; gap: 0.5rem; }
+  .pub-num { display: none; }
+  .pub-right-col { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
   .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
-  .award-item { grid-template-columns: 60px 1fr; }
-  .award-link-btn { display: none; }
-  .contact-body { grid-template-columns: 1fr; }
+  .contact-body { grid-template-columns: 1fr; gap: 3rem; }
 }
 </style>
 </head>
@@ -270,27 +227,30 @@ footer {
 </nav>
 
 <!-- HERO -->
-<div style="max-width:900px; margin:0 auto; padding:0 5vw;">
-  <section id="hero">
-    <p class="hero-eyebrow">PhD Candidate · Electronic Engineering · Jeju National University</p>
-    <h1 class="hero-name">Muhammad<br>Faseeh</h1>
-    <p class="hero-desc">
-      AI & ML researcher specializing in Computer Vision, Material Informatics, and Natural Language Processing.
-      Graduating December 2026. Open to research and faculty positions globally.
-    </p>
-    <div class="hero-cta">
-      <a href="https://scholar.google.com/citations?user=-C-iZsAAAAAJ&hl=en" target="_blank" class="btn btn-primary">Google Scholar</a>
-      <a href="https://github.com/MFaseeh" target="_blank" class="btn btn-outline">GitHub</a>
-      <a href="https://www.linkedin.com/in/ifaseeh/" target="_blank" class="btn btn-outline">LinkedIn</a>
-      <a href="mailto:faseeh@stu.jejunu.ac.kr" class="btn btn-outline">Email</a>
+<div style="max-width:var(--max-w);margin:0 auto;padding:0 5vw;">
+<section id="hero">
+  <div class="hero-top">
+    <div class="hero-left-block">
+      <p class="hero-eyebrow">PhD Candidate · Electronic Engineering · Jeju National University</p>
+      <h1 class="hero-name">Muhammad<br>Faseeh</h1>
+      <p class="hero-desc">AI & ML researcher specializing in Computer Vision, Material Informatics, and Natural Language Processing. Graduating December 2026. Open to research and faculty positions globally.</p>
     </div>
-    <div class="hero-stats">
-      <div class="stat"><div class="stat-num" id="s-total">23</div><div class="stat-label">Publications</div></div>
-      <div class="stat"><div class="stat-num" id="s-first">8</div><div class="stat-label">First Author</div></div>
-      <div class="stat"><div class="stat-num">6+</div><div class="stat-label">Years Experience</div></div>
-      <div class="stat"><div class="stat-num">7</div><div class="stat-label">Publishers</div></div>
+    <div class="hero-right-block">
+      <div class="hero-cta">
+        <a href="https://scholar.google.com/citations?user=-C-iZsAAAAAJ&hl=en" target="_blank" class="btn btn-primary">Google Scholar</a>
+        <a href="https://github.com/MFaseeh" target="_blank" class="btn btn-outline">GitHub</a>
+        <a href="https://www.linkedin.com/in/ifaseeh/" target="_blank" class="btn btn-outline">LinkedIn</a>
+        <a href="mailto:faseeh@stu.jejunu.ac.kr" class="btn btn-outline">Email</a>
+      </div>
     </div>
-  </section>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num" id="s-total">23</div><div class="stat-label">Publications</div></div>
+    <div class="stat"><div class="stat-num" id="s-first">8</div><div class="stat-label">First Author</div></div>
+    <div class="stat"><div class="stat-num">6+</div><div class="stat-label">Years Experience</div></div>
+    <div class="stat"><div class="stat-num">7</div><div class="stat-label">Publishers</div></div>
+  </div>
+</section>
 </div>
 
 <div class="section-divider"></div>
@@ -298,15 +258,13 @@ footer {
 <!-- ABOUT -->
 <section id="about">
   <div class="section-wrap">
-    <div class="section-header">
-      <span class="section-num">01</span>
-      <h2 class="section-title">About</h2>
-    </div>
+    <div class="section-header"><span class="section-num">01</span><h2 class="section-title">About</h2></div>
     <div class="about-body">
       <div class="about-text">
         <p>I am a PhD Candidate in the Department of Electronic Engineering at Jeju National University, South Korea, working under the supervision of Prof. Do Hyeun Kim, supported by the Brain Korea (BK21) fully-funded scholarship.</p>
-        <p>My research sits at the intersection of deep learning and applied sciences — developing AI-driven methods for computer vision tasks like object detection and depth estimation, NLP applications, and inverse learning frameworks for ceramic material design and properties prediction.</p>
-        <p>With 23 published and accepted papers across IEEE, Elsevier, Springer, Wiley, MDPI, Taylor & Francis, and PLOS ONE, I combine rigorous research with a strong foundation from 6+ years in academia as a lecturer, lab engineer, and vice principal in Pakistan.</p>
+        <p>My research sits at the intersection of deep learning and applied sciences — developing AI-driven methods for computer vision tasks like object detection, monocular depth estimation, and long-range tracking, alongside NLP applications such as text similarity, sarcasm detection, and essay scoring.</p>
+        <p>A significant strand of my work extends into Material Informatics, where I apply Transformer and AutoML-based inverse learning frameworks for ceramic material design and property prediction — including BaTiO₃-based ferroelectric ceramics.</p>
+        <p>With 23 published and accepted papers across IEEE, Elsevier, Springer, Wiley, MDPI, Taylor & Francis, and PLOS ONE, I bring a track record of high-impact research. Prior to my PhD, I spent 6+ years in academia as a lecturer, lab engineer, and vice principal across institutions in Pakistan.</p>
       </div>
       <div class="about-facts">
         <div class="fact-row"><div class="fact-label">Position</div><div class="fact-value">PhD Candidate</div></div>
@@ -317,6 +275,39 @@ footer {
         <div class="fact-row"><div class="fact-label">Open To</div><div class="fact-value">Saudi Arabia · Middle East · Europe</div></div>
       </div>
     </div>
+    <!-- 2x3 GRID -->
+    <div class="about-grid-6">
+      <div class="ag6-cell">
+        <div class="ag6-label">PhD</div>
+        <div class="ag6-value">Electronic Engineering</div>
+        <div class="ag6-sub">Jeju National University · 2023–2026</div>
+      </div>
+      <div class="ag6-cell">
+        <div class="ag6-label">MS</div>
+        <div class="ag6-value">Computer Science</div>
+        <div class="ag6-sub">COMSATS University Islamabad · 2020</div>
+      </div>
+      <div class="ag6-cell">
+        <div class="ag6-label">BS</div>
+        <div class="ag6-value">Computer Science</div>
+        <div class="ag6-sub">COMSATS University Islamabad · 2016</div>
+      </div>
+      <div class="ag6-cell">
+        <div class="ag6-label">Research Focus</div>
+        <div class="ag6-value">Computer Vision · NLP</div>
+        <div class="ag6-sub">Material Informatics · Deep Learning</div>
+      </div>
+      <div class="ag6-cell">
+        <div class="ag6-label">Funding</div>
+        <div class="ag6-value">Brain Korea BK21</div>
+        <div class="ag6-sub">Fully Funded · Korean Government</div>
+      </div>
+      <div class="ag6-cell">
+        <div class="ag6-label">Target Locations</div>
+        <div class="ag6-value">Middle East · Europe</div>
+        <div class="ag6-sub">Saudi Arabia · Open to Relocation</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -325,20 +316,31 @@ footer {
 <!-- PUBLICATIONS -->
 <section id="publications">
   <div class="section-wrap">
-    <div class="section-header">
-      <span class="section-num">02</span>
-      <h2 class="section-title">Publications</h2>
+    <div class="section-header"><span class="section-num">02</span><h2 class="section-title">Publications</h2></div>
+    <div class="pub-top">
+      <div class="pub-bar" id="pub-bar"><div class="loading">Loading…</div></div>
+      <div class="pub-filters">
+        <div>
+          <div class="filter-group-label" style="margin-bottom:0.4rem;">Filter by role</div>
+          <div class="pub-filter-row" id="role-filters">
+            <button class="pf-btn active-role" data-role="all">All</button>
+            <button class="pf-btn" data-role="first">First Author</button>
+            <button class="pf-btn" data-role="co">Co-Author</button>
+            <button class="pf-btn" data-role="equal">Equal Contribution</button>
+          </div>
+        </div>
+        <div>
+          <div class="filter-group-label" style="margin-bottom:0.4rem;">Filter by year</div>
+          <div class="pub-filter-row" id="year-filters">
+            <button class="pf-btn" data-year="all">All Years</button>
+            <button class="pf-btn" data-year="2026">2026</button>
+            <button class="pf-btn" data-year="2025">2025</button>
+            <button class="pf-btn" data-year="2024">2024</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="pub-bar" id="pub-bar"><div class="loading">Loading…</div></div>
-    <div class="pub-filters" id="pub-filters">
-      <button class="pf-btn active" data-f="all">All</button>
-      <button class="pf-btn" data-f="first">First Author</button>
-      <button class="pf-btn" data-f="co">Co-Author</button>
-      <button class="pf-btn" data-f="equal">Equal Contribution</button>
-      <button class="pf-btn" data-f="2026">2026</button>
-      <button class="pf-btn" data-f="2025">2025</button>
-      <button class="pf-btn" data-f="2024">2024</button>
-    </div>
+    <div class="pub-result-info" id="pub-result-info"></div>
     <div class="pub-list" id="pub-list"><div class="loading">Loading publications…</div></div>
   </div>
 </section>
@@ -348,10 +350,7 @@ footer {
 <!-- SKILLS -->
 <section id="skills">
   <div class="section-wrap">
-    <div class="section-header">
-      <span class="section-num">03</span>
-      <h2 class="section-title">Skills & Tools</h2>
-    </div>
+    <div class="section-header"><span class="section-num">03</span><h2 class="section-title">Skills & Tools</h2></div>
     <div class="skills-grid" id="skills-grid"><div class="loading">Loading…</div></div>
   </div>
 </section>
@@ -361,10 +360,7 @@ footer {
 <!-- EXPERIENCE -->
 <section id="experience">
   <div class="section-wrap">
-    <div class="section-header">
-      <span class="section-num">04</span>
-      <h2 class="section-title">Experience</h2>
-    </div>
+    <div class="section-header"><span class="section-num">04</span><h2 class="section-title">Experience</h2></div>
     <div class="exp-list" id="exp-list"><div class="loading">Loading…</div></div>
   </div>
 </section>
@@ -374,11 +370,8 @@ footer {
 <!-- AWARDS -->
 <section id="awards">
   <div class="section-wrap">
-    <div class="section-header">
-      <span class="section-num">05</span>
-      <h2 class="section-title">Awards & Certifications</h2>
-    </div>
-    <div class="awards-list" id="awards-list"><div class="loading">Loading…</div></div>
+    <div class="section-header"><span class="section-num">05</span><h2 class="section-title">Awards & Certifications</h2></div>
+    <div class="awards-grid" id="awards-grid"><div class="loading">Loading…</div></div>
   </div>
 </section>
 
@@ -387,35 +380,18 @@ footer {
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-wrap">
-    <div class="section-header">
-      <span class="section-num">06</span>
-      <h2 class="section-title">Contact</h2>
-    </div>
+    <div class="section-header"><span class="section-num">06</span><h2 class="section-title">Contact</h2></div>
     <div class="contact-body">
       <div class="contact-text">
-        <p>Open to research positions, faculty roles, postdoctoral opportunities, and collaboration in AI, Machine Learning, and Computer Vision. Currently based in Jeju, South Korea — targeting opportunities in Saudi Arabia, the Middle East, and Europe.</p>
+        <p>Open to research positions, faculty roles, postdoctoral opportunities, and collaboration in AI, Machine Learning, and Computer Vision.</p>
+        <p style="margin-top:1rem;">Currently based in Jeju, South Korea — targeting opportunities in Saudi Arabia, the Middle East, and Europe. Available from December 2026.</p>
       </div>
       <div class="contact-links-list">
-        <a href="mailto:faseeh@stu.jejunu.ac.kr" class="contact-link-item">
-          <span class="cl-label">Academic Email</span>
-          <span class="cl-value">faseeh@stu.jejunu.ac.kr</span>
-        </a>
-        <a href="mailto:ifaseeh1@gmail.com" class="contact-link-item">
-          <span class="cl-label">Personal Email</span>
-          <span class="cl-value">ifaseeh1@gmail.com</span>
-        </a>
-        <a href="https://www.linkedin.com/in/ifaseeh/" target="_blank" class="contact-link-item">
-          <span class="cl-label">LinkedIn</span>
-          <span class="cl-value">linkedin.com/in/ifaseeh</span>
-        </a>
-        <a href="https://github.com/MFaseeh" target="_blank" class="contact-link-item">
-          <span class="cl-label">GitHub</span>
-          <span class="cl-value">github.com/MFaseeh</span>
-        </a>
-        <a href="https://scholar.google.com/citations?user=-C-iZsAAAAAJ&hl=en" target="_blank" class="contact-link-item">
-          <span class="cl-label">Google Scholar</span>
-          <span class="cl-value">View Profile →</span>
-        </a>
+        <a href="mailto:faseeh@stu.jejunu.ac.kr" class="contact-link-item"><span class="cl-label">Academic Email</span><span class="cl-value">faseeh@stu.jejunu.ac.kr</span></a>
+        <a href="mailto:ifaseeh1@gmail.com" class="contact-link-item"><span class="cl-label">Personal Email</span><span class="cl-value">ifaseeh1@gmail.com</span></a>
+        <a href="https://www.linkedin.com/in/ifaseeh/" target="_blank" class="contact-link-item"><span class="cl-label">LinkedIn</span><span class="cl-value">linkedin.com/in/ifaseeh</span></a>
+        <a href="https://github.com/MFaseeh" target="_blank" class="contact-link-item"><span class="cl-label">GitHub</span><span class="cl-value">github.com/MFaseeh</span></a>
+        <a href="https://scholar.google.com/citations?user=-C-iZsAAAAAJ&hl=en" target="_blank" class="contact-link-item"><span class="cl-label">Google Scholar</span><span class="cl-value">View Profile →</span></a>
       </div>
     </div>
   </div>
@@ -427,10 +403,13 @@ footer {
 const BASE = './data/';
 function csv(f){ return new Promise((res,rej)=>Papa.parse(BASE+f,{download:true,header:true,skipEmptyLines:true,complete:r=>res(r.data),error:rej})); }
 
+/* ── PUBLICATIONS with combined role + year filter ── */
 async function loadPubs(){
   try{
     const d = await csv('publications.csv');
-    const total=d.length, first=d.filter(x=>x.FirstAuthor==='Yes').length, eq=d.filter(x=>x.FirstAuthor==='Equal').length;
+    const total=d.length;
+    const first=d.filter(x=>x.FirstAuthor==='Yes').length;
+    const eq=d.filter(x=>x.FirstAuthor==='Equal').length;
     const pubs=[...new Set(d.map(x=>x.Publisher).filter(Boolean))].length;
     document.getElementById('pub-bar').innerHTML=`
       <div class="pub-stat-item"><div class="psn">${total}</div><div class="psl">Total</div></div>
@@ -439,73 +418,109 @@ async function loadPubs(){
       <div class="pub-stat-item"><div class="psn">${pubs}</div><div class="psl">Publishers</div></div>`;
     document.getElementById('s-total').textContent=total;
     document.getElementById('s-first').textContent=first;
-    function render(f){
+
+    let activeRole='all', activeYear='all';
+
+    function render(){
       let rows=d;
-      if(f==='first') rows=d.filter(x=>x.FirstAuthor==='Yes');
-      else if(f==='co') rows=d.filter(x=>x.FirstAuthor==='No');
-      else if(f==='equal') rows=d.filter(x=>x.FirstAuthor==='Equal');
-      else if(['2024','2025','2026'].includes(f)) rows=d.filter(x=>x.Year===f);
+      if(activeRole==='first') rows=rows.filter(x=>x.FirstAuthor==='Yes');
+      else if(activeRole==='co') rows=rows.filter(x=>x.FirstAuthor==='No');
+      else if(activeRole==='equal') rows=rows.filter(x=>x.FirstAuthor==='Equal');
+      if(activeYear!=='all') rows=rows.filter(x=>x.Year===activeYear);
       rows=[...rows].sort((a,b)=>(b.Year||0)-(a.Year||0));
-      document.getElementById('pub-list').innerHTML=rows.map(p=>{
+
+      const roleLabel = activeRole==='all'?'All':activeRole==='first'?'First Author':activeRole==='equal'?'Equal Contribution':'Co-Author';
+      const yearLabel = activeYear==='all'?'All Years':activeYear;
+      document.getElementById('pub-result-info').textContent=`Showing ${rows.length} of ${d.length} papers · ${roleLabel} · ${yearLabel}`;
+
+      document.getElementById('pub-list').innerHTML=rows.map((p,i)=>{
         const rc=p.FirstAuthor==='Yes'?'tag-first':p.FirstAuthor==='Equal'?'tag-equal':'tag-co';
         const rl=p.FirstAuthor==='Yes'?'First Author':p.FirstAuthor==='Equal'?'Equal Contribution':'Co-Author';
         return `<div class="pub-item">
-          <div><div class="pub-t">${p.Title}</div><div class="pub-m">${p.Publication} · ${p.Publisher}</div></div>
-          <div class="pub-right"><span class="pub-year">${p.Year}</span><span class="tag ${rc}">${rl}</span></div>
+          <div class="pub-num">${String(i+1).padStart(2,'0')}</div>
+          <div class="pub-center">
+            <div class="pub-t">${p.Title}</div>
+            <div class="pub-m">${p.Publication} · ${p.Publisher}</div>
+          </div>
+          <div class="pub-right-col">
+            <div class="pub-year-big">${p.Year}</div>
+            <span class="tag ${rc}">${rl}</span>
+          </div>
         </div>`;
       }).join('');
     }
-    render('all');
-    document.querySelectorAll('.pf-btn').forEach(b=>b.addEventListener('click',()=>{
-      document.querySelectorAll('.pf-btn').forEach(x=>x.classList.remove('active'));
-      b.classList.add('active'); render(b.dataset.f);
+
+    render();
+
+    document.querySelectorAll('#role-filters .pf-btn').forEach(b=>b.addEventListener('click',()=>{
+      document.querySelectorAll('#role-filters .pf-btn').forEach(x=>x.classList.remove('active-role'));
+      b.classList.add('active-role');
+      activeRole=b.dataset.role;
+      render();
     }));
+    document.querySelectorAll('#year-filters .pf-btn').forEach(b=>b.addEventListener('click',()=>{
+      document.querySelectorAll('#year-filters .pf-btn').forEach(x=>x.classList.remove('active-year'));
+      b.classList.add('active-year');
+      activeYear=b.dataset.year;
+      render();
+    }));
+
   }catch(e){ document.getElementById('pub-list').innerHTML='<div class="loading">Could not load publications.csv</div>'; }
 }
 
+/* ── SKILLS ── */
 async function loadSkills(){
   try{
     const d=await csv('skills.csv');
     const groups={};
     d.forEach(x=>{ if(!groups[x.Category]) groups[x.Category]=[]; groups[x.Category].push(x.Skill); });
-    document.getElementById('skills-grid').innerHTML=Object.entries(groups).map(([cat,skills])=>`
-      <div class="skill-col">
-        <div class="skill-col-title">${cat}</div>
-        <div class="skill-list">${skills.map(s=>`<div class="skill-item">— ${s}</div>`).join('')}</div>
+    const colors=['sg-1','sg-2','sg-3','sg-4','sg-5'];
+    document.getElementById('skills-grid').innerHTML=Object.entries(groups).map(([cat,skills],i)=>`
+      <div class="skill-group ${colors[i%colors.length]}">
+        <div class="skill-group-title">${cat}</div>
+        <div class="skill-tags">${skills.map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div>
       </div>`).join('');
   }catch(e){}
 }
 
+/* ── EXPERIENCE ── */
 async function loadExp(){
   try{
     const d=await csv('experience.csv');
     const rev=[...d].reverse();
-    document.getElementById('exp-list').innerHTML=rev.map(e=>`
-      <div class="exp-item">
+    document.getElementById('exp-list').innerHTML=rev.map(e=>{
+      const tc=e.Type==='Teaching'?'tag-teaching-t':'tag-research-t';
+      return `<div class="exp-item">
         <div class="exp-date-col">
-          <div class="exp-period">${e.StartDate}<br>– ${e.EndDate}</div>
+          <div class="exp-period">${e.StartDate} – ${e.EndDate}</div>
+          <span class="exp-type-tag ${tc}">${e.Type}</span>
         </div>
         <div class="exp-content">
           <div class="exp-title">${e.Title}</div>
           <div class="exp-org">${e.Organization} · ${e.City}, ${e.Country}</div>
           <div class="exp-desc">${e.Description}</div>
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
   }catch(e){}
 }
 
+/* ── AWARDS ── */
 async function loadAwards(){
   try{
     const d=await csv('awards.csv');
-    document.getElementById('awards-list').innerHTML=d.map(a=>`
-      <div class="award-item">
-        <div class="award-year">${a.Year}</div>
-        <div class="award-info">
-          <div class="award-title">${a.Title}</div>
-          <div class="award-issuer">${a.Issuer}${a.Degree?' · '+a.Degree+' Degree':''} · ${a.Type}</div>
+    document.getElementById('awards-grid').innerHTML=d.map(a=>{
+      const cls=a.Type==='Scholarship'?'award-scholarship':'award-certification';
+      return `<div class="award-card ${cls}">
+        <div class="award-type-label">${a.Type}${a.Degree?' · '+a.Degree:''}</div>
+        <div class="award-title">${a.Title}</div>
+        <div class="award-issuer">${a.Issuer}</div>
+        <div class="award-footer">
+          <span class="award-year-badge">${a.Year}</span>
+          ${a.Link?`<a href="${a.Link}" target="_blank" class="award-link-btn">Verify →</a>`:''}
         </div>
-        ${a.Link?`<a href="${a.Link}" target="_blank" class="award-link-btn">Verify →</a>`:'<span></span>'}
-      </div>`).join('');
+      </div>`;
+    }).join('');
   }catch(e){}
 }
 
