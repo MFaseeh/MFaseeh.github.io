@@ -225,6 +225,23 @@ nav{position:fixed;top:0;left:0;right:0;z-index:99;display:flex;align-items:cent
 .page-btn[disabled]{opacity:0.35;cursor:not-allowed;}
 .page-nav{font-size:0.78rem;}
 
+
+/* PROJECTS */
+#projects{background:var(--white);}
+.projects-grid{display:flex;flex-direction:column;gap:1.5rem;}
+.project-card{background:var(--off-white);border:1px solid var(--line);border-radius:16px;padding:2rem 2.25rem;display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:start;transition:transform 0.2s,box-shadow 0.2s;position:relative;overflow:hidden;}
+.project-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.07);}
+.project-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;}
+.pc-1::before{background:#2563eb;}
+.pc-2::before{background:#10b981;}
+.pc-3::before{background:#8b5cf6;}
+.project-num{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:500;color:var(--line);line-height:1;padding-top:0.25rem;min-width:48px;text-align:center;}
+.project-body{}
+.project-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.85rem;}
+.project-tag{font-size:0.68rem;font-weight:600;padding:0.2rem 0.7rem;border-radius:100px;letter-spacing:0.04em;background:var(--white);border:1px solid var(--line);color:var(--ink-soft);}
+.project-title{font-family:'Playfair Display',serif;font-size:1.12rem;font-weight:500;color:var(--ink);line-height:1.4;margin-bottom:0.85rem;}
+.project-desc{font-size:0.9rem;color:var(--ink-soft);line-height:1.8;}
+
 /* NEWS TICKER */
 .news-ticker-wrap{background:#1e3a5f;border-bottom:1px solid rgba(255,255,255,0.1);overflow:hidden;padding:0;position:relative;}
 .news-ticker-inner{display:flex;align-items:center;}
@@ -266,7 +283,7 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#publications">Publications</a></li>
-    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li><li><a href="#skills">Skills</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#awards">Awards</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -422,10 +439,70 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
 
 <div class="section-divider"></div>
 
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-wrap">
+    <div class="section-header"><span class="section-num">03</span><h2 class="section-title">Research Projects</h2></div>
+    <div class="projects-grid">
+
+      <!-- Project 1 -->
+      <div class="project-card pc-1">
+        <div class="project-num">01</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="project-tag">Computer Vision</span>
+            <span class="project-tag">Object Detection</span>
+            <span class="project-tag">Depth Estimation</span>
+            <span class="project-tag">YOLOv11</span>
+            <span class="project-tag">Custom Dataset</span>
+          </div>
+          <div class="project-title">Custom Dataset Development & Real-Time Long-Range Object Detection Using YOLOv11 with Depth Estimation</div>
+          <div class="project-desc">Developed <strong>DFar300</strong>, a custom dataset enabling object detection at distances up to 300 meters, addressing the absence of long-range benchmarks in the field. Implemented a YOLOv11-based detection pipeline integrated with depth estimation to deliver accurate real-time object localization and distance measurement.</div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project-card pc-2">
+        <div class="project-num">02</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="project-tag">Material Informatics</span>
+            <span class="project-tag">NLP</span>
+            <span class="project-tag">Feature Fusion</span>
+            <span class="project-tag">BaTiO₃</span>
+            <span class="project-tag">Predictive Modeling</span>
+          </div>
+          <div class="project-title">AI-Driven Material Property Prediction via Multi-Source Feature Fusion and NLP-Enhanced Learning</div>
+          <div class="project-desc">Engineered a predictive model for <strong>BaTiO₃ material properties</strong> by fusing computational simulations with NLP-derived datasets to enrich feature representation. Applied advanced feature selection and fusion techniques within a forward learning framework to improve prediction accuracy across diverse material components and processing conditions.</div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project-card pc-3">
+        <div class="project-num">03</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="project-tag">Inverse Learning</span>
+            <span class="project-tag">Material Informatics</span>
+            <span class="project-tag">Feature Engineering</span>
+            <span class="project-tag">BaTiO₃</span>
+            <span class="project-tag">Attention Mechanism</span>
+          </div>
+          <div class="project-title">Multi-Strategy Feature Fusion and Inverse Learning with Post-Processing Optimization for BaTiO₃ Material Property Prediction</div>
+          <div class="project-desc">Designed a comprehensive inverse learning pipeline incorporating mathematical, statistical, and physics-informed feature transformations to predict BaTiO₃ material properties. Leveraged multiple fusion strategies — including <strong>weighted, hierarchical, attention-based, and block-wise fusion</strong> — alongside post-processing optimization to significantly enhance model performance and output reliability.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
 <!-- SKILLS 3x2 -->
 <section id="skills">
   <div class="section-wrap">
-    <div class="section-header"><span class="section-num">03</span><h2 class="section-title">Skills & Tools</h2></div>
+    <div class="section-header"><span class="section-num">04</span><h2 class="section-title">Skills & Tools</h2></div>
     <div class="skills-grid" id="skills-grid"><div class="loading">Loading…</div></div>
   </div>
 </section>
@@ -435,7 +512,7 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
 <!-- EXPERIENCE -->
 <section id="experience">
   <div class="section-wrap">
-    <div class="section-header"><span class="section-num">04</span><h2 class="section-title">Experience</h2></div>
+    <div class="section-header"><span class="section-num">05</span><h2 class="section-title">Experience</h2></div>
     <div class="exp-list" id="exp-list"><div class="loading">Loading…</div></div>
   </div>
 </section>
@@ -445,7 +522,7 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
 <!-- AWARDS -->
 <section id="awards">
   <div class="section-wrap">
-    <div class="section-header"><span class="section-num">05</span><h2 class="section-title">Awards & Certifications</h2></div>
+    <div class="section-header"><span class="section-num">06</span><h2 class="section-title">Awards & Certifications</h2></div>
     <div class="awards-grid" id="awards-grid"><div class="loading">Loading…</div></div>
   </div>
 </section>
@@ -455,7 +532,7 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-wrap">
-    <div class="section-header"><span class="section-num">06</span><h2 class="section-title">Contact</h2></div>
+    <div class="section-header"><span class="section-num">07</span><h2 class="section-title">Contact</h2></div>
     <div class="contact-grid">
       <div>
         <div class="contact-desc">
