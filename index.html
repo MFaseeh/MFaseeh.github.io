@@ -184,6 +184,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:99;display:flex;align-items:cent
 .award-card{background:var(--off-white);border:1px solid var(--line);border-radius:14px;padding:1.6rem 1.75rem;position:relative;overflow:hidden;transition:transform 0.2s;}
 .award-card:hover{transform:translateY(-2px);}
 .award-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.award-award::before{background:#f59e0b;}
 .award-scholarship::before{background:#2563eb;}
 .award-certification::before{background:#10b981;}
 .award-type-label{font-size:0.66rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:0.55rem;}
@@ -931,7 +932,7 @@ async function loadAwards(){
   try{
     const d=await csv('awards.csv');
     document.getElementById('awards-grid').innerHTML=d.map(a=>`
-      <div class="award-card ${a.Type==='Scholarship'?'award-scholarship':'award-certification'}">
+      <div class="award-card ${a.Type==='Scholarship'?'award-scholarship':a.Type==='Award'?'award-award':'award-certification'}">
         <div class="award-type-label">${a.Type}${a.Degree?' · '+a.Degree:''}</div>
         <div class="award-title">${a.Title}</div>
         <div class="award-issuer">${a.Issuer}</div>
