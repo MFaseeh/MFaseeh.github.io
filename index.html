@@ -328,10 +328,10 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
 
   <!-- Stats -->
   <div class="hero-stats">
-    <div class="stat"><div class="stat-num" id="s-total">23</div><div class="stat-label">Publications</div></div>
-    <div class="stat"><div class="stat-num" id="s-first">8</div><div class="stat-label">First Author</div></div>
+    <div class="stat"><div class="stat-num" id="s-total">—</div><div class="stat-label">Publications</div></div>
+    <div class="stat"><div class="stat-num" id="s-first">—</div><div class="stat-label">First Author</div></div>
     <div class="stat"><div class="stat-num">6+</div><div class="stat-label">Years Experience</div></div>
-    <div class="stat"><div class="stat-num">7</div><div class="stat-label">Publishers</div></div>
+    <div class="stat"><div class="stat-num" id="s-publishers">—</div><div class="stat-label">Publishers</div></div>
   </div>
 </section>
 </div>
@@ -590,6 +590,8 @@ function renderPubs(d){
     <div class="pub-stat-item"><div class="psn">${pubCount}</div><div class="psl">Publishers</div></div>`;
   document.getElementById('s-total').textContent=total;
   document.getElementById('s-first').textContent=first>0?first:'—';
+  const spEl=document.getElementById('s-publishers');
+  if(spEl) spEl.textContent=pubCount;
 
   const PER_PAGE=10;
   let activeRole='all', activeYear='all', currentPage=1;
