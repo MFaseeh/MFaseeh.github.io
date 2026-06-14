@@ -242,6 +242,39 @@ nav{position:fixed;top:0;left:0;right:0;z-index:99;display:flex;align-items:cent
 .project-title{font-family:'Playfair Display',serif;font-size:1.12rem;font-weight:500;color:var(--ink);line-height:1.4;margin-bottom:0.85rem;}
 .project-desc{font-size:0.9rem;color:var(--ink-soft);line-height:1.8;}
 
+
+/* LAB / COLLABORATORS */
+#lab{background:var(--off-white);}
+.lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
+.lab-card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:2rem 2.25rem;position:relative;overflow:hidden;}
+.lab-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);}
+.lab-card-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:500;color:var(--ink);margin-bottom:0.5rem;}
+.lab-card-sub{font-size:0.8rem;color:var(--accent);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:1rem;}
+.lab-card-desc{font-size:0.9rem;color:var(--ink-soft);line-height:1.8;}
+.lab-topics{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1rem;}
+.lab-topic{font-size:0.75rem;padding:0.25rem 0.75rem;background:var(--accent-soft);border-radius:100px;color:var(--accent);font-weight:500;}
+.supervisor-card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:2rem 2.25rem;position:relative;overflow:hidden;}
+.supervisor-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#10b981;}
+.sup-role{font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#10b981;margin-bottom:0.5rem;}
+.sup-name{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:500;color:var(--ink);margin-bottom:0.25rem;}
+.sup-title{font-size:0.88rem;color:var(--ink-muted);margin-bottom:1rem;}
+.sup-detail{font-size:0.88rem;color:var(--ink-soft);line-height:1.7;}
+
+/* TEACHING */
+#teaching{background:var(--white);}
+.teaching-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+.teaching-card{background:var(--off-white);border:1px solid var(--line);border-radius:14px;padding:1.4rem 1.5rem;display:flex;align-items:flex-start;gap:1rem;}
+.teaching-icon{width:36px;height:36px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.teaching-icon svg{width:18px;height:18px;}
+.teaching-name{font-size:0.9rem;font-weight:500;color:var(--ink);line-height:1.4;}
+
+/* LANGUAGES */
+.languages-row{display:flex;gap:1.25rem;flex-wrap:wrap;margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--line);}
+.lang-item{display:flex;align-items:center;gap:0.75rem;background:var(--off-white);border:1px solid var(--line);border-radius:12px;padding:0.85rem 1.25rem;flex:1;min-width:160px;}
+.lang-flag{font-size:1.4rem;line-height:1;}
+.lang-name{font-size:0.92rem;font-weight:500;color:var(--ink);}
+.lang-level{font-size:0.72rem;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:0.1rem;}
+
 /* NEWS TICKER */
 .news-ticker-wrap{background:#1e3a5f;border-bottom:1px solid rgba(255,255,255,0.1);overflow:hidden;padding:0;position:relative;}
 .news-ticker-inner{display:flex;align-items:center;}
@@ -271,6 +304,8 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
   .pub-num{display:none;}
   .pub-right-col{align-items:flex-start;flex-direction:row;flex-wrap:wrap;}
   .skills-grid{grid-template-columns:1fr 1fr;}
+  .teaching-grid{grid-template-columns:1fr 1fr;}
+  .lab-grid{grid-template-columns:1fr;}
   .exp-item{grid-template-columns:1fr;gap:0.5rem;}
   .contact-grid{grid-template-columns:1fr;gap:2.5rem;}
 }
@@ -283,7 +318,7 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#publications">Publications</a></li>
-    <li><a href="#projects">Projects</a></li><li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li><li><a href="#lab">Lab</a></li><li><a href="#teaching">Teaching</a></li><li><a href="#skills">Skills</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#awards">Awards</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -499,10 +534,108 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
 
 <div class="section-divider"></div>
 
+<!-- LAB -->
+<section id="lab">
+  <div class="section-wrap">
+    <div class="section-header"><span class="section-num">04</span><h2 class="section-title">Research Lab</h2></div>
+    <div class="lab-grid">
+      <div class="lab-card">
+        <div class="lab-card-title">Big Data Research Center</div>
+        <div class="lab-card-sub">Jeju National University · South Korea</div>
+        <div class="lab-card-desc">
+          The Big Data Research Center focuses on cutting-edge research at the intersection of data science, distributed intelligence, and smart systems. Our interdisciplinary team develops scalable AI solutions that address real-world challenges across healthcare, energy, and materials science — with a strong emphasis on privacy-preserving and data-efficient learning.
+        </div>
+        <div class="lab-topics">
+          <span class="lab-topic">Big Data</span>
+          <span class="lab-topic">Data Science</span>
+          <span class="lab-topic">Federated Learning</span>
+          <span class="lab-topic">Virtual Sensors</span>
+          <span class="lab-topic">AI Systems</span>
+          <span class="lab-topic">Smart Grids</span>
+        </div>
+      </div>
+      <div class="supervisor-card">
+        <div class="sup-role">PhD Supervisor</div>
+        <div class="sup-name">Prof. Do Hyeun Kim</div>
+        <div class="sup-title">Professor · Department of Electronic Engineering<br>Jeju National University, South Korea</div>
+        <div class="sup-detail">
+          Prof. Do Hyeun Kim leads the Big Data Research Center at Jeju National University. His research encompasses intelligent data processing, IoT systems, federated learning, and energy-efficient computing. Under his supervision, I conduct research in Computer Vision, Material Informatics, and Natural Language Processing.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- TEACHING -->
+<section id="teaching">
+  <div class="section-wrap">
+    <div class="section-header"><span class="section-num">05</span><h2 class="section-title">Teaching</h2></div>
+    <div class="teaching-grid">
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div class="teaching-name">Introduction to Computer</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <div class="teaching-name">C++ Programming</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <div class="teaching-name">Software Project Management</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <div class="teaching-name">Professional Practices in IT</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <div class="teaching-name">Introduction to Python</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg></div>
+        <div class="teaching-name">Building Apps Using C#</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+        <div class="teaching-name">Introduction to Databases</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+        <div class="teaching-name">E-Commerce</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg></div>
+        <div class="teaching-name">Visual Basic Programming</div>
+      </div>
+    </div>
+
+    <!-- Languages row inside Teaching section -->
+    <div class="languages-row">
+      <div class="lang-item">
+        <div class="lang-flag">🇬🇧</div>
+        <div><div class="lang-name">English</div><div class="lang-level">Professional</div></div>
+      </div>
+      <div class="lang-item">
+        <div class="lang-flag">🇵🇰</div>
+        <div><div class="lang-name">Urdu</div><div class="lang-level">Native</div></div>
+      </div>
+      <div class="lang-item">
+        <div class="lang-flag">🇵🇰</div>
+        <div><div class="lang-name">Punjabi</div><div class="lang-level">Expert</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
 <!-- SKILLS 3x2 -->
 <section id="skills">
   <div class="section-wrap">
-    <div class="section-header"><span class="section-num">04</span><h2 class="section-title">Skills & Tools</h2></div>
+    <div class="section-header"><span class="section-num">06</span><h2 class="section-title">Skills & Tools</h2></div>
     <div class="skills-grid" id="skills-grid"><div class="loading">Loading…</div></div>
   </div>
 </section>
@@ -512,7 +645,7 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
 <!-- EXPERIENCE -->
 <section id="experience">
   <div class="section-wrap">
-    <div class="section-header"><span class="section-num">05</span><h2 class="section-title">Experience</h2></div>
+    <div class="section-header"><span class="section-num">07</span><h2 class="section-title">Experience</h2></div>
     <div class="exp-list" id="exp-list"><div class="loading">Loading…</div></div>
   </div>
 </section>
@@ -522,7 +655,7 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
 <!-- AWARDS -->
 <section id="awards">
   <div class="section-wrap">
-    <div class="section-header"><span class="section-num">06</span><h2 class="section-title">Awards & Certifications</h2></div>
+    <div class="section-header"><span class="section-num">08</span><h2 class="section-title">Awards & Certifications</h2></div>
     <div class="awards-grid" id="awards-grid"><div class="loading">Loading…</div></div>
   </div>
 </section>
@@ -532,7 +665,7 @@ footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-wrap">
-    <div class="section-header"><span class="section-num">07</span><h2 class="section-title">Contact</h2></div>
+    <div class="section-header"><span class="section-num">09</span><h2 class="section-title">Contact</h2></div>
     <div class="contact-grid">
       <div>
         <div class="contact-desc">
