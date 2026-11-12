@@ -45,9 +45,9 @@ Deep Learning            ██████████████████�
 
 | | |
 |---|---|
-| 📄 Total Papers | **23** |
-| ✍️ First Author | **8** |
-| 🤝 Equal Contribution | **1** |
+| 📄 Total Papers | **26** |
+| ✍️ First Author | **9** |
+| 🤝 Equal Contribution | **4** |
 | 🏛️ Publishers | IEEE · Elsevier · Springer · Wiley · MDPI · Taylor & Francis · PLOS ONE |
 
 > Full publication list on [Google Scholar](https://scholar.google.com/citations?user=-C-iZsAAAAAJ&hl=en) and [ORCID](https://orcid.org/0009-0008-2375-7803)
