@@ -1,317 +1,961 @@
-%% Muhammad Faseeh — Academic CV
-%% Compile with: pdflatex Muhammad_Faseeh_CV.tex (run twice for page numbers)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Muhammad Faseeh — AI & ML Researcher</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root {
+  --white: #ffffff;
+  --off-white: #fafaf8;
+  --ink: #111111;
+  --ink-soft: #444444;
+  --ink-muted: #888888;
+  --line: #e8e8e4;
+  --accent: #2563eb;
+  --accent-soft: #eff4ff;
+  --max-w: 1380px;
+  --pad: 3vw;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--off-white);color:var(--ink);font-family:'Outfit',sans-serif;font-size:16px;line-height:1.7;}
 
-\documentclass[10pt, a4paper]{article}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:99;display:flex;align-items:center;justify-content:space-between;padding:1.1rem var(--pad);background:rgba(250,250,248,0.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;letter-spacing:-0.01em;color:var(--ink);}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{font-size:0.8rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;color:var(--ink-muted);transition:color 0.2s;}
+.nav-links a:hover{color:var(--accent);}
 
-% ── Packages ──────────────────────────────────────────────────────────────
-\usepackage[a4paper, top=1.2cm, bottom=1.2cm, left=1.4cm, right=1.4cm, includefoot, footskip=0.6cm]{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage{microtype}
-\usepackage{enumitem}
-\usepackage{titlesec}
-\usepackage{xcolor}
-\usepackage{tabularx}
-\usepackage{fancyhdr}
-\usepackage{lastpage}
-\usepackage{needspace}
-\usepackage{pdfpages}
-\usepackage{hyperref}
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:8rem var(--pad) 4.5rem;max-width:var(--max-w);margin:0 auto;animation:fadeUp 0.8s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
 
-% ── Colors ────────────────────────────────────────────────────────────────
-\definecolor{accent}{HTML}{1E3A5F}
-\definecolor{lightaccent}{HTML}{2563EB}
-\definecolor{muted}{HTML}{555555}
+.hero-top{display:grid;grid-template-columns:1fr 320px;gap:4.5rem;align-items:start;margin-bottom:2.75rem;}
 
-\hypersetup{colorlinks=true, urlcolor=lightaccent, linkcolor=accent,
-  pdftitle={Muhammad Faseeh -- Postdoctoral Application}, pdfauthor={Muhammad Faseeh}}
+/* Left */
+.hero-eyebrow{font-size:0.78rem;font-weight:500;letter-spacing:0.13em;text-transform:uppercase;color:var(--accent);margin-bottom:1.1rem;}
+.hero-name{font-family:'Playfair Display',serif;font-size:clamp(3rem,4.8vw,5.5rem);font-weight:400;line-height:1.05;letter-spacing:-0.03em;margin-bottom:1.2rem;}
+.hero-desc{font-size:1rem;font-weight:300;color:var(--ink-soft);line-height:1.85;margin-bottom:2rem;max-width:560px;}
 
-% ── Page Style ────────────────────────────────────────────────────────────
-\pagestyle{fancy}
-\fancyhf{}
-\renewcommand{\headrulewidth}{0pt}
-\fancyfoot[L]{\small\color{muted}Muhammad Faseeh -- Postdoctoral Application}
-\fancyfoot[R]{\small\color{muted}Page \thepage}
+/* Icon link buttons */
+.icon-links{display:flex;flex-wrap:wrap;gap:0.6rem;}
+.icon-link-btn{
+  display:inline-flex;align-items:center;gap:0.55rem;
+  padding:0.55rem 1.1rem;border-radius:100px;
+  font-size:0.82rem;font-weight:500;text-decoration:none;
+  border:1.5px solid var(--line);background:var(--white);
+  color:var(--ink-soft);transition:all 0.2s;
+}
+.icon-link-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
+.icon-link-btn svg{width:16px;height:16px;flex-shrink:0;}
 
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{3pt}
+/* Right: photo + quick-link grid */
+.hero-right{display:flex;flex-direction:column;gap:1rem;}
+.photo-box{
+  width:100%;aspect-ratio:3/4;border-radius:18px;overflow:hidden;
+  border:1px solid var(--line);background:#e8e8e2;position:relative;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;
+}
+.photo-box img{width:100%;height:100%;object-fit:cover;object-position:top center;position:absolute;inset:0;display:block;}
+.photo-ph-icon{width:56px;height:56px;border-radius:50%;background:var(--line);display:flex;align-items:center;justify-content:center;}
+.photo-ph-text{font-size:0.72rem;color:var(--ink-muted);letter-spacing:0.06em;text-transform:uppercase;}
 
-% ── Section Formatting ────────────────────────────────────────────────────
-\titleformat{\section}{\large\bfseries\color{accent}}{}{0em}{}
-  [\vspace{-4pt}\textcolor{accent}{\rule{\linewidth}{0.8pt}}]
-\titlespacing{\section}{0pt}{12pt}{5pt}
+/* 5 social icons: 2 top + 3 bottom */
+.quick-links{display:flex;flex-direction:column;gap:0.5rem;}
+.ql-row{display:grid;gap:0.5rem;}
+.ql-row.r2{grid-template-columns:1fr 1fr;}
+.ql-row.r3{grid-template-columns:1fr 1fr 1fr;}
+.ql-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.28rem;
+  padding:0.75rem 0.4rem;border-radius:12px;text-decoration:none;
+  background:var(--white);border:1px solid var(--line);transition:all 0.2s;
+}
+.ql-btn:hover{border-color:var(--accent);background:var(--accent-soft);}
+.ql-btn svg{width:20px;height:20px;}
+.ql-label{font-size:0.64rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--ink-muted);}
+.ql-btn:hover .ql-label{color:var(--accent);}
 
-\setlist[itemize]{leftmargin=1.5em, itemsep=1pt, topsep=2pt, parsep=0pt}
+/* Stats bar */
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--white);}
+.stat{padding:1.4rem 1.6rem;border-right:1px solid var(--line);}
+.stat:last-child{border-right:none;}
+.stat-num{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:500;line-height:1;color:var(--ink);margin-bottom:0.2rem;}
+.stat-label{font-size:0.7rem;font-weight:400;color:var(--ink-muted);letter-spacing:0.05em;text-transform:uppercase;}
 
-% ── Custom Commands ───────────────────────────────────────────────────────
-\newcommand{\cventry}[3]{%
-  \begin{tabularx}{\linewidth}{@{}X r@{}}
-    \textbf{#1} & \textcolor{muted}{\small #2} \\
-    \textcolor{lightaccent}{\small #3} &
-  \end{tabularx}\par}
+/* DIVIDER */
+.section-divider{width:100%;height:1px;background:var(--line);}
 
-\newcommand{\cvproject}[2]{%
-  \textbf{#1}\par
-  \textcolor{lightaccent}{\small #2}\par}
+/* SECTION WRAP */
+.section-wrap{max-width:var(--max-w);margin:0 auto;padding:5rem var(--pad);}
+.section-header{display:flex;align-items:baseline;gap:1.25rem;margin-bottom:3rem;}
+.section-num{font-family:'Playfair Display',serif;font-size:0.88rem;color:var(--ink-muted);font-weight:400;}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,2.3vw,2.3rem);font-weight:400;letter-spacing:-0.02em;color:var(--ink);}
 
-\newcommand{\pub}[2]{%
-  \hangindent=2em\hangafter=1
-  \makebox[2em][l]{\textcolor{accent}{\textbf{[#1]}}}#2\par\vspace{2pt}}
+/* ABOUT */
+#about{background:var(--white);}
+.about-body{display:grid;grid-template-columns:2fr 1fr;gap:5rem;align-items:start;margin-bottom:2.75rem;}
+.about-text{font-size:1rem;color:var(--ink-soft);line-height:1.9;}
+.about-text p+p{margin-top:1rem;}
+.about-facts{display:flex;flex-direction:column;}
+.fact-row{display:flex;flex-direction:column;padding:0.85rem 0;border-bottom:1px solid var(--line);}
+.fact-row:first-child{border-top:1px solid var(--line);}
+.fact-label{font-size:0.68rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:0.15rem;}
+.fact-value{font-size:0.93rem;color:var(--ink);}
+.about-grid-6{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+.ag6-cell{background:var(--off-white);padding:1.6rem 1.75rem;}
+.ag6-label{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:0.45rem;}
+.ag6-value{font-size:0.97rem;font-weight:500;color:var(--ink);line-height:1.4;}
+.ag6-sub{font-size:0.8rem;color:var(--ink-muted);margin-top:0.2rem;}
 
-\newcommand{\skillrow}[2]{\textbf{#1:} \textcolor{muted}{#2}\par\vspace{2pt}}
+/* PUBLICATIONS */
+#publications{background:var(--off-white);}
 
-% ── Document ──────────────────────────────────────────────────────────────
-\begin{document}
+/* Stats — centered */
+.pub-stats-wrap{display:flex;justify-content:center;margin-bottom:2rem;}
+.pub-stats-row{display:flex;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--white);}
+.pub-stat-item{padding:1.2rem 2.5rem;border-right:1px solid var(--line);}
+.pub-stat-item:last-child{border-right:none;}
+.psn{font-family:'Playfair Display',serif;font-size:2rem;color:var(--ink);line-height:1;}
+.psl{font-size:0.7rem;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:0.2rem;}
 
-% ══ PAGE 1: RESEARCH STATEMENT ═══════════════════════════════════════════
-\begin{center}
-  {\LARGE\bfseries\color{accent} Muhammad Faseeh}\\[5pt]
-  {\normalsize Application for a Postdoctoral Position (Start: Spring 2027)}\\[2pt]
-  {\normalsize\color{muted} ELLIS Institute Finland and Tampere University}\\[4pt]
-  {\small \href{mailto:ifaseeh1@gmail.com}{ifaseeh1@gmail.com} $\mid$ \href{https://mfaseeh.github.io}{mfaseeh.github.io} $\mid$ \href{https://scholar.google.com/citations?user=-C-iZsAAAAAJ}{Google Scholar} $\mid$ \href{https://orcid.org/0009-0008-2375-7803}{ORCID}}
-\end{center}
-\vspace{-6pt}
-\textcolor{accent}{\rule{\linewidth}{1.2pt}}
+/* Filters — below stats, above list */
+.pub-filters-bar{
+  display:flex;flex-direction:column;gap:0.85rem;
+  background:var(--white);border:1px solid var(--line);border-radius:14px;
+  padding:1.25rem 1.75rem;margin-bottom:1.75rem;
+}
+.pub-filters-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.filter-group-label{font-size:0.7rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-muted);min-width:80px;}
+.pf-btn{padding:0.3rem 0.85rem;border-radius:100px;font-size:0.78rem;font-weight:500;border:1px solid var(--line);background:transparent;cursor:pointer;color:var(--ink-soft);transition:all 0.18s;font-family:'Outfit',sans-serif;}
+.pf-btn.active-role{background:var(--ink);color:var(--white);border-color:var(--ink);}
+.pf-btn.active-year{background:var(--accent);color:var(--white);border-color:var(--accent);}
+.pub-result-info{font-size:0.78rem;color:var(--ink-muted);padding-top:0.6rem;border-top:1px solid var(--line);}
 
-\section{Research Statement}
+/* Publication list */
+.pub-list{display:flex;flex-direction:column;}
+.pub-item{display:grid;grid-template-columns:52px 1fr 180px;gap:1.75rem;align-items:center;padding:1.4rem 1rem;border-bottom:1px solid var(--line);border-radius:4px;transition:background 0.15s;}
+.pub-item:first-child{border-top:1px solid var(--line);}
+.pub-item:hover{background:var(--white);}
+.pub-num{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--line);text-align:center;}
+.pub-t{font-size:0.95rem;font-weight:500;color:var(--ink);line-height:1.5;margin-bottom:0.3rem;}
+.pub-m{font-size:0.8rem;color:var(--ink-muted);}
+.pub-right-col{display:flex;flex-direction:column;align-items:flex-end;gap:0.45rem;}
+.pub-year-big{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--ink-muted);}
+.tag{font-size:0.66rem;font-weight:600;padding:0.2rem 0.65rem;border-radius:100px;letter-spacing:0.04em;white-space:nowrap;}
+.tag-first{background:#e8f0fe;color:#1a56db;}
+.tag-co{background:#f3f4f6;color:#6b7280;}
+.tag-equal{background:#ecfdf5;color:#059669;}
 
-\setlength{\parskip}{8pt}
-My research focuses on making machine learning systems reliable when the data they meet differs from the data they were trained on. During my PhD at Jeju National University, I worked on multimodal and multi-source learning across several domains, including long-range object detection and depth estimation for autonomous systems, anomaly detection and forecasting for industrial energy systems, and data fusion models for materials discovery, with 26 peer-reviewed journal papers (9 as first author). My recent work turns directly to trustworthiness: conformal calibration for detecting text from unseen generative models, calibrated uncertainty and guarded deployment for forecasting under regime shifts, cross-attention fusion of multiple cues for ordinal drowsiness grading, and forgery detection that generalises across image generators.
+/* SKILLS — 3x2 grid */
+#skills{background:var(--white);}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+.skill-group{background:var(--off-white);border:1px solid var(--line);border-radius:14px;padding:1.6rem 1.5rem;position:relative;overflow:hidden;}
+.skill-group::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.sg-1::before{background:#2563eb;}
+.sg-2::before{background:#10b981;}
+.sg-3::before{background:#f59e0b;}
+.sg-4::before{background:#8b5cf6;}
+.sg-5::before{background:#ef4444;}
+.sg-6::before{background:#ec4899;}
+.skill-group-title{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:1rem;}
+.skill-tags{display:flex;flex-wrap:wrap;gap:0.4rem;}
+.skill-tag{font-size:0.78rem;padding:0.25rem 0.7rem;background:var(--white);border-radius:100px;color:var(--ink-soft);border:1px solid var(--line);}
 
-I would like to join your group because its focus on how foundation models and agentic systems adapt safely to new environments is the natural next step for my work. I want to move from task-specific models to vision-language and foundation models, and to study their reliability under distribution shift in domains such as autonomous driving, healthcare, and industrial monitoring. Your group's computing resources and the ELLIS network would let me work at a scale I cannot reach now, and I would aim to publish this work at top machine learning and computer vision venues.
+/* EXPERIENCE */
+#experience{background:var(--off-white);}
+.exp-list{display:flex;flex-direction:column;}
+.exp-item{display:grid;grid-template-columns:190px 1fr;gap:3rem;padding:2rem 0;border-bottom:1px solid var(--line);}
+.exp-item:first-child{border-top:1px solid var(--line);}
+.exp-period{font-size:0.8rem;color:var(--ink-muted);line-height:1.6;}
+.exp-type-tag{display:inline-block;margin-top:0.45rem;font-size:0.66rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:0.18rem 0.6rem;border-radius:100px;}
+.tag-research-t{background:#e8f0fe;color:#1a56db;}
+.tag-teaching-t{background:#ecfdf5;color:#059669;}
+.exp-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:500;margin-bottom:0.22rem;}
+.exp-org{font-size:0.86rem;color:var(--ink-muted);margin-bottom:0.65rem;}
+.exp-desc{font-size:0.88rem;color:var(--ink-soft);line-height:1.75;}
 
-\section{Application Contents}
-\setlength{\parskip}{3pt}
-\begin{enumerate}[leftmargin=1.5em, itemsep=2pt]
-  \item Research Statement (this page)
-  \item Curriculum Vitae, including referees
-  \item Academic Transcripts
-\end{enumerate}
+/* AWARDS */
+#awards{background:var(--white);}
+.awards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;}
+.award-card{background:var(--off-white);border:1px solid var(--line);border-radius:14px;padding:1.6rem 1.75rem;position:relative;overflow:hidden;transition:transform 0.2s;}
+.award-card:hover{transform:translateY(-2px);}
+.award-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.award-award::before{background:#f59e0b;}
+.award-scholarship::before{background:#2563eb;}
+.award-certification::before{background:#10b981;}
+.award-type-label{font-size:0.66rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:0.55rem;}
+.award-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:500;color:var(--ink);margin-bottom:0.28rem;line-height:1.4;}
+.award-issuer{font-size:0.83rem;color:var(--ink-muted);margin-bottom:1rem;}
+.award-footer{display:flex;justify-content:space-between;align-items:center;}
+.award-year-badge{font-size:0.73rem;font-weight:600;background:var(--white);border:1px solid var(--line);border-radius:100px;padding:0.18rem 0.6rem;color:var(--ink-soft);}
+.award-link-btn{font-size:0.76rem;color:var(--accent);text-decoration:none;padding:0.25rem 0.75rem;border:1px solid #bfcffd;border-radius:100px;transition:all 0.2s;}
+.award-link-btn:hover{background:var(--accent);color:var(--white);border-color:var(--accent);}
 
-\newpage
+/* CONTACT */
+#contact{background:#1e3a5f;color:var(--white);}
+#contact .section-title{color:var(--white);}
+#contact .section-num{color:rgba(255,255,255,0.35);}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+.contact-desc{font-size:1.05rem;color:rgba(255,255,255,0.65);line-height:1.9;font-weight:300;}
+.contact-desc p+p{margin-top:1rem;}
+.contact-availability{display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.5rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:0.5rem 1.1rem;font-size:0.82rem;color:rgba(255,255,255,0.75);}
+.contact-avail-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;flex-shrink:0;animation:pulse-dot 2s ease-in-out infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.contact-links-grid{display:flex;flex-direction:column;gap:0;}
+.contact-link-row{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,0.08);text-decoration:none;transition:all 0.2s;gap:1rem;}
+.contact-link-row:first-child{border-top:1px solid rgba(255,255,255,0.08);}
+.contact-link-row:hover{padding-left:0.5rem;}
+.clr-left{display:flex;align-items:center;gap:0.75rem;}
+.clr-icon{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.clr-icon svg{width:17px;height:17px;}
+.clr-label{font-size:0.7rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.1rem;}
+.clr-value{font-size:0.88rem;color:rgba(255,255,255,0.85);}
+.clr-arrow{font-size:0.8rem;color:rgba(255,255,255,0.3);transition:color 0.2s;}
+.contact-link-row:hover .clr-arrow{color:rgba(255,255,255,0.7);}
 
-% ── HEADER ────────────────────────────────────────────────────────────────
-\begin{center}
-  {\LARGE\bfseries\color{accent} Muhammad Faseeh}\\[5pt]
-  {\normalsize PhD in Electronic Engineering (December 2026) $\cdot$ Jeju National University, Republic of Korea}\\[2pt]
-  {\normalsize\color{muted} Reliable Machine Learning $\cdot$ Multimodal Learning $\cdot$ Generative AI}\\[4pt]
-  {\small
-    \href{mailto:ifaseeh1@gmail.com}{ifaseeh1@gmail.com} $\mid$
-    \href{mailto:faseeh@stu.jejunu.ac.kr}{faseeh@stu.jejunu.ac.kr} $\mid$
-    \href{https://orcid.org/0009-0008-2375-7803}{ORCID: 0009-0008-2375-7803}
-  }\\[2pt]
-  {\small
-    \href{https://mfaseeh.github.io}{mfaseeh.github.io} $\mid$
-    \href{https://scholar.google.com/citations?user=-C-iZsAAAAAJ}{Google Scholar} $\mid$
-    \href{https://github.com/MFaseeh}{GitHub: MFaseeh} $\mid$
-    \href{https://www.linkedin.com/in/ifaseeh/}{LinkedIn: ifaseeh}
+
+
+/* PAGINATION */
+.page-btn{padding:0.4rem 0.85rem;border-radius:100px;font-size:0.8rem;font-weight:500;border:1px solid var(--line);background:var(--white);cursor:pointer;color:var(--ink-soft);transition:all 0.18s;font-family:'Outfit',sans-serif;}
+.page-btn:hover:not([disabled]){border-color:var(--accent);color:var(--accent);}
+.page-btn.active-page{background:var(--accent);color:var(--white);border-color:var(--accent);}
+.page-btn[disabled]{opacity:0.35;cursor:not-allowed;}
+.page-nav{font-size:0.78rem;}
+
+
+/* PROJECTS */
+#projects{background:var(--white);}
+.projects-grid{display:flex;flex-direction:column;gap:1.5rem;}
+.project-card{background:var(--off-white);border:1px solid var(--line);border-radius:16px;padding:2rem 2.25rem;display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:start;transition:transform 0.2s,box-shadow 0.2s;position:relative;overflow:hidden;}
+.project-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.07);}
+.project-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;}
+.pc-1::before{background:#2563eb;}
+.pc-2::before{background:#10b981;}
+.pc-3::before{background:#8b5cf6;}
+.project-num{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:500;color:var(--line);line-height:1;padding-top:0.25rem;min-width:48px;text-align:center;}
+.project-body{}
+.project-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.85rem;}
+.project-tag{font-size:0.68rem;font-weight:600;padding:0.2rem 0.7rem;border-radius:100px;letter-spacing:0.04em;background:var(--white);border:1px solid var(--line);color:var(--ink-soft);}
+.project-title{font-family:'Playfair Display',serif;font-size:1.12rem;font-weight:500;color:var(--ink);line-height:1.4;margin-bottom:0.85rem;}
+.project-desc{font-size:0.9rem;color:var(--ink-soft);line-height:1.8;}
+
+
+/* LAB / COLLABORATORS */
+#lab{background:var(--off-white);}
+.lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
+.lab-card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:2rem 2.25rem;position:relative;overflow:hidden;}
+.lab-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);}
+.lab-card-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:500;color:var(--ink);margin-bottom:0.5rem;}
+.lab-card-sub{font-size:0.8rem;color:var(--accent);font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:1rem;}
+.lab-card-desc{font-size:0.9rem;color:var(--ink-soft);line-height:1.8;}
+.lab-topics{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1rem;}
+.lab-topic{font-size:0.75rem;padding:0.25rem 0.75rem;background:var(--accent-soft);border-radius:100px;color:var(--accent);font-weight:500;}
+.supervisor-card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:2rem 2.25rem;position:relative;overflow:hidden;}
+.supervisor-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#10b981;}
+.sup-role{font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#10b981;margin-bottom:0.5rem;}
+.sup-name{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:500;color:var(--ink);margin-bottom:0.25rem;}
+.sup-title{font-size:0.88rem;color:var(--ink-muted);margin-bottom:1rem;}
+.sup-detail{font-size:0.88rem;color:var(--ink-soft);line-height:1.7;}
+
+/* TEACHING */
+#teaching{background:var(--white);}
+.teaching-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+.teaching-card{background:var(--off-white);border:1px solid var(--line);border-radius:14px;padding:1.4rem 1.5rem;display:flex;align-items:flex-start;gap:1rem;}
+.teaching-icon{width:36px;height:36px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.teaching-icon svg{width:18px;height:18px;}
+.teaching-name{font-size:0.9rem;font-weight:500;color:var(--ink);line-height:1.4;}
+
+/* LANGUAGES */
+.languages-row{display:flex;gap:1.25rem;flex-wrap:wrap;margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--line);}
+.lang-item{display:flex;align-items:center;gap:0.75rem;background:var(--off-white);border:1px solid var(--line);border-radius:12px;padding:0.85rem 1.25rem;flex:1;min-width:160px;}
+.lang-flag{font-size:1.4rem;line-height:1;}
+.lang-name{font-size:0.92rem;font-weight:500;color:var(--ink);}
+.lang-level{font-size:0.72rem;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:0.1rem;}
+
+/* NEWS TICKER */
+.news-ticker-wrap{background:#1e3a5f;border-bottom:1px solid rgba(255,255,255,0.1);overflow:hidden;padding:0;position:relative;}
+.news-ticker-inner{display:flex;align-items:center;}
+.ticker-label{flex-shrink:0;background:var(--accent);color:#fff;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.75rem 1.25rem;white-space:nowrap;z-index:2;}
+.ticker-track{overflow:hidden;flex:1;}
+.ticker-content{display:inline-flex;gap:0;animation:ticker-scroll 40s linear infinite;white-space:nowrap;}
+.ticker-content:hover{animation-play-state:paused;}
+.ticker-item{display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 2.5rem;font-size:0.82rem;color:rgba(255,255,255,0.88);font-weight:400;}
+.ticker-item .ticker-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+.ticker-item .ticker-date{font-size:0.72rem;color:rgba(255,255,255,0.5);margin-left:0.25rem;}
+.ticker-separator{color:rgba(255,255,255,0.25);padding:0 0.5rem;}
+@keyframes ticker-scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+footer{background:#0a0a0a;color:rgba(255,255,255,0.2);text-align:center;padding:1.4rem var(--pad);font-size:0.76rem;}
+.loading{text-align:center;padding:2rem;color:var(--ink-muted);font-size:0.86rem;}
+
+@media(max-width:1024px){.skills-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hero-top{grid-template-columns:1fr;gap:2.5rem;}
+  .hero-right{flex-direction:row;gap:1.25rem;align-items:flex-start;}
+  .photo-box{width:180px;flex-shrink:0;}
+  .hero-stats{grid-template-columns:repeat(2,1fr);}
+  .about-body{grid-template-columns:1fr;gap:2rem;}
+  .about-grid-6{grid-template-columns:repeat(2,1fr);}
+  .pub-item{grid-template-columns:1fr;gap:0.5rem;}
+  .pub-num{display:none;}
+  .pub-right-col{align-items:flex-start;flex-direction:row;flex-wrap:wrap;}
+  .skills-grid{grid-template-columns:1fr 1fr;}
+  .teaching-grid{grid-template-columns:1fr 1fr;}
+  .lab-grid{grid-template-columns:1fr;}
+  .exp-item{grid-template-columns:1fr;gap:0.5rem;}
+  .contact-grid{grid-template-columns:1fr;gap:2.5rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Muhammad Faseeh</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#projects">Projects</a></li><li><a href="#lab">Lab</a></li><li><a href="#teaching">Teaching</a></li><li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#awards">Awards</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div style="max-width:var(--max-w);margin:0 auto;padding:0 var(--pad);">
+<section id="hero">
+  <div class="hero-top">
+
+    <!-- LEFT: name, desc, icon links -->
+    <div>
+      <p class="hero-eyebrow">PhD Candidate · Electronic Engineering · Jeju National University</p>
+      <h1 class="hero-name">Muhammad<br>Faseeh</h1>
+      <p class="hero-desc">AI & ML researcher specializing in Computer Vision, Material Informatics, and Natural Language Processing. Graduating December 2026. Open to research and faculty positions globally.</p>
+
+      <!-- Icon link buttons replacing the old text buttons -->
+      <div class="icon-links">
+        <a href="https://scholar.google.com/citations?user=-C-iZsAAAAAJ&hl=en" target="_blank" class="icon-link-btn">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" fill="#4285F4"/><path d="M2 17l10 5 10-5" stroke="#34A853" stroke-width="2"/><path d="M2 12l10 5 10-5" stroke="#FBBC05" stroke-width="2"/></svg>
+          Google Scholar
+        </a>
+        <a href="https://github.com/MFaseeh" target="_blank" class="icon-link-btn">
+          <svg viewBox="0 0 24 24" fill="#111"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+          GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/ifaseeh/" target="_blank" class="icon-link-btn">
+          <svg viewBox="0 0 24 24" fill="#0077B5"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://orcid.org/0009-0008-2375-7803" target="_blank" class="icon-link-btn">
+          <svg viewBox="0 0 24 24" fill="#A6CE39"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.2 14.5H9.3V9h1.5v7.5zm-.75-8.6a.94.94 0 110-1.88.94.94 0 010 1.88zM16 16.5h-1.5v-3.75c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v3.75H10V9h1.5v.9c.47-.6 1.2-1 2-1 1.38 0 2.5 1.12 2.5 2.5v5.1z"/></svg>
+          ORCID
+        </a>
+        <a href="mailto:faseeh@stu.jejunu.ac.kr" class="icon-link-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+          Email
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT: photo + 5 social icons -->
+    <div class="hero-right">
+      <div class="photo-box">
+        <img src="./images/Faseeh.png" alt="Muhammad Faseeh"
+          onerror="this.style.display='none';document.getElementById('ph-fallback').style.display='flex';" />
+        <div id="ph-fallback" style="display:none;flex-direction:column;align-items:center;gap:0.5rem;">
+          <div class="photo-ph-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.5" width="28" height="28"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <span class="photo-ph-text">Add photo to /images/</span>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num" id="s-total">—</div><div class="stat-label">Publications</div></div>
+    <div class="stat"><div class="stat-num" id="s-first">—</div><div class="stat-label">First Author</div></div>
+    <div class="stat"><div class="stat-num">5+</div><div class="stat-label">Years Experience</div></div>
+    <div class="stat"><div class="stat-num" id="s-publishers">—</div><div class="stat-label">Publishers</div></div>
+  </div>
+</section>
+</div>
+
+
+<!-- NEWS TICKER -->
+<div class="news-ticker-wrap" id="news-ticker-wrap" style="display:none;">
+  <div class="news-ticker-inner">
+    <div class="ticker-label">📢 News</div>
+    <div class="ticker-track">
+      <div class="ticker-content" id="ticker-content"></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-wrap">
+    <div class="section-header"><span class="section-num">01</span><h2 class="section-title">About</h2></div>
+    <div class="about-body">
+      <div class="about-text">
+        <p>I am a PhD Candidate in the Department of Electronic Engineering at Jeju National University, South Korea, working under the supervision of Prof. Do Hyeun Kim, supported by the Brain Korea (BK21) fully-funded scholarship.</p>
+        <p>My research sits at the intersection of deep learning and applied sciences — developing AI-driven methods for computer vision tasks like object detection, monocular depth estimation, and long-range tracking, alongside NLP applications such as text similarity, sarcasm detection, and essay scoring.</p>
+        <p>A significant strand of my work extends into Material Informatics, where I apply Transformer and AutoML-based inverse learning frameworks for ceramic material design and property prediction — including BaTiO₃-based ferroelectric ceramics.</p>
+        <p>With <span id="about-total">26</span> published and accepted papers across IEEE, Elsevier, Springer, Wiley, MDPI, Taylor & Francis, and PLOS ONE, I bring a track record of high-impact research. Prior to my PhD, I spent 5+ years in academia as a lecturer, lab engineer, and vice principal across institutions in Pakistan.</p>
+      </div>
+      <div class="about-facts">
+        <div class="fact-row"><div class="fact-label">Position</div><div class="fact-value">PhD Candidate</div></div>
+        <div class="fact-row"><div class="fact-label">Department</div><div class="fact-value">Electronic Engineering</div></div>
+        <div class="fact-row"><div class="fact-label">University</div><div class="fact-value">Jeju National University, South Korea</div></div>
+        <div class="fact-row"><div class="fact-label">Supervisor</div><div class="fact-value">Prof. Do Hyeun Kim</div></div>
+        <div class="fact-row"><div class="fact-label">Graduation</div><div class="fact-value">December 2026</div></div>
+        <div class="fact-row"><div class="fact-label">Open To</div><div class="fact-value">Middle East · Europe</div></div>
+      </div>
+    </div>
+    <div class="about-grid-6">
+      <div class="ag6-cell"><div class="ag6-label">PhD</div><div class="ag6-value">Electronic Engineering</div><div class="ag6-sub">Jeju National University · 2023–2026</div></div>
+      <div class="ag6-cell"><div class="ag6-label">MS</div><div class="ag6-value">Computer Science</div><div class="ag6-sub">COMSATS University Islamabad · 2020</div></div>
+      <div class="ag6-cell"><div class="ag6-label">BS</div><div class="ag6-value">Computer Science</div><div class="ag6-sub">COMSATS University Islamabad · 2016</div></div>
+      <div class="ag6-cell"><div class="ag6-label">Research Focus</div><div class="ag6-value">Computer Vision · NLP</div><div class="ag6-sub">Material Informatics · Deep Learning</div></div>
+      <div class="ag6-cell"><div class="ag6-label">Funding</div><div class="ag6-value">Brain Korea BK21</div><div class="ag6-sub">Fully Funded · Korean Government</div></div>
+      <div class="ag6-cell"><div class="ag6-label">Target Locations</div><div class="ag6-value">Middle East · Europe</div><div class="ag6-sub">Open to Relocation</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="section-wrap">
+    <div class="section-header"><span class="section-num">02</span><h2 class="section-title">Publications</h2></div>
+
+    <!-- Stats centered -->
+    <div class="pub-stats-wrap">
+      <div class="pub-stats-row" id="pub-bar"><div class="loading">Loading…</div></div>
+    </div>
+
+    <!-- Filters below stats, above list -->
+    <div class="pub-filters-bar">
+      <div class="pub-filters-row">
+        <span class="filter-group-label">By Role</span>
+        <div id="role-filters" style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+          <button class="pf-btn active-role" data-role="all">All</button>
+          <button class="pf-btn" data-role="first">First Author</button>
+          <button class="pf-btn" data-role="co">Co-Author</button>
+        </div>
+      </div>
+      <div class="pub-filters-row">
+        <span class="filter-group-label">By Year</span>
+        <div id="year-filters" style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+          <button class="pf-btn active-year" data-year="all">All Years</button>
+        </div>
+      </div>
+      <div class="pub-result-info" id="pub-result-info"></div>
+    </div>
+
+    <!-- Publication list -->
+    <div class="pub-list" id="pub-list"><div class="loading">Loading publications…</div></div>
+    <div id="pub-pagination" style="display:flex;justify-content:center;gap:0.4rem;flex-wrap:wrap;margin-top:2rem;"></div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-wrap">
+    <div class="section-header"><span class="section-num">03</span><h2 class="section-title">Research Projects</h2></div>
+    <div class="projects-grid">
+
+      <!-- Project 1 -->
+      <div class="project-card pc-1">
+        <div class="project-num">01</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="project-tag">Computer Vision</span>
+            <span class="project-tag">Object Detection</span>
+            <span class="project-tag">Depth Estimation</span>
+            <span class="project-tag">YOLOv11</span>
+            <span class="project-tag">Custom Dataset</span>
+          </div>
+          <div class="project-title">Custom Dataset Development & Real-Time Long-Range Object Detection Using YOLOv11 with Depth Estimation</div>
+          <div class="project-desc">Developed <strong>DFar300</strong>, a custom dataset enabling object detection at distances up to 300 meters, addressing the absence of long-range benchmarks in the field. Implemented a YOLOv11-based detection pipeline integrated with depth estimation to deliver accurate real-time object localization and distance measurement.</div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project-card pc-2">
+        <div class="project-num">02</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="project-tag">Material Informatics</span>
+            <span class="project-tag">NLP</span>
+            <span class="project-tag">Feature Fusion</span>
+            <span class="project-tag">BaTiO₃</span>
+            <span class="project-tag">Predictive Modeling</span>
+          </div>
+          <div class="project-title">AI-Driven Material Property Prediction via Multi-Source Feature Fusion and NLP-Enhanced Learning</div>
+          <div class="project-desc">Engineered a predictive model for <strong>BaTiO₃ material properties</strong> by fusing computational simulations with NLP-derived datasets to enrich feature representation. Applied advanced feature selection and fusion techniques within a forward learning framework to improve prediction accuracy across diverse material components and processing conditions.</div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project-card pc-3">
+        <div class="project-num">03</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="project-tag">Inverse Learning</span>
+            <span class="project-tag">Material Informatics</span>
+            <span class="project-tag">Feature Engineering</span>
+            <span class="project-tag">BaTiO₃</span>
+            <span class="project-tag">Attention Mechanism</span>
+          </div>
+          <div class="project-title">Multi-Strategy Feature Fusion and Inverse Learning with Post-Processing Optimization for BaTiO₃ Material Property Prediction</div>
+          <div class="project-desc">Designed a comprehensive inverse learning pipeline incorporating mathematical, statistical, and physics-informed feature transformations to predict BaTiO₃ material properties. Leveraged multiple fusion strategies — including <strong>weighted, hierarchical, attention-based, and block-wise fusion</strong> — alongside post-processing optimization to significantly enhance model performance and output reliability.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- LAB -->
+<section id="lab">
+  <div class="section-wrap">
+    <div class="section-header"><span class="section-num">04</span><h2 class="section-title">Research Lab</h2></div>
+    <div class="lab-grid">
+      <div class="lab-card">
+        <div class="lab-card-title">Big Data Research Center</div>
+        <div class="lab-card-sub">Jeju National University · South Korea</div>
+        <div class="lab-card-desc">
+          The Big Data Research Center focuses on cutting-edge research at the intersection of data science, distributed intelligence, and smart systems. Our interdisciplinary team develops scalable AI solutions that address real-world challenges across healthcare, energy, and materials science — with a strong emphasis on privacy-preserving and data-efficient learning.
+        </div>
+        <div class="lab-topics">
+          <span class="lab-topic">Big Data</span>
+          <span class="lab-topic">Data Science</span>
+          <span class="lab-topic">Federated Learning</span>
+          <span class="lab-topic">Virtual Sensors</span>
+          <span class="lab-topic">AI Systems</span>
+          <span class="lab-topic">Smart Grids</span>
+        </div>
+      </div>
+      <div class="supervisor-card">
+        <div class="sup-role">PhD Supervisor</div>
+        <div class="sup-name">Prof. Do Hyeun Kim</div>
+        <div class="sup-title">Professor · Department of Electronic Engineering<br>Jeju National University, South Korea</div>
+        <div class="sup-detail">
+          Prof. Do Hyeun Kim leads the Big Data Research Center at Jeju National University. His research encompasses intelligent data processing, IoT systems, federated learning, and energy-efficient computing. Under his supervision, I conduct research in Computer Vision, Material Informatics, and Natural Language Processing.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- TEACHING -->
+<section id="teaching">
+  <div class="section-wrap">
+    <div class="section-header"><span class="section-num">05</span><h2 class="section-title">Teaching</h2></div>
+    <div class="teaching-grid">
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div class="teaching-name">Introduction to Computer</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <div class="teaching-name">C++ Programming</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <div class="teaching-name">Software Project Management</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <div class="teaching-name">Professional Practices in IT</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <div class="teaching-name">Introduction to Python</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg></div>
+        <div class="teaching-name">Building Apps Using C#</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+        <div class="teaching-name">Introduction to Databases</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+        <div class="teaching-name">E-Commerce</div>
+      </div>
+      <div class="teaching-card">
+        <div class="teaching-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg></div>
+        <div class="teaching-name">Visual Basic Programming</div>
+      </div>
+    </div>
+
+    <!-- Languages row inside Teaching section -->
+    <div class="languages-row">
+      <div class="lang-item">
+        <div class="lang-flag">🇬🇧</div>
+        <div><div class="lang-name">English</div><div class="lang-level">Professional</div></div>
+      </div>
+      <div class="lang-item">
+        <div class="lang-flag">🇵🇰</div>
+        <div><div class="lang-name">Urdu</div><div class="lang-level">Native</div></div>
+      </div>
+      <div class="lang-item">
+        <div class="lang-flag">🇵🇰</div>
+        <div><div class="lang-name">Punjabi</div><div class="lang-level">Expert</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SKILLS 3x2 -->
+<section id="skills">
+  <div class="section-wrap">
+    <div class="section-header"><span class="section-num">06</span><h2 class="section-title">Skills & Tools</h2></div>
+    <div class="skills-grid" id="skills-grid"><div class="loading">Loading…</div></div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-wrap">
+    <div class="section-header"><span class="section-num">07</span><h2 class="section-title">Experience</h2></div>
+    <div class="exp-list" id="exp-list"><div class="loading">Loading…</div></div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="section-wrap">
+    <div class="section-header"><span class="section-num">08</span><h2 class="section-title">Awards & Certifications</h2></div>
+    <div class="awards-grid" id="awards-grid"><div class="loading">Loading…</div></div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-wrap">
+    <div class="section-header"><span class="section-num">09</span><h2 class="section-title">Contact</h2></div>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-desc">
+          <p>Open to research positions, faculty roles, postdoctoral opportunities, and active collaboration in AI, Machine Learning, and Computer Vision.</p>
+          <p>Currently based in Jeju, South Korea — targeting opportunities in the Middle East and Europe. Available from December 2026.</p>
+        </div>
+        <div class="contact-availability">
+          <span class="contact-avail-dot"></span>
+          Available from December 2026
+        </div>
+      </div>
+      <div class="contact-links-grid">
+        <a href="mailto:faseeh@stu.jejunu.ac.kr" class="contact-link-row">
+          <div class="clr-left">
+            <div class="clr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></div>
+            <div><div class="clr-label">Academic Email</div><div class="clr-value">faseeh@stu.jejunu.ac.kr</div></div>
+          </div>
+          <span class="clr-arrow">→</span>
+        </a>
+        <a href="mailto:ifaseeh1@gmail.com" class="contact-link-row">
+          <div class="clr-left">
+            <div class="clr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></div>
+            <div><div class="clr-label">Personal Email</div><div class="clr-value">ifaseeh1@gmail.com</div></div>
+          </div>
+          <span class="clr-arrow">→</span>
+        </a>
+        <a href="https://www.linkedin.com/in/ifaseeh/" target="_blank" class="contact-link-row">
+          <div class="clr-left">
+            <div class="clr-icon"><svg viewBox="0 0 24 24" fill="rgba(255,255,255,0.7)"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
+            <div><div class="clr-label">LinkedIn</div><div class="clr-value">linkedin.com/in/ifaseeh</div></div>
+          </div>
+          <span class="clr-arrow">→</span>
+        </a>
+        <a href="https://scholar.google.com/citations?user=-C-iZsAAAAAJ&hl=en" target="_blank" class="contact-link-row">
+          <div class="clr-left">
+            <div class="clr-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" fill="rgba(255,255,255,0.7)"/><path d="M2 17l10 5 10-5" stroke="rgba(255,255,255,0.7)" stroke-width="2"/><path d="M2 12l10 5 10-5" stroke="rgba(255,255,255,0.7)" stroke-width="2"/></svg></div>
+            <div><div class="clr-label">Google Scholar</div><div class="clr-value">View Publications</div></div>
+          </div>
+          <span class="clr-arrow">→</span>
+        </a>
+        <a href="https://orcid.org/0009-0008-2375-7803" target="_blank" class="contact-link-row">
+          <div class="clr-left">
+            <div class="clr-icon"><svg viewBox="0 0 24 24" fill="rgba(255,255,255,0.7)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.2 14.5H9.3V9h1.5v7.5zm-.75-8.6a.94.94 0 110-1.88.94.94 0 010 1.88zM16 16.5h-1.5v-3.75c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v3.75H10V9h1.5v.9c.47-.6 1.2-1 2-1 1.38 0 2.5 1.12 2.5 2.5v5.1z"/></svg></div>
+            <div><div class="clr-label">ORCID</div><div class="clr-value">0009-0008-2375-7803</div></div>
+          </div>
+          <span class="clr-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 Muhammad Faseeh · Jeju National University · Publications updated from publications.xlsx</footer>
+
+<script>
+const ORCID_ID = '0009-0008-2375-7803';
+const MY_NAME_KEY = 'Faseeh';
+const BASE='./data/';
+
+function csv(f){return new Promise((res,rej)=>Papa.parse(BASE+f,{download:true,header:true,skipEmptyLines:true,complete:r=>res(r.data),error:rej}));}
+
+/* ── Fetch works summary ── */
+async function fetchORCIDWorks(){
+  const url=`https://pub.orcid.org/v3.0/${ORCID_ID}/works`;
+  const res=await fetch(url,{headers:{Accept:'application/json'}});
+  if(!res.ok) throw new Error('ORCID fetch failed');
+  const json=await res.json();
+  return json.group||[];
+}
+
+/* ── Fetch full detail for a single put-code ── */
+async function fetchWorkDetail(putCode){
+  const url=`https://pub.orcid.org/v3.0/${ORCID_ID}/work/${putCode}`;
+  const res=await fetch(url,{headers:{Accept:'application/json'}});
+  if(!res.ok) return null;
+  return res.json();
+}
+
+/* ── Auto-detect publisher from journal name ── */
+function detectPublisher(journal){
+  if(!journal) return '';
+  const j=journal.toLowerCase();
+  if(j.includes('ieee')) return 'IEEE';
+  if(j.includes('results in engineering')||j.includes('internet of things')||j.includes('expert systems')||j.includes('materials today')||j.includes('journal of alloys')||j.includes('hydrogen energy')||j.includes('elsevier')) return 'Elsevier';
+  if(j.includes('mathematics')||j.includes('bioengineering')||j.includes('mdpi')) return 'MDPI';
+  if(j.includes('smart grid')||j.includes('springer')) return 'Springer';
+  if(j.includes('advanced intelligent')||j.includes('caai')||j.includes('wiley')) return 'Wiley';
+  if(j.includes('ceramic societ')||j.includes('taylor')) return 'Taylor & Francis';
+  if(j.includes('plos')||j.includes('public library')) return 'PLOS ONE';
+  return '';
+}
+
+/* ── Detect equal contribution purely from ORCID contributor data ── */
+function detectEqualContrib(contribs){
+  /* Checks two signals entirely from ORCID:
+     1. contributor-role field contains "equal"
+     2. credit-name contains "(Equal Contribution)" — as you should enter it in ORCID */
+  return contribs.some(c=>{
+    const name=(c?.['credit-name']?.value||'').toLowerCase();
+    const role=(c?.['contributor-attributes']?.['contributor-role']||'').toLowerCase();
+    const isFaseeh=name.includes(MY_NAME_KEY.toLowerCase());
+    const markedEqual=role.includes('equal')||name.includes('equal contribution')||name.includes('co-first');
+    return isFaseeh && markedEqual;
+  });
+}
+
+/* ── Determine authorship role purely from ORCID contributors ── */
+function detectRole(contribs){
+  if(!contribs||contribs.length===0) return 'No';
+  // Is Faseeh the first listed contributor?
+  const firstName=(contribs[0]?.['credit-name']?.value||'').toLowerCase();
+  const isFaseehFirst=firstName.includes(MY_NAME_KEY.toLowerCase());
+  // Is there an equal contribution marker anywhere?
+  const isEqual=detectEqualContrib(contribs);
+  if(isEqual) return 'Equal';
+  if(isFaseehFirst) return 'Yes';
+  // Check if Faseeh appears anywhere in the list at all
+  const faseehAnywhere=contribs.some(c=>(c?.['credit-name']?.value||'').toLowerCase().includes(MY_NAME_KEY.toLowerCase()));
+  return faseehAnywhere?'No':'No';
+}
+
+/* ── Render publication list & filters with pagination ── */
+function renderPubs(d){
+  const total=d.length;
+  const first=d.filter(x=>x.FirstAuthor==='Yes'||x.FirstAuthor==='Equal').length;
+  const at=document.getElementById('about-total'); if(at) at.textContent=total;
+  const yf=document.getElementById('year-filters');
+  [...new Set(d.map(x=>x.Year).filter(Boolean))].sort((a,b)=>b-a).forEach(y=>{
+    const b=document.createElement('button'); b.className='pf-btn'; b.dataset.year=y; b.textContent=y; yf.appendChild(b);});
+  const pubSet=[...new Set(d.map(x=>x.Publisher).filter(Boolean))];
+  const pubCount=pubSet.length||total;
+
+  document.getElementById('pub-bar').innerHTML=`
+    <div class="pub-stat-item"><div class="psn">${total}</div><div class="psl">Total</div></div>
+    <div class="pub-stat-item"><div class="psn">${first}</div><div class="psl">First Author</div></div>
+    <div class="pub-stat-item"><div class="psn">${pubCount}</div><div class="psl">Publishers</div></div>`;
+  document.getElementById('s-total').textContent=total;
+  document.getElementById('s-first').textContent=first>0?first:'—';
+  const spEl=document.getElementById('s-publishers');
+  if(spEl) spEl.textContent=pubCount;
+
+  const PER_PAGE=10;
+  let activeRole='all', activeYear='all', currentPage=1;
+
+  function render(){
+    let rows=d;
+    if(activeRole==='first') rows=rows.filter(x=>x.FirstAuthor==='Yes'||x.FirstAuthor==='Equal');
+    else if(activeRole==='co') rows=rows.filter(x=>x.FirstAuthor==='No');
+    if(activeYear!=='all') rows=rows.filter(x=>x.Year===activeYear);
+    rows=[...rows].sort((a,b)=>(b.Year||0)-(a.Year||0));
+
+    const totalPages=Math.ceil(rows.length/PER_PAGE);
+    if(currentPage>totalPages) currentPage=1;
+    const start=(currentPage-1)*PER_PAGE;
+    const pageRows=rows.slice(start, start+PER_PAGE);
+
+    const rl=activeRole==='all'?'All':activeRole==='first'?'First Author':'Co-Author';
+    document.getElementById('pub-result-info').textContent=
+      `Showing ${start+1}–${Math.min(start+PER_PAGE,rows.length)} of ${rows.length} papers · ${rl} · ${activeYear==='all'?'All Years':activeYear}`;
+
+    document.getElementById('pub-list').innerHTML=pageRows.map((p,i)=>{
+      const rc=p.FirstAuthor==='Yes'?'tag-first':p.FirstAuthor==='Equal'?'tag-equal':'tag-co';
+      const rl2=p.RoleLabel||(p.FirstAuthor==='Yes'?'First Author':p.FirstAuthor==='Equal'?'Co-First Author':'Co-Author');
+      const href=p.DOI?(/^https?:\/\//i.test(p.DOI)?p.DOI:'https://doi.org/'+p.DOI):'';
+      const doiLink=href?`<a href="${href}" target="_blank" rel="noopener" style="font-size:0.75rem;color:var(--accent);margin-left:0.5rem;">Paper →</a>`:'';
+      return `<div class="pub-item">
+        <div class="pub-num">${String(start+i+1).padStart(2,'0')}</div>
+        <div><div class="pub-t">${p.Title}${doiLink}</div>${p.Authors?`<div class="pub-m" style="margin-bottom:0.15rem;">${p.Authors}</div>`:''}<div class="pub-m">${p.Publication}${p.Publisher?' · '+p.Publisher:''}</div></div>
+        <div class="pub-right-col"><div class="pub-year-big">${p.Year}</div><span class="tag ${rc}">${rl2}</span></div>
+      </div>`;
+    }).join('');
+
+    // Pagination controls
+    if(totalPages>1){
+      let pages='';
+      for(let i=1;i<=totalPages;i++){
+        pages+=`<button class="page-btn${i===currentPage?' active-page':''}" data-p="${i}">${i}</button>`;
+      }
+      document.getElementById('pub-pagination').innerHTML=`
+        <button class="page-btn page-nav" data-p="${currentPage-1}" ${currentPage===1?'disabled':''}>← Prev</button>
+        ${pages}
+        <button class="page-btn page-nav" data-p="${currentPage+1}" ${currentPage===totalPages?'disabled':''}>Next →</button>`;
+      document.querySelectorAll('.page-btn').forEach(b=>b.addEventListener('click',()=>{
+        const p=parseInt(b.dataset.p);
+        if(p>=1&&p<=totalPages){ currentPage=p; render(); document.getElementById('publications').scrollIntoView({behavior:'smooth',block:'start'}); }
+      }));
+    } else {
+      document.getElementById('pub-pagination').innerHTML='';
+    }
   }
-\end{center}
-\vspace{-6pt}
-\textcolor{accent}{\rule{\linewidth}{1.2pt}}
+  render();
 
-% ── PROFILE ───────────────────────────────────────────────────────────────
-\section{Research Profile}
+  document.querySelectorAll('#role-filters .pf-btn').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#role-filters .pf-btn').forEach(x=>x.classList.remove('active-role'));
+    b.classList.add('active-role'); activeRole=b.dataset.role; currentPage=1; render();
+  }));
+  document.querySelectorAll('#year-filters .pf-btn').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#year-filters .pf-btn').forEach(x=>x.classList.remove('active-year'));
+    b.classList.add('active-year'); activeYear=b.dataset.year; currentPage=1; render();
+  }));
+}
 
-I am an AI researcher working on \textbf{reliable and trustworthy machine learning}, with a focus on \textbf{multimodal learning} and \textbf{generative AI}. My recent work studies how models behave under distribution shift: conformal calibration for detecting text from unseen generators, calibrated uncertainty and guarded deployment for forecasting, robustness of forgery detection across image generators, and interpretable cross-attention fusion of multiple cues. I build these methods on a broad base of applied deep learning, including computer vision for autonomous systems (long-range detection and monocular depth estimation), anomaly detection and forecasting for industrial energy systems, NLP with LLMs, and multi-source data fusion for materials discovery.
+/* ── Main loader: publications come from data/publications.xlsx ── */
+const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+async function loadPubs(){
+  document.getElementById('pub-list').innerHTML='<div class="loading">Loading publications…</div>';
+  try{
+    const res=await fetch(BASE+'publications.xlsx?v='+Date.now(),{cache:'no-store'});
+    if(!res.ok) throw new Error('publications.xlsx not found in /data');
+    const wb=XLSX.read(await res.arrayBuffer(),{type:'array'});
+    const ws=wb.Sheets['Publications']||wb.Sheets[wb.SheetNames[0]];
+    const rows=XLSX.utils.sheet_to_json(ws,{defval:''});
+    const works=rows.filter(r=>String(r.Title).trim()).map(r=>{
+      const role=String(r.Role).trim().toLowerCase();
+      const fa=role==='first author'?'Yes':role==='co-first author'?'Equal':'No';
+      const doi=String(r.DOI).trim();
+      return {Title:esc(String(r.Title).trim()), Authors:esc(r.Authors).replace(/M\. Faseeh/g,'<strong>M. Faseeh</strong>'),
+        Publication:esc(r.Journal), Publisher:esc(r.Publisher), Year:String(r.Year).trim(),
+        FirstAuthor:fa, RoleLabel:esc(String(r.Role).trim()||'Co-Author'), DOI:esc(doi)};
+    });
+    if(!works.length) throw new Error('The Publications sheet is empty');
+    renderPubs(works);
+  }catch(err){
+    document.getElementById('pub-list').innerHTML=`<div class="loading">Could not load publications.<br><small style="color:var(--ink-muted)">${esc(err.message)}</small></div>`;
+  }
+}
 
-% ── EDUCATION ─────────────────────────────────────────────────────────────
-\section{Education}
+async function loadSkills(){
+  try{
+    const d=await csv('skills.csv');
+    const groups={};
+    d.forEach(x=>{if(!groups[x.Category])groups[x.Category]=[];groups[x.Category].push(x.Skill);});
+    const colors=['sg-1','sg-2','sg-3','sg-4','sg-5','sg-6'];
+    document.getElementById('skills-grid').innerHTML=Object.entries(groups).map(([cat,skills],i)=>`
+      <div class="skill-group ${colors[i%colors.length]}">
+        <div class="skill-group-title">${cat}</div>
+        <div class="skill-tags">${skills.map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div>
+      </div>`).join('');
+  }catch(e){}
+}
 
-\cventry{PhD in Electronic Engineering}{Sep 2023 -- Dec 2026 (Expected)}{Jeju National University, Jeju, Republic of Korea}
-\begin{itemize}
-  \item Supervisor: Prof.\ Do Hyeun Kim $\mid$ Big Data Research Center
-  \item Fully funded by the Brain Korea 21 (BK21) Scholarship, National Research Foundation of Korea
-\end{itemize}
-\vspace{4pt}
+async function loadExp(){
+  try{
+    const d=await csv('experience.csv');
+    document.getElementById('exp-list').innerHTML=[...d].reverse().map(e=>`
+      <div class="exp-item">
+        <div><div class="exp-period">${e.StartDate} – ${e.EndDate}</div><span class="exp-type-tag ${e.Type==='Teaching'?'tag-teaching-t':'tag-research-t'}">${e.Type}</span></div>
+        <div><div class="exp-title">${e.Title}</div><div class="exp-org">${e.Organization} · ${e.City}, ${e.Country}</div><div class="exp-desc">${e.Description}</div></div>
+      </div>`).join('');
+  }catch(e){}
+}
 
-\cventry{MS in Computer Science}{2020}{COMSATS University Islamabad, Attock Campus, Pakistan}
-\begin{itemize}
-  \item Fully funded by the Prime Minister Youth Scholarship, Government of Pakistan
-\end{itemize}
-\vspace{4pt}
+async function loadAwards(){
+  try{
+    const d=await csv('awards.csv');
+    document.getElementById('awards-grid').innerHTML=d.map(a=>`
+      <div class="award-card ${a.Type==='Scholarship'?'award-scholarship':a.Type==='Award'?'award-award':'award-certification'}">
+        <div class="award-type-label">${a.Type}${a.Degree?' · '+a.Degree:''}</div>
+        <div class="award-title">${a.Title}</div>
+        <div class="award-issuer">${a.Issuer}</div>
+        <div class="award-footer">
+          <span class="award-year-badge">${a.Year}</span>
+          ${a.Link?`<a href="${a.Link}" target="_blank" class="award-link-btn">Verify →</a>`:''}
+        </div>
+      </div>`).join('');
+  }catch(e){}
+}
 
-\cventry{BS in Computer Science}{2016}{COMSATS University Islamabad, Attock Campus, Pakistan}
-\begin{itemize}
-  \item Fully funded by the Pakistan Air Force Scholarship
-\end{itemize}
 
-% ── RESEARCH EXPERIENCE ───────────────────────────────────────────────────
-\section{Research Experience}
+async function loadNews(){
+  try{
+    const d=await csv('news.csv');
+    if(!d.length) return;
+    // Build items twice for seamless loop
+    const items=d.map(n=>`
+      <span class="ticker-item">
+        <span class="ticker-dot"></span>
+        ${n.Text}
+        <span class="ticker-date">${n.Date}</span>
+      </span>
+      <span class="ticker-separator">·</span>`).join('');
+    document.getElementById('ticker-content').innerHTML=items+items;
+    document.getElementById('news-ticker-wrap').style.display='block';
+    // Adjust animation speed based on content length
+    const itemCount=d.length;
+    const duration=Math.max(30, itemCount*5);
+    document.querySelector('.ticker-content').style.animationDuration=duration+'s';
+  }catch(e){}
+}
 
-\cventry{PhD Researcher, Big Data Research Center}{Sep 2023 -- Present}{Department of Electronic Engineering, Jeju National University, Republic of Korea}
-\begin{itemize}
-  \item Research in reliable and multimodal machine learning, computer vision, NLP, and materials informatics under Prof.\ Do Hyeun Kim.
-  \item Developing methods for uncertainty calibration, robustness to distribution shift, and interpretable multimodal fusion (manuscripts in progress).
-  \item Published 26 peer-reviewed journal papers (9 as first author) with IEEE, Elsevier, Springer, Wiley, MDPI, Taylor \& Francis, and PLOS.
-  \item Built NLP models for text similarity, duplicate question detection, and automated essay scoring that combine deep embeddings with handcrafted linguistic features.
-  \item Developed multi-source feature fusion and inverse learning frameworks for predicting the properties of BaTiO\textsubscript{3}-based ceramics.
-  \item Created DFar300, a long-range object detection dataset, and real-time detection and depth estimation pipelines using YOLOv11 and ResNet.
-\end{itemize}
-\vspace{4pt}
-
-\cventry{Research Assistant, HEC-Funded Project}{Sep 2016 -- Jun 2017}{COMSATS University Islamabad, Attock Campus, Pakistan}
-\begin{itemize}
-  \item Project: ``Psycholinguistic Analysis of the English Curriculum Taught to Special Students,'' funded by the Higher Education Commission (HEC), Pakistan.
-\end{itemize}
-
-% ── PUBLICATIONS ──────────────────────────────────────────────────────────
-\Needspace{10\baselineskip}
-\section{Journal Publications}
-
-\textcolor{muted}{\small 26 peer-reviewed journal papers $\cdot$ 9 first-author $\cdot$ 1 corresponding-author (*) $\cdot$ IEEE, Elsevier, Springer, Wiley, MDPI, Taylor \& Francis, PLOS}
-\vspace{3pt}
-
-\textbf{First-Author Papers}\par\vspace{3pt}
-\pub{1}{\textbf{M.~Faseeh}, S. Khalid, M.A. Khan, H. Song, S.S.A. Naqvi, H. Ko, D.-H. Kim. E2C-LFFNet: Late Feature Fusion-Based Network for Electroceramic Property Prediction. \textit{Journal of Materiomics (Elsevier)}, 2026. \textcolor{muted}{(Accepted)}}
-\pub{2}{\textbf{M.~Faseeh}, T. Amin, N. Iqbal, H.S. Hussain, S. Ahmad, M. Afzaal. A robust approach to text similarity detection with LSTM networks based on embedding and attention synergy. \textit{Expert Systems with Applications (Elsevier)}, vol.~296, Art.~128904, 2026. \textcolor{lightaccent}{[\href{https://www.sciencedirect.com/science/article/pii/S0957417425025217}{Link}]}}
-\pub{3}{\textbf{M.~Faseeh}, H. Song, M.A. Khan, S.S.A. Naqvi, S. Khalid, H. Ko, D.-H. Kim. Processing--structure--property prediction in polycrystalline BaTiO\textsubscript{3} ceramics using experimental and computational data fusion. \textit{Materials Today Communications (Elsevier)}, vol.~52, Art.~115004, 2026. \textcolor{lightaccent}{[\href{https://www.sciencedirect.com/science/article/pii/S2352492826003880}{Link} $\mid$ \href{https://github.com/MFaseeh/Early-Feature-Fusion}{Code}]}}
-\pub{4}{\textbf{M.~Faseeh}, M. Bibi, M.A. Khan, S.S.A. Naqvi, A.E. Muhammad, D.-H. Kim. Enhanced Monocular Depth Estimation Using ResNet Backbone and Multiscale Feature Decoding for Precise Object Distance Measurement. \textit{Advanced Intelligent Systems (Wiley)}, Art.~e70450, 2026. \textcolor{lightaccent}{[\href{https://advanced.onlinelibrary.wiley.com/doi/10.1002/aisy.70450}{Link}]}}
-\pub{5}{\textbf{M.~Faseeh}, M. Bibi, M.A. Khan. Real-time long-range object tracking based on ensembled model. \textit{IEEE Access}, vol.~13, pp.~2679--2693, 2025. \textcolor{lightaccent}{[\href{https://ieeexplore.ieee.org/document/10802909}{Link}]}}
-\pub{6}{\textbf{M.~Faseeh}, M.A. Khan, N. Iqbal, F. Qayyum, A. Mehmood, J. Kim. Enhancing user experience on Q\&A platforms: Measuring text similarity based on hybrid CNN-LSTM model for efficient duplicate question detection. \textit{IEEE Access}, vol.~12, pp.~34512--34526, 2024. \textcolor{lightaccent}{[\href{https://ieeexplore.ieee.org/document/10414059}{Link}]}}
-\pub{7}{\textbf{M.~Faseeh}, M. Bibi, M.A. Khan, A. Rizwan, R. Ahmad, D.-H. Kim. Geo-temporal selective approach for dynamic depth estimation in outdoor object detection and distance measurement. \textit{IEEE Access}, vol.~12, pp.~155522--155533, 2024. \textcolor{lightaccent}{[\href{https://ieeexplore.ieee.org/document/10731702}{Link}]}}
-\pub{8}{\textbf{M.~Faseeh}, A. Jaleel, N. Iqbal, A. Ghani, A. Abdusalomov, A. Mehmood, Y.-I. Cho. Hybrid approach to automated essay scoring: Integrating deep learning embeddings with handcrafted linguistic features for improved accuracy. \textit{Mathematics (MDPI)}, vol.~12(21), Art.~3416, 2024. \textcolor{lightaccent}{[\href{https://www.mdpi.com/2227-7390/12/21/3416}{Link}]}}
-\pub{9}{\textbf{M.~Faseeh}, M. Bibi, M.A. Khan, D.-H. Kim. Deep learning assisted real-time object recognition and depth estimation for enhancing emergency response in adaptive environment. \textit{Results in Engineering (Elsevier)}, vol.~24, Art.~103482, 2024. \textcolor{lightaccent}{[\href{https://www.sciencedirect.com/science/article/pii/S2590123024017341}{Link}]}}
-\vspace{4pt}\textbf{Co-Authored Papers}\par\vspace{3pt}
-\pub{10}{S.S.A. Naqvi, H. Jamil, N. Iqbal, \textbf{M.~Faseeh}, M.A. Khan, S. Khan, D.-H. Kim. Explainable fault classification mechanism using solar data based on ensemble paradigm for efficient hydrogen energy production. \textit{International Journal of Hydrogen Energy (Elsevier)}, vol.~197, Art.~152606, 2026. \textcolor{lightaccent}{[\href{https://www.sciencedirect.com/science/article/pii/S0360319925056095}{Link}]}}
-\pub{11}{M.A. Khan, H. Song, S.S.A. Naqvi, \textbf{M.~Faseeh}, H. Ko, D.-H. Kim. Toward efficient dielectric material discovery: a comparative evaluation of Transformer and AutoML-based inverse learning. \textit{Journal of Asian Ceramic Societies (Taylor \& Francis)}, vol.~14(1), pp.~1--19, 2026. \textcolor{lightaccent}{[\href{https://www.tandfonline.com/doi/full/10.1080/21870764.2025.2570561}{Link}]}}
-\pub{12}{M.A. Khan, S.S.A. Naqvi, \textbf{M.~Faseeh}, D.-H. Kim. Cross-material inverse learning and knowledge transfer for property-driven design of advanced ceramics. \textit{Journal of Alloys and Compounds (Elsevier)}, Art.~187165, 2026. \textcolor{lightaccent}{[\href{https://www.sciencedirect.com/science/article/pii/S0925838826012338}{Link}]}}
-\pub{13}{S.S.A. Naqvi, \textbf{M.~Faseeh}, M.A. Khan, Q.W. Khan, D.-H. Kim. Accurate hydrogen flow prediction in proton exchange membrane electrolyzers using feature selection and stacked ensemble learning. \textit{Energy Reports (Elsevier)}, vol.~16, Art.~109403, 2026. \textcolor{lightaccent}{[\href{https://www.sciencedirect.com/science/article/pii/S2352484726003720}{Link}]}}
-\pub{14}{S. Khalid, \textbf{M.~Faseeh}, H. Song, M.A. Khan, S.S.A. Naqvi, H. Ko, D.-H. Kim. Multi-model machine learning framework for predicting material properties of BaTiO\textsubscript{3}-based ferroelectric ceramics. \textit{Materials \& Design (Elsevier)}, Art.~116418, 2026. \textcolor{lightaccent}{[\href{https://www.sciencedirect.com/science/article/pii/S0264127526009913}{Link} $\mid$ \href{https://github.com/MFaseeh/BaTiO3-ML-Property-Prediction}{Code}]}}
-\pub{15}{S. Khalid, \textbf{M.~Faseeh}, M.A. Khan, H. Song, S.S.A. Naqvi, H. Ko, D.-H. Kim. Composition and Processing Descriptors Govern Electroceramic Property Prediction: A Multi-Modal Interpretable Framework for BaTiO\textsubscript{3}-Based Ceramics. \textit{Journal of Materiomics (Elsevier)}, Art.~101282, 2026. \textcolor{lightaccent}{[\href{https://www.sciencedirect.com/science/article/pii/S235284782600122X}{Link} $\mid$ \href{https://github.com/MFaseeh/BaTiO3-MultiModal-Framework}{Code}]}}
-\pub{16}{M.A. Khan, N. Iqbal, S.S.A. Naqvi, \textbf{M.~Faseeh}, D.-H. Kim. RES-AD: An AutoML-Driven Robust Ensemble Framework for Real-Time Anomaly Detection and Energy Forecasting in Smart Grids. \textit{CAAI Transactions on Intelligence Technology (Wiley)}, 2026. \textcolor{lightaccent}{[\href{https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/cit2.70155}{Link}]}}
-\pub{17}{M.A. Khan, \textbf{M.~Faseeh}, S.S.A. Naqvi, D.-H. Kim. AMS-LPP: adaptive model selection for lightfastness property prediction in textile materials using similarity-guided transfer learning and AutoML. \textit{Journal of Big Data (Springer)}, 2026. \textcolor{lightaccent}{[\href{https://link.springer.com/article/10.1186/s40537-026-01585-4}{Link}]}}
-\pub{18}{M.A. Khan, S.S.A. Naqvi, \textbf{M.~Faseeh}, D.-H. Kim. Transformer-driven inverse learning for AI-powered ceramic material innovation with advanced data preprocessing. \textit{IEEE Access}, vol.~13, pp.~7574--7589, 2025. \textcolor{lightaccent}{[\href{https://ieeexplore.ieee.org/document/10804758}{Link}]}}
-\pub{19}{M. Bibi, \textbf{M.~Faseeh}, A.N. Khan, A. Rizwan, Q.W. Khan, R. Ahmad, D.-H. Kim. An auto-annotation approach for object detection and depth-based distance estimation in security and surveillance systems. \textit{IEEE Access}, vol.~13, pp.~45240--45251, 2025. \textcolor{lightaccent}{[\href{https://ieeexplore.ieee.org/document/10876157}{Link}]}}
-\pub{20}{A. Sattar, A. Sarwar, S. Gillani, M. Bukhari, S. Rho, \textbf{M.~Faseeh}. A novel rms-driven deep reinforcement learning for optimized portfolio management in stock trading. \textit{IEEE Access}, vol.~13, pp.~42813--42835, 2025. \textcolor{lightaccent}{[\href{https://ieeexplore.ieee.org/document/10904473}{Link}]}}
-\pub{21}{L. Zhang, \textbf{M.~Faseeh}*, S.S.A. Naqvi, L. Hu, A. Ghani. Enhancing sarcasm detection on social media: A comprehensive study using LLMs and BERT with multi-headed attention on SARC. \textit{PLOS ONE}, vol.~20(11), Art.~e0334120, 2025. \textcolor{lightaccent}{[\href{https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0334120}{Link}]}}
-\pub{22}{S. Khan, F. Nosheen, S.S.A. Naqvi, H. Jamil, \textbf{M.~Faseeh}, M.A. Khan, D.-H. Kim. Bilevel hyperparameter optimization and neural architecture search for enhanced breast cancer detection in smart hospitals interconnected with decentralized federated learning environment. \textit{IEEE Access}, vol.~12, pp.~63618--63628, 2024. \textcolor{lightaccent}{[\href{https://ieeexplore.ieee.org/document/10506922}{Link}]}}
-\pub{23}{S.S.A. Naqvi, H. Jamil, \textbf{M.~Faseeh}, N. Iqbal, S. Khan, D.-H. Kim. Development strategies of integrated electronic control units in IoEVs for mobility energy efficiency: A comprehensive review. \textit{Internet of Things (Elsevier)}, Art.~101085, 2024. \textcolor{lightaccent}{[\href{https://www.sciencedirect.com/science/article/pii/S2542660524000271}{Link}]}}
-\pub{24}{H. Ayub, M.A. Khan, S.S.A. Naqvi, \textbf{M.~Faseeh}, J. Kim, A. Mehmood, Y.-J. Kim. Unraveling the potential of attentive Bi-LSTM for accurate obesity prognosis: Advancing public health towards sustainable cities. \textit{Bioengineering (MDPI)}, vol.~11(6), Art.~533, 2024. \textcolor{lightaccent}{[\href{https://www.mdpi.com/2306-5354/11/6/533}{Link}]}}
-\pub{25}{H. Jamil, S.S.A. Naqvi, N. Iqbal, M.A. Khan, F. Qayyum, \textbf{M.~Faseeh}, S. Khan, D.-H. Kim. Analysis on the driving and braking control logic algorithm for mobility energy efficiency in electric vehicle. \textit{Smart Grids and Sustainable Energy (Springer)}, vol.~9(1), Art.~12, 2024. \textcolor{lightaccent}{[\href{https://link.springer.com/article/10.1007/s40866-023-00190-1}{Link}]}}
-\pub{26}{M. Bibi, A.N. Khan, \textbf{M.~Faseeh}, Q.W. Khan, R. Ahmad. A synthetic data generation approach with dynamic camera poses for long-range object detection in AI applications. \textit{IEEE Access}, vol.~12, pp.~194505--194520, 2024. \textcolor{lightaccent}{[\href{https://ieeexplore.ieee.org/document/10802893}{Link}]}}
-
-% ── ONGOING WORK ──────────────────────────────────────────────────────────
-\section{Manuscripts in Progress}
-
-\begin{itemize}
-  \item Nowcast or forecast? Guarded deployment and calibrated uncertainty for a lagged financial stress index. \textcolor{muted}{(International Journal of Forecasting)}
-  \item Reliability- and regime-aware dynamic fusion of heterogeneous information for multi-horizon financial stress forecasting.
-  \item Are writing-process profiles robust? A reproducible test of latent writer types in keystroke logs. \textcolor{muted}{(Acta Psychologica)}
-  \item Domain-stratified conformal calibration for zero-day machine-generated text detection: A benchmark and robustness study.
-  \item MADE: A multi-axis detection ensemble for AI-generated academic writing.
-  \item Human--AI interaction in education: An explainable decision-support approach for academic integrity.
-  \item Quality-controlled synthetic data augmentation for disaster-related social media classification to support situational awareness and risk reduction.
-  \item Multi-cue ordinal drowsiness grading with interpretable cross-attention fusion.
-  \item A hybrid field-guided probabilistic decision framework for transaction-level receipt forgery detection under cross-generator shift.
-  \item Fusing pixel forensics and field value consistency for receipt forgery detection under cross-generator generalization.
-  \item Monocular depth-based distance estimation for long-range dynamic objects. \textcolor{muted}{(Conference paper)}
-\end{itemize}
-
-% ── ONGOING WORK ──────────────────────────────────────────────────────────
-\section{Manuscripts in Progress}
-
-\begin{itemize}
-  \item Domain-stratified conformal calibration for zero-day machine-generated text detection: A benchmark and robustness study.
-  \item Nowcast or forecast? Guarded deployment and calibrated uncertainty for a lagged financial stress index. \textcolor{muted}{(International Journal of Forecasting)}
-  \item Reliability- and regime-aware dynamic fusion of heterogeneous information for multi-horizon financial stress forecasting.
-  \item Multi-cue ordinal drowsiness grading with interpretable cross-attention fusion.
-  \item A hybrid field-guided probabilistic decision framework for transaction-level receipt forgery detection under cross-generator shift.
-  \item Fusing pixel forensics and field value consistency for receipt forgery detection under cross-generator generalization.
-  \item MADE: A multi-axis detection ensemble for AI-generated academic writing.
-  \item Quality-controlled synthetic data augmentation for disaster-related social media classification to support situational awareness and risk reduction.
-  \item Human--AI interaction in education: An explainable decision-support approach for academic integrity.
-  \item Are writing-process profiles robust? A reproducible test of latent writer types in keystroke logs. \textcolor{muted}{(Acta Psychologica)}
-  \item Monocular depth-based distance estimation for long-range dynamic objects. \textcolor{muted}{(Conference paper)}
-\end{itemize}
-
-% ── SKILLS ────────────────────────────────────────────────────────────────
-\section{Skills}
-
-\skillrow{Machine Learning}{Deep learning (CNN, LSTM, Bi-LSTM, Transformers, attention), multimodal fusion, uncertainty calibration and conformal prediction, robustness to distribution shift, transfer learning, ensemble methods, AutoML}
-\skillrow{Computer Vision}{Object detection (YOLO), monocular depth estimation, long-range tracking, synthetic data generation, image forensics}
-\skillrow{NLP \& Text Analysis}{Text similarity and semantic matching, text classification, linguistic feature engineering, Transformers, BERT, LLMs, machine-generated text detection}
-\skillrow{Materials Informatics}{Material property prediction, inverse learning, experimental and computational data fusion, ferroelectric ceramics (BaTiO\textsubscript{3})}
-\skillrow{Data Science}{Dataset construction, multi-source data fusion, feature engineering, statistical analysis, data visualisation}
-\skillrow{Programming}{Python, C/C++/C\#, SQL, HTML/CSS/PHP}
-\skillrow{Frameworks \& Libraries}{PyTorch, TensorFlow, Keras, Hugging Face Transformers, scikit-learn, OpenCV, NumPy, Pandas, Matplotlib}
-\skillrow{Tools}{Git, \LaTeX, Jupyter, PyCharm, Visual Studio Code}
-
-% ── TEACHING ──────────────────────────────────────────────────────────────
-\section{Teaching Experience}
-
-\cventry{Visiting Lecturer, Computer Science}{Sep 2022 -- Jan 2023}{COMSATS University Islamabad, Attock Campus, Pakistan}
-\begin{itemize}
-  \item Courses: Operating Systems, Database Management Systems, Software Engineering Concepts
-\end{itemize}
-\vspace{4pt}
-
-\cventry{Lab Engineer}{Feb 2020 -- Aug 2022}{COMSATS University Islamabad, Attock Campus, Pakistan}
-\begin{itemize}
-  \item Labs: Databases, E-Commerce, Introduction to ICT, C++, Software Project Management, Professional Practices in IT
-\end{itemize}
-\vspace{4pt}
-
-\cventry{Vice Principal and Computer Science Lecturer}{May 2019 -- Feb 2020}{Excel College of Sciences and Commerce, Fateh Jang, Pakistan}
-\begin{itemize}
-  \item Courses: C, C++, Introduction to Databases; also responsible for college administration
-\end{itemize}
-\vspace{4pt}
-
-\cventry{Computer Science Lecturer}{Aug 2017 -- May 2019}{Fateh Jang College of Commerce and Sciences, Fateh Jang, Pakistan}
-\begin{itemize}
-  \item Courses: C, C++, Visual Basic, Operating Systems, Computer Communication and Networks
-\end{itemize}
-
-% ── AWARDS ────────────────────────────────────────────────────────────────
-\section{Awards, Honours \& Scholarships}
-
-\begin{tabularx}{\linewidth}{@{}X r@{}}
-  \textbf{Excellent Research Outstanding Award} (KRW 2,700,000), Jeju National University & \textcolor{muted}{\small 2025} \\
-  \textbf{Best Academic Video Contest Award} (KRW 200,000), Jeju National University & \textcolor{muted}{\small 2024} \\
-  \textbf{Brain Korea 21 (BK21) Scholarship}, National Research Foundation of Korea (PhD, fully funded) & \textcolor{muted}{\small 2023 -- Present} \\
-  \textbf{Prime Minister Youth Scholarship}, Government of Pakistan (MS, fully funded) & \textcolor{muted}{\small 2017} \\
-  \textbf{Pakistan Air Force Scholarship} (BS, fully funded) & \textcolor{muted}{\small 2012} \\
-\end{tabularx}
-
-% ── MEMBERSHIPS ───────────────────────────────────────────────────────────
-\section{Professional Memberships}
-
-\begin{tabularx}{\linewidth}{@{}X r@{}}
-  \textbf{IEEE Student Member}, Institute of Electrical and Electronics Engineers & \\
-\end{tabularx}
-
-% ── CERTIFICATIONS ────────────────────────────────────────────────────────
-\section{Certifications}
-
-\begin{tabularx}{\linewidth}{@{}X r@{}}
-  \textbf{What is Data Science?}, Coursera \textcolor{muted}{\small (\href{https://www.coursera.org/account/accomplishments/verify/YUZQ5PZRXN9K}{verify})} & \textcolor{muted}{\small Nov 2023} \\
-  \textbf{Introduction to Deep Learning \& Neural Networks with Keras}, Coursera \textcolor{muted}{\small (\href{https://www.coursera.org/account/accomplishments/verify/SG6BSB9W68QT}{verify})} & \textcolor{muted}{\small Apr 2023} \\
-  \textbf{Machine Learning with Python}, Coursera \textcolor{muted}{\small (\href{https://www.coursera.org/account/accomplishments/verify/LTTX9G6FX36L}{verify})} & \textcolor{muted}{\small Feb 2023} \\
-\end{tabularx}
-
-% ── LANGUAGES ─────────────────────────────────────────────────────────────
-\section{Languages}
-
-\textbf{English} \textcolor{muted}{(Professional)} \quad
-\textbf{Urdu} \textcolor{muted}{(Native)} \quad
-\textbf{Punjabi} \textcolor{muted}{(Fluent)}
-
-% ── REFERENCES ────────────────────────────────────────────────────────────
-\section{Referees}
-\textcolor{muted}{\small To be contacted at the pre-offer stage.}\par\vspace{3pt}
-\begin{tabularx}{\linewidth}{@{}XXX@{}}
-  \textbf{Prof.\ Dr.\ Do Hyeun Kim} & \textbf{Dr.\ Naeem Iqbal} & \textbf{Dr.\ Muhammad Afzaal} \\
-  \textcolor{muted}{\small PhD Supervisor; Professor} & \textcolor{muted}{\small Senior Engineer (AI), CSIT} & \textcolor{muted}{\small Associate Professor} \\
-  \textcolor{muted}{\small Big Data Research Center} & \textcolor{muted}{\small Queen's University Belfast} & \textcolor{muted}{\small Institute of Corpus Studies and Applications} \\
-  \textcolor{muted}{\small Jeju National University, Korea} & \textcolor{muted}{\small United Kingdom} & \textcolor{muted}{\small Shanghai International Studies Univ., China} \\
-  \href{mailto:kimdh@jejunu.ac.kr}{\small kimdh@jejunu.ac.kr} & \href{mailto:n.iqbal@qub.ac.uk}{\small n.iqbal@qub.ac.uk} & \href{mailto:afzaal@shisu.edu.cn}{\small afzaal@shisu.edu.cn} \\
-\end{tabularx}
-
-% ══ TRANSCRIPTS ══════════════════════════════════════════════════════════
-%% Put your transcript PDFs in the same folder as this .tex file with these
-%% names. Each one is added automatically if the file exists.
-\IfFileExists{transcript_PhD.pdf}{\includepdf[pages=-,pagecommand={}]{transcript_PhD.pdf}}{}
-\IfFileExists{transcript_MS.pdf}{\includepdf[pages=-,pagecommand={}]{transcript_MS.pdf}}{}
-\IfFileExists{transcript_BS.pdf}{\includepdf[pages=-,pagecommand={}]{transcript_BS.pdf}}{}
-
-\end{document}
+loadPubs();loadSkills();loadExp();loadAwards();loadNews();
+</script>
+</body>
+</html>
